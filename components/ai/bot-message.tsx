@@ -3,7 +3,7 @@ import { IconOpenAI } from "@/components/ui/icons";
 
 import { cn } from "@/lib/utils";
 
-export function BotCard({
+export function BotMessage({
   children,
   showAvatar = true,
 }: {

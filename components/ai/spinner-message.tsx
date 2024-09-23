@@ -1,6 +1,6 @@
 "use client"
 import { IconOpenAI } from "@/components/ui/icons";
-import { spinner } from "@/components/chat/spinner";
+import { spinner } from "@/components/ai/spinner";
 
 export function SpinnerMessage() {
   return (

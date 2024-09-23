@@ -1,5 +1,5 @@
-"use client"
-import {IconUser} from "@/components/ui/icons";
+"use client";
+import { IconUser } from "@/components/ui/icons";
 
 export function UserMessage({ children }: { children: React.ReactNode }) {
   return (
