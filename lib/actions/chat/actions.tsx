@@ -2,7 +2,13 @@
 import { getMutableAIState, streamUI } from "ai/rsc";
 import { google } from "@ai-sdk/google";
 import { BotMessage } from "@/components/ai/bot-message";
-import { ClientMessage } from "@/lib/types";
+import {
+  ClientMessage,
+  CodeAnalyzerProps,
+  SetupProps,
+  TableProps,
+  UuidGenProps,
+} from "@/lib/types";
 import {
   setupGuideSchema,
   tableSchema,
@@ -16,7 +22,7 @@ import DisplayTable from "@/components/ai/table";
 import CodeSnippet from "@/components/ai/code-snippet";
 import SetupGuide from "@/components/ai/setup-guide";
 import UuidGenerator from "@/components/ai/uuid-generator";
-import AIProvider from "@/providers/ai-provider";
+import AIProvider from "@/components/providers/ai-provider";
 export async function submitMessage(
   userMessage: string,
 ): Promise<ClientMessage> {
@@ -91,17 +97,17 @@ export async function submitMessage(
                     toolCallId: toolId,
                     args: { operation, itemNames },
                   },
+                ],
+              },
+              {
+                id: crypto.randomUUID(),
+                role: "tool",
+                content: [
                   {
-                    id: crypto.randomUUID(),
-                    role: "tool",
-                    content: [
-                      {
-                        type: "tool-result",
-                        toolName: "comparison",
-                        toolCallId: toolId,
-                        toolResult: data,
-                      },
-                    ],
+                    type: "tool-result",
+                    toolName: "comparison",
+                    toolCallId: toolId,
+                    result: data.object as TableProps,
                   },
                 ],
               },
@@ -139,17 +145,17 @@ export async function submitMessage(
                     args: { codes },
                     type: "tool-call",
                   },
+                ],
+              },
+              {
+                id: crypto.randomUUID(),
+                role: "tool",
+                content: [
                   {
-                    id: crypto.randomUUID(),
-                    role: "tool",
-                    content: [
-                      {
-                        type: "tool-result",
-                        toolCallId: toolId,
-                        toolName: "codeAnalyzer",
-                        result: analyzed,
-                      },
-                    ],
+                    type: "tool-result",
+                    toolCallId: toolId,
+                    toolName: "codeAnalyzer",
+                    result: analyzed.object as CodeAnalyzerProps,
                   },
                 ],
               },
@@ -185,17 +191,17 @@ export async function submitMessage(
                     args: { tool },
                     type: "tool-call",
                   },
+                ],
+              },
+              {
+                id: crypto.randomUUID(),
+                role: "tool",
+                content: [
                   {
-                    id: crypto.randomUUID(),
-                    role: "tool",
-                    content: [
-                      {
-                        type: "tool-result",
-                        toolCallId: toolId,
-                        result: steps,
-                        toolName: "setupGuide",
-                      },
-                    ],
+                    type: "tool-result",
+                    toolCallId: toolId,
+                    result: steps.object as SetupProps,
+                    toolName: "setupGuide",
                   },
                 ],
               },
@@ -230,17 +236,17 @@ export async function submitMessage(
                     type: "tool-call",
                     args: { version },
                   },
+                ],
+              },
+              {
+                id: crypto.randomUUID(),
+                role: "tool",
+                content: [
                   {
-                    id: crypto.randomUUID(),
-                    role: "tool",
-                    content: [
-                      {
-                        type: "tool-result",
-                        toolCallId: toolId,
-                        toolName: "uuidGenerator",
-                        result: response,
-                      },
-                    ],
+                    type: "tool-result",
+                    toolCallId: toolId,
+                    toolName: "uuidGenerator",
+                    result: response.object as UuidGenProps,
                   },
                 ],
               },
