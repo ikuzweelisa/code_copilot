@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import {
   DropdownMenu,
@@ -9,8 +8,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { auth, signOut } from "@/app/auth";
 
-export default function User() {
+export default async function User() {
+  const session = await auth();
   return (
     <div className={"flex gap-2 items-center "}>
       <DropdownMenu>
@@ -21,7 +22,7 @@ export default function User() {
             className="overflow-hidden rounded-full flex  justify-between"
           >
             <Image
-              src="https://i.pravatar.cc"
+              src={session?.user?.image ?? "https://i.pravatar.cc"}
               width={36}
               height={36}
               alt="Avatar"
@@ -38,13 +39,20 @@ export default function User() {
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <Button size={"sm"} variant={"ghost"}>
-              Logout
-            </Button>
+            <form
+              action={async () => {
+                "use server";
+                await signOut();
+              }}
+            >
+              <Button size={"sm"} type={"submit"} variant={"ghost"}>
+                Logout
+              </Button>
+            </form>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <span>useremail@gmail.com</span>
+      <span>{session?.user?.email}</span>
     </div>
   );
 }

@@ -1,21 +1,23 @@
 "use client";
-import React, { useRef, useEffect, useState, FormEvent } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import InputField from "@/components/chat/input-field";
 import Messages from "@/components/chat/messages";
 import { useActions, useAIState, useUIState } from "ai/rsc";
 import AIProvider from "@/components/providers/ai-provider";
 import { usePathname, useRouter } from "next/navigation";
+import { Message } from "@/lib/types";
 
 interface ChatProps {
-  initialMessages?: [];
+  initialMessages?: Message[];
   chatId: string;
 }
 
 export default function Chat({ chatId }: ChatProps) {
   const path = usePathname();
   const router = useRouter();
-  const state = useAIState<typeof AIProvider>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [state, _] = useAIState<typeof AIProvider>();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useUIState<typeof AIProvider>();
   const { submitMessage } = useActions();
@@ -44,12 +46,9 @@ export default function Chat({ chatId }: ChatProps) {
   }, []);
 
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (formRef === null) return;
+    if (!formRef.current) return;
     if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
-      if (formRef) {
-        formRef.current.requestSubmit();
-      }
-
+      formRef.current.requestSubmit();
       e.preventDefault();
     }
   }
@@ -60,11 +59,11 @@ export default function Chat({ chatId }: ChatProps) {
     }
   }, [chatId, messages, path]);
   useEffect(() => {
-    const messagesLength = state.messages.length;
+    const messagesLength = state?.messages?.length ?? 0;
     if (messagesLength === 2) {
       router.refresh();
     }
-  }, [state.messages, router]);
+  }, [state?.messages, router]);
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
       <ScrollArea className="flex-grow" ref={scrollAreaRef}>

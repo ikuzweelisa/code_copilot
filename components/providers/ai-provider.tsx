@@ -9,7 +9,7 @@ import {
   TableProps,
   UuidGenProps,
 } from "@/lib/types";
-import saveChatData from "@/lib/server";
+import { saveChatData } from "@/lib/server";
 import DisplayTable from "@/components/ai/table";
 import CodeSnippet from "@/components/ai/code-snippet";
 import SetupGuide from "@/components/ai/setup-guide";
@@ -35,24 +35,24 @@ const AIProvider = createAI<AIState, UIState>({
   initialUIState: [],
   onSetAIState: async ({ state, done }) => {
     "use server";
-    if (!done) return;
-    const firstMessage = state.messages[0]?.content as string;
-    const title = firstMessage?.substring(0, 100) || "New Chat";
-    const path = `/chat/${state.chatId}`;
-    const chat: Chat = {
-      id: state.chatId,
-      messages: state.messages,
-      title: title,
-      path: path,
-    };
-    await saveChatData(chat);
+    if (done) {
+      const firstMessage = state.messages[0]?.content as string;
+      const title = firstMessage?.substring(0, 100) || "New Chat";
+      const path = `/chat/${state.chatId}`;
+      const chat: Chat = {
+        id: state.chatId,
+        messages: state.messages,
+        title: title,
+        path: path,
+      };
+      await saveChatData(chat);
+    }
   },
   onGetUIState: async (): Promise<ClientMessage[]> => {
     "use server";
     const state = getAIState() as Chat;
     if (!state) return [];
     const uiState = (await getUiState(state)) as ClientMessage[];
-    console.log(uiState);
     if (!uiState) return [];
     return uiState;
   },
@@ -60,7 +60,7 @@ const AIProvider = createAI<AIState, UIState>({
 
 export default AIProvider;
 
-export async function getUiState(state: Chat) {
+export async function getUiState(state: Chat): Promise<ClientMessage[]> {
   return state.messages
     .filter((message) => message.role !== "system")
     .map((msg, index) => ({
@@ -92,5 +92,5 @@ export async function getUiState(state: Chat) {
         ) : msg.role === "assistant" && typeof msg.content === "string" ? (
           <BotMessage>{msg.content}</BotMessage>
         ) : null,
-    }));
+    })) as ClientMessage[];
 }

@@ -97,9 +97,7 @@ const tableSchema = z.object({
 });
 
 const uuidGenSchema = z.object({
-  message: z
-    .string()
-    .describe("a message to tell the user"),
+  message: z.string().describe("a message to tell the user"),
   uuid: z.string().describe("the generated uuid"),
 });
 export { tableSchema, codeAnalyzerSchema, setupGuideSchema, uuidGenSchema };

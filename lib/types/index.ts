@@ -26,6 +26,20 @@ export type Chat = {
   messages: Message[];
   createdAt?: Date;
 };
+/**
+ * The login Status
+ * @property {string} success|error The login status
+ */
+type Status = "success" | "error";
+/**
+ * Login status
+ * @property {Status} status login status
+ * @property {string} message login message
+ */
+export type AuthStatus = {
+  status: Status;
+  message: string;
+};
 export type CodeAnalyzerProps = z.infer<typeof codeAnalyzerSchema>;
 export type TableProps = z.infer<typeof tableSchema>;
 export type SetupProps = z.infer<typeof setupGuideSchema>;
