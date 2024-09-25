@@ -5,22 +5,27 @@ import { AuthError } from "next-auth";
 import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
 import prisma from "@/lib/db";
-import { notFound } from "next/navigation";
+import { Prisma } from "@prisma/client";
 
 export async function saveChatData(chat: Chat) {
   try {
-    await prisma.chart.upsert({
+    await prisma.chat.upsert({
       where: { id: chat.id },
       update: {
         title: chat.title,
-        messages: chat.messages,
+        messages: chat.messages as Prisma.InputJsonValue[],
         path: chat.path,
       },
       create: {
         id: chat.id,
         title: chat.title,
-        messages: chat.messages,
+        messages: chat.messages as Prisma.InputJsonValue[],
         path: chat.path,
+        user: {
+          connect: {
+            id: chat.userId,
+          },
+        },
       },
     });
 
@@ -32,7 +37,7 @@ export async function saveChatData(chat: Chat) {
 
 export async function getChat(cid: string) {
   try {
-    const chat = await prisma.chart.findFirst({
+    const chat = await prisma.chat.findFirst({
       where: {
         id: cid,
       },
@@ -44,17 +49,20 @@ export async function getChat(cid: string) {
   }
 }
 
-export async function getChats() {
+export async function getChats(userId: string) {
   try {
-    const chats = await prisma.chart.findMany({
-      select: {
-        id: true,
-        path: true,
-        title: true,
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        chats: true,
       },
     });
-    if (!chats) return notFound();
-    return chats as Chat[];
+
+    if (!user) return;
+
+    return user.chats;
   } catch (e) {
     console.log(e);
   }

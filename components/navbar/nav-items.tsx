@@ -1,9 +1,10 @@
 import NavItem from "@/components/navbar/nav-item";
-import { Chat } from "@/lib/types";
 import { getChats } from "@/lib/server";
+import { auth } from "@/app/auth";
 
 export default async function NavItems() {
-  const chats = (await getChats()) as Chat[];
+  const session = await auth();
+  const chats = await getChats(session?.user?.id);
   return (
     <div>
       {chats && chats.length > 0 ? (

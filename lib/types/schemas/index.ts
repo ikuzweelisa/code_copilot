@@ -100,4 +100,31 @@ const uuidGenSchema = z.object({
   message: z.string().describe("a message to tell the user"),
   uuid: z.string().describe("the generated uuid"),
 });
-export { tableSchema, codeAnalyzerSchema, setupGuideSchema, uuidGenSchema };
+const debuggerSchema = z.object({
+  error: z.string().describe("the error in given codes "),
+  correctCode: z.string().describe("the correct version of the codes"),
+  updated: z.object({
+    language: z
+      .string()
+      .describe("the programming language the updated code is written in"),
+    title: z.string().describe("the title for the updated version"),
+    concepts: z
+      .array(
+        z.object({
+          name: z.string().describe("key concept name"),
+          description: z
+            .string()
+            .describe("A small description of key concept"),
+        }),
+      )
+      .describe("Key concepts in the improved codes"),
+    message: z.string().describe("A small Explanation  of improvements made"),
+  }),
+});
+export {
+  tableSchema,
+  codeAnalyzerSchema,
+  setupGuideSchema,
+  uuidGenSchema,
+  debuggerSchema,
+};

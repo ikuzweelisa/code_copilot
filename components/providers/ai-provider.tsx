@@ -4,6 +4,7 @@ import {
   Chat,
   ClientMessage,
   CodeAnalyzerProps,
+  DebuggerProps,
   Message,
   SetupProps,
   TableProps,
@@ -16,6 +17,8 @@ import SetupGuide from "@/components/ai/setup-guide";
 import UuidGenerator from "@/components/ai/uuid-generator";
 import { UserMessage } from "@/components/ai/user-message";
 import { BotMessage } from "@/components/ai/bot-message";
+import { auth } from "@/app/auth";
+import Debugger from "@/components/ai/debugger";
 
 export type AIState = {
   chatId: string;
@@ -35,18 +38,19 @@ const AIProvider = createAI<AIState, UIState>({
   initialUIState: [],
   onSetAIState: async ({ state, done }) => {
     "use server";
-    if (done) {
-      const firstMessage = state.messages[0]?.content as string;
-      const title = firstMessage?.substring(0, 100) || "New Chat";
-      const path = `/chat/${state.chatId}`;
-      const chat: Chat = {
-        id: state.chatId,
-        messages: state.messages,
-        title: title,
-        path: path,
-      };
-      await saveChatData(chat);
-    }
+    const session = await auth();
+    if (!done) return;
+    const firstMessage = state.messages[0]?.content as string;
+    const title = firstMessage?.substring(0, 100) || "New Chat";
+    const path = `/chat/${state.chatId}`;
+    const chat: Chat = {
+      id: state.chatId,
+      messages: state.messages,
+      title: title,
+      path: path,
+      userId: session?.user?.id as string,
+    };
+    await saveChatData(chat);
   },
   onGetUIState: async (): Promise<ClientMessage[]> => {
     "use server";
@@ -84,6 +88,10 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
             ) : tool.toolName === "uuidGenerator" ? (
               <BotMessage>
                 <UuidGenerator {...(tool.result as UuidGenProps)} />
+              </BotMessage>
+            ) : tool.toolName === "debugCode" ? (
+              <BotMessage>
+                <Debugger {...(tool.result as DebuggerProps)} />
               </BotMessage>
             ) : null;
           })

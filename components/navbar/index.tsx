@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageSquarePlus, Package2 } from "lucide-react";
+import { MessageSquarePlus } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -11,13 +11,14 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import NavItems from "@/components/navbar/nav-items";
 import User from "@/components/navbar/user";
+import Image from "next/image";
 
 export default async function Navbar() {
   return (
     <TooltipProvider>
       <aside className="fixed inset-y-0 left-0 w-80 flex flex-col dark:bg-zinc-950 text-white">
         <div className="flex items-center gap-2 p-4 border-b border-zinc-700">
-          <Package2 className="h-6 w-6" />
+          <Image src={"/logo.png"} alt={"logo"} width={50} height={50} />
           <span className="font-semibold text-lg">AI Chat bot</span>
         </div>
         <div className="flex-1 overflow-hidden">

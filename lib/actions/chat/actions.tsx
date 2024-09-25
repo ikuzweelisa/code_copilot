@@ -5,14 +5,16 @@ import { BotMessage } from "@/components/ai/bot-message";
 import {
   ClientMessage,
   CodeAnalyzerProps,
+  DebuggerProps,
   SetupProps,
   TableProps,
   UuidGenProps,
 } from "@/lib/types";
 import {
+  codeAnalyzerSchema,
+  debuggerSchema,
   setupGuideSchema,
   tableSchema,
-  codeAnalyzerSchema,
   uuidGenSchema,
 } from "@/lib/types/schemas";
 import { SpinnerMessage } from "@/components/ai/spinner-message";
@@ -23,6 +25,8 @@ import CodeSnippet from "@/components/ai/code-snippet";
 import SetupGuide from "@/components/ai/setup-guide";
 import UuidGenerator from "@/components/ai/uuid-generator";
 import AIProvider from "@/components/providers/ai-provider";
+import Debugger from "@/components/ai/debugger";
+
 export async function submitMessage(
   userMessage: string,
 ): Promise<ClientMessage> {
@@ -253,6 +257,51 @@ export async function submitMessage(
             ],
           });
           return <UuidGenerator {...response.object} />;
+        },
+      },
+      debugCode: {
+        description: "Debug codes",
+        parameters: z.object({
+          codes: z.string().describe("the codes to debug"),
+        }),
+        generate: async function* ({ codes }) {
+          const correctCode = await generateObject({
+            model: google("models/gemini-1.5-flash-latest"),
+            schema: debuggerSchema,
+            prompt: `Debug this codes ${codes}`,
+          });
+          const toolId = crypto.randomUUID();
+          state.done({
+            ...state.get(),
+            messages: [
+              ...state.get()?.messages,
+              {
+                id: crypto.randomUUID(),
+                role: "assistant",
+                content: [
+                  {
+                    toolCallId: toolId,
+                    toolName: "debugCode",
+                    args: { codes },
+                    type: "tool-call",
+                  },
+                ],
+              },
+              {
+                id: crypto.randomUUID(),
+                role: "tool",
+                content: [
+                  {
+                    toolCallId: toolId,
+                    toolName: "debugCode",
+                    type: "tool-result",
+                    result: correctCode.object as DebuggerProps,
+                  },
+                ],
+              },
+            ],
+          });
+          return <Debugger {...correctCode.object} />;
         },
       },
     },

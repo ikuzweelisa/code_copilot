@@ -7,13 +7,15 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Chart {
+model Chat {
   id        String   @id @map("_id")
   title     String
   path      String
   messages  Json[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
 }
 
 model User {
@@ -25,6 +27,7 @@ model User {
   accounts      Account[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  chats         Chat[]
 }
 
 model Account {

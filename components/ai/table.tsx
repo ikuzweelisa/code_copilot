@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TableProps } from "../../lib/types";
+import { TableProps } from "@/lib/types";
 
 export default function DisplayTable({
   title,
@@ -45,7 +45,7 @@ export default function DisplayTable({
         </TableBody>
         <TableCaption>{title}</TableCaption>
       </Table>
-      <span >{overview}</span>
+      <span>{overview}</span>
     </div>
   );
 }
