@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { TableProps } from "@/lib/types";
+import ButtonRow from "@/components/ai/button-row";
 
 export default function DisplayTable({
   title,
@@ -46,6 +47,7 @@ export default function DisplayTable({
         <TableCaption>{title}</TableCaption>
       </Table>
       <span>{overview}</span>
+      <ButtonRow />
     </div>
   );
 }

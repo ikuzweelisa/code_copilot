@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { MessagesSquare, Trash2 } from "lucide-react";
+import { MessageCircleCode, Trash2 } from "lucide-react";
 import {
   Dialog,
   DialogClose,
@@ -32,7 +32,7 @@ export default function NavItem({ chat }: NavItemProps) {
           className="flex items-center justify-between  gap-2 text-zinc-400 hover:text-white"
         >
           <span className={"flex items-center gap-2"}>
-            <MessagesSquare className="h-5 w-5" />
+            <MessageCircleCode className="h-5 w-5" />
             {chat.title}
           </span>
         </Link>

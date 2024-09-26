@@ -1,130 +1,185 @@
 import { z } from "zod";
 
 const setupGuideSchema = z.object({
-  intro: z.string().describe("small description"),
-  title: z.string().describe("A small title for the steps"),
+  intro: z.string().describe("A brief introduction or summary of the guide"),
+  title: z.string().describe("The title summarizing the setup steps"),
   steps: z
     .array(
       z.object({
         step: z.object({
-          name: z.string().describe("steps name"),
-          description: z.string().describe("small description on the step"),
+          name: z.string().describe("The name of the step"),
+          description: z.string().describe("A brief explanation of the step"),
           example: z
             .object({
               language: z
                 .string()
-                .describe("language the example code is written in"),
-              codes: z.string().describe("code example for the step"),
+                .describe("The programming language used in the code example"),
+              codes: z.string().describe("Code snippet for the step"),
             })
             .optional()
-            .describe("Example code"),
+            .describe("An optional example code for the step"),
         }),
       }),
     )
-    .describe("All steps involved"),
-  overview: z.string().optional().describe("overview summary"),
+    .describe("An array detailing the steps involved in the setup"),
+  overview: z
+    .string()
+    .optional()
+    .describe("An optional overall summary of the guide"),
 });
 const codeAnalyzerSchema = z.object({
-  message: z.string().describe("A small message about the codes"),
+  message: z.string().describe("A message explaining the code analysis"),
   language: z
     .string()
-    .describe("the programing language the code is written in"),
+    .describe("The programming language the code is written in"),
   keyConcepts: z
     .array(
       z.object({
-        name: z.string().describe("key concept name"),
-        description: z.string().describe("A small description of key concept"),
+        name: z.string().describe("Name of the key concept"),
+        description: z
+          .string()
+          .describe("A brief description of the key concept"),
       }),
     )
-    .describe("Key concepts in the given codes"),
+    .describe("Important concepts present in the code"),
   improvedCode: z.object({
-    message: z
-      .string()
-      .describe(
-        "small message like saying this is improved version of your codes",
-      ),
-    code: z.string().optional().describe("Improved codes"),
+    message: z.string().describe("A message about the improved code"),
+    code: z.string().optional().describe("The improved version of the code"),
   }),
   improvedKeyConcepts: z.object({
     concepts: z
       .array(
         z.object({
-          name: z.string().describe("key concept name"),
+          name: z.string().describe("Name of the improved concept"),
           description: z
             .string()
-            .describe("A small description of key concept"),
+            .describe("Explanation of the improved concept"),
         }),
       )
-      .describe("Key concepts in the improved codes"),
-    message: z.string().describe("A small Explanation  of improvements made"),
+      .describe("Important concepts in the improved code"),
+    message: z
+      .string()
+      .describe("Explanation of the changes made to improve the code"),
   }),
 });
 const tableSchema = z.object({
   message: z
     .string()
-    .describe("A message to tell the user you are going to do it "),
-  title: z.string().describe("A  title for the items to compare or contrast"),
+    .describe("A message to inform the user about the comparison"),
+  title: z.string().describe("The title summarizing the items being compared"),
   itemNames: z
-    .array(z.string().describe("The names of the items being analyzed"))
-    .describe("An array listing the items to compare"),
-
+    .array(z.string().describe("Names of the items being compared"))
+    .describe("An array containing the names of items to compare"),
   comparison: z
     .array(
       z.object({
         feature: z
           .string()
-          .describe(
-            "A distinguishing feature or characteristic for comparison",
-          ),
-
+          .describe("A specific feature to compare across items"),
         items: z
-          .array(
-            z
-              .string()
-              .describe(
-                "The behavior, property, or value of each item regarding this feature",
-              ),
-          )
+          .array(z.string().describe("How each item relates to the feature"))
           .describe(
-            "An array representing how each item exhibits the specified feature",
+            "Values or properties of each item with respect to the feature",
           ),
       }),
     )
-    .describe(
-      "A detailed comparison of the items based on their distinguishing features",
-    ),
-  overview: z.string().describe("A small overview summary"),
+    .describe("A comparison of the items based on their features"),
+  overview: z.string().describe("A brief overview of the comparison"),
+});
+const uuidGenSchema = z.object({
+  message: z.string().describe("A message accompanying the generated UUID"),
+  uuid: z.string().describe("The generated UUID"),
 });
 
-const uuidGenSchema = z.object({
-  message: z.string().describe("a message to tell the user"),
-  uuid: z.string().describe("the generated uuid"),
-});
 const debuggerSchema = z.object({
-  error: z.string().describe("the error in given codes "),
-  correctCode: z.string().describe("the correct version of the codes"),
+  error: z.string().describe("The error encountered in the given code"),
+  correctCode: z.string().describe("The correct version of the code"),
   updated: z.object({
     language: z
       .string()
-      .describe("the programming language the updated code is written in"),
-    title: z.string().describe("the title for the updated version"),
+      .describe("The programming language of the corrected code"),
+    title: z.string().describe("The title for the corrected code version"),
     concepts: z
       .array(
         z.object({
-          name: z.string().describe("key concept name"),
-          description: z
+          name: z
             .string()
-            .describe("A small description of key concept"),
+            .describe("Name of the key concept in the updated code"),
+          description: z.string().describe("Description of the key concept"),
         }),
       )
-      .describe("Key concepts in the improved codes"),
-    message: z.string().describe("A small Explanation  of improvements made"),
+      .describe("Key concepts in the corrected code"),
+    message: z.string().describe("Explanation of the improvements made"),
   }),
 });
+const codeExampleSchema = z.object({
+  message: z
+    .string()
+    .describe("A message providing context about the code example"),
+  example: z
+    .object({
+      language: z
+        .string()
+        .describe("The programming language used in the code example"),
+      codes: z.string().describe("The actual code example"),
+      title: z.string().describe("A title summarizing the code example"),
+    })
+    .describe("Details of the code example"),
+  concepts: z
+    .array(
+      z.object({
+        name: z
+          .string()
+          .describe("Name of the key concept demonstrated in the example"),
+        description: z
+          .string()
+          .describe("Explanation of the key concept in the example"),
+      }),
+    )
+    .describe("Key concepts illustrated by the example code"),
+});
+const topicSchema = z.object({
+  introduction: z.string().describe("A detailed introduction to the topic"),
+  keyConcepts: z
+    .array(
+      z.object({
+        name: z.string().describe("Name of the key concept within the topic"),
+        description: z.string().describe("Description of the key concept"),
+      }),
+    )
+    .describe("Key concepts involved in the topic"),
+  example: z.object({
+    language: z
+      .string()
+      .optional()
+      .describe("The programming language used in the example"),
+    codes: z.string().describe("The example code for the topic"),
+    title: z.string().describe("A title summarizing the code example"),
+  }),
+  overview: z.string().describe("A summary or conclusion about the topic"),
+});
+const defineSchema = z.object({
+  explanation: z.string().describe("A detailed explanation of the concept"),
+  message: z
+    .string()
+    .describe("A follow-up message asking if the user wants more information"),
+});
+
+const conceptsSchema = z
+  .object({
+    name: z.string().describe("The name of the key concept"),
+    description: z.string().describe("A brief description of the key concept"),
+  })
+  .describe("Schema defining key concepts for a topic");
+
 export {
   tableSchema,
   codeAnalyzerSchema,
   setupGuideSchema,
   uuidGenSchema,
   debuggerSchema,
+  codeExampleSchema,
+  topicSchema,
+  defineSchema,
+  conceptsSchema,
 };

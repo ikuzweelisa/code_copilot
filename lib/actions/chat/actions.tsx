@@ -5,16 +5,22 @@ import { BotMessage } from "@/components/ai/bot-message";
 import {
   ClientMessage,
   CodeAnalyzerProps,
+  CodeExampleProps,
   DebuggerProps,
+  DefineProps,
   SetupProps,
   TableProps,
+  TopicPros,
   UuidGenProps,
 } from "@/lib/types";
 import {
   codeAnalyzerSchema,
+  codeExampleSchema,
   debuggerSchema,
+  defineSchema,
   setupGuideSchema,
   tableSchema,
+  topicSchema,
   uuidGenSchema,
 } from "@/lib/types/schemas";
 import { SpinnerMessage } from "@/components/ai/spinner-message";
@@ -26,10 +32,15 @@ import SetupGuide from "@/components/ai/setup-guide";
 import UuidGenerator from "@/components/ai/uuid-generator";
 import AIProvider from "@/components/providers/ai-provider";
 import Debugger from "@/components/ai/debugger";
+import CodeExample from "@/components/ai/code-example";
+import ExplainTopic from "@/components/ai/explain-topic";
+import Define from "@/components/ai/define";
+import { getSystemMessage } from "@/lib/actions/server/message";
 
 export async function submitMessage(
   userMessage: string,
 ): Promise<ClientMessage> {
+  const systemMessage = await getSystemMessage();
   const state = getMutableAIState<typeof AIProvider>();
   state.update({
     ...state.get(),
@@ -45,6 +56,7 @@ export async function submitMessage(
   const result = await streamUI({
     model: google("models/gemini-1.5-flash-latest"),
     initial: <SpinnerMessage />,
+    system: systemMessage,
     messages: [
       ...state.get()?.messages.map((message) => ({
         role: message.role,
@@ -175,6 +187,7 @@ export async function submitMessage(
           tool: z.string().describe("the name of the tool to setup"),
         }),
         generate: async function* ({ tool }) {
+          yield <SpinnerMessage />;
           const steps = await generateObject({
             model: google("models/gemini-1.5-flash-latest"),
             schema: setupGuideSchema,
@@ -220,6 +233,7 @@ export async function submitMessage(
           version: z.number().optional().describe("version of the uuid"),
         }),
         generate: async function* ({ version = 4 }) {
+          yield <SpinnerMessage />;
           const response = await generateObject({
             model: google("models/gemini-1.5-flash-latest"),
             schema: uuidGenSchema,
@@ -265,6 +279,7 @@ export async function submitMessage(
           codes: z.string().describe("the codes to debug"),
         }),
         generate: async function* ({ codes }) {
+          yield <SpinnerMessage />;
           const correctCode = await generateObject({
             model: google("models/gemini-1.5-flash-latest"),
             schema: debuggerSchema,
@@ -302,6 +317,144 @@ export async function submitMessage(
             ],
           });
           return <Debugger {...correctCode.object} />;
+        },
+      },
+      generateExample: {
+        description: "give example",
+        parameters: z.object({
+          language: z.string().describe("The programming language"),
+        }),
+        generate: async function* ({ language }) {
+          yield <SpinnerMessage />;
+          const exampleCode = await generateObject({
+            model: google("models/gemini-1.5-flash-latest"),
+            schema: codeExampleSchema,
+            prompt: `Give a simple example of  ${language} by generating codes an explaining key concepts in the given example `,
+          });
+          const toolId = crypto.randomUUID();
+          state.done({
+            ...state.get(),
+            messages: [
+              ...state.get()?.messages,
+              {
+                id: crypto.randomUUID(),
+                role: "assistant",
+                content: [
+                  {
+                    type: "tool-call",
+                    toolName: "generateExample",
+                    args: { language },
+                    toolCallId: toolId,
+                  },
+                ],
+              },
+              {
+                id: crypto.randomUUID(),
+                role: "tool",
+                content: [
+                  {
+                    type: "tool-result",
+                    toolName: "generateExample",
+                    toolCallId: toolId,
+                    result: exampleCode.object as CodeExampleProps,
+                  },
+                ],
+              },
+            ],
+          });
+          return <CodeExample {...exampleCode.object} />;
+        },
+      },
+      explainTopic: {
+        description: "explain",
+        parameters: z.object({
+          topicName: z.string().describe("the topic to explain about"),
+        }),
+        generate: async function* ({ topicName }) {
+          yield <SpinnerMessage />;
+          const text = await generateObject({
+            model: google("models/gemini-1.5-flash-latest"),
+            schema: topicSchema,
+            prompt: `Explain this ${topicName} briefly and explain key concepts in it and provide an example if necessary`,
+          });
+          const toolId = crypto.randomUUID();
+          state.done({
+            ...state.get(),
+            messages: [
+              ...state.get()?.messages,
+              {
+                id: crypto.randomUUID(),
+                role: "assistant",
+                content: [
+                  {
+                    toolCallId: toolId,
+                    args: { topicName },
+                    type: "tool-call",
+                    toolName: "explainTopic",
+                  },
+                ],
+              },
+              {
+                id: crypto.randomUUID(),
+                role: "tool",
+                content: [
+                  {
+                    type: "tool-result",
+                    result: text.object as TopicPros,
+                    toolName: "explainTopic",
+                    toolCallId: toolId,
+                  },
+                ],
+              },
+            ],
+          });
+          return <ExplainTopic {...text.object} />;
+        },
+      },
+      define: {
+        description: "Define something",
+        parameters: z.object({
+          term: z.string().describe("The term to explain"),
+        }),
+        generate: async function* ({ term }) {
+          yield <SpinnerMessage />;
+          const definition = await generateObject({
+            model: google("models/gemini-1.5-flash-latest"),
+            schema: defineSchema,
+            prompt: `Define this  ${term} and ask the user if he needs to know more`,
+          });
+          const toolId = crypto.randomUUID();
+          state.done({
+            ...state.get(),
+            messages: [
+              ...state.get()?.messages,
+              {
+                id: crypto.randomUUID(),
+                role: "assistant",
+                content: [
+                  {
+                    type: "tool-call",
+                    toolName: "define",
+                    toolCallId: toolId,
+                    args: { term },
+                  },
+                ],
+              },
+              {
+                id: crypto.randomUUID(),
+                role: "tool",
+                content: [
+                  {
+                    toolName: "define",
+                    toolCallId: toolId,
+                    result: definition.object as DefineProps,
+                    type: "tool-result",
+                  },
+                ],
+              },
+            ],
+          });
+          return <Define {...definition.object} />;
         },
       },
     },

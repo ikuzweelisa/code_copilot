@@ -1,6 +1,6 @@
 import Chat from "@/components/chat";
 import AIProvider from "@/components/providers/ai-provider";
-import { getChat } from "@/lib/server";
+import { getChat } from "../../../lib/actions/server";
 import { type Chat as TChat } from "@/lib/types";
 import { notFound } from "next/navigation";
 

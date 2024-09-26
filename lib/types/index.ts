@@ -4,9 +4,13 @@ import { CoreMessage } from "ai";
 
 import {
   codeAnalyzerSchema,
+  codeExampleSchema,
+  conceptsSchema,
   debuggerSchema,
+  defineSchema,
   setupGuideSchema,
   tableSchema,
+  topicSchema,
   uuidGenSchema,
 } from "@/lib/types/schemas";
 
@@ -27,6 +31,7 @@ export type Chat = {
   messages: Message[];
   createdAt?: Date;
   userId: string;
+  updatedAt?: Date;
 };
 /**
  * The login Status
@@ -47,3 +52,7 @@ export type TableProps = z.infer<typeof tableSchema>;
 export type SetupProps = z.infer<typeof setupGuideSchema>;
 export type UuidGenProps = z.infer<typeof uuidGenSchema>;
 export type DebuggerProps = z.infer<typeof debuggerSchema>;
+export type CodeExampleProps = z.infer<typeof codeExampleSchema>;
+export type TopicPros = z.infer<typeof topicSchema>;
+export type DefineProps = z.infer<typeof defineSchema>;
+export type Concept = z.infer<typeof conceptsSchema>;

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useFormState, useFormStatus } from "react-dom";
-import signInWithProvider from "@/lib/server";
+import signInWithProvider from "../../../lib/actions/server";
 import { GitHubLogoIcon, ReloadIcon } from "@radix-ui/react-icons";
 import AlertMessage from "@/components/auth/alert";
 import Image from "next/image";

@@ -20,7 +20,7 @@ export function BotMessage({
       >
         <IconOpenAI />
       </div>
-      <div className="ml-4 flex-1 pl-2">{children}</div>
+      <div className="ml-4 flex-1 flex-col pl-2">{children}</div>
     </div>
   );
 }

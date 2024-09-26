@@ -1,11 +1,8 @@
 "use client";
-
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { Button } from "@/components/ui/button";
-import { CheckIcon, CopyIcon } from "lucide-react";
 import { SetupProps } from "@/lib/types";
-import useClipBoard from "@/lib/hooks/use-clipboard";
+import Code from "@/components/ai/code";
+import ButtonRow from "@/components/ai/button-row";
+import React from "react";
 
 export default function SetupGuide({
   steps,
@@ -13,7 +10,6 @@ export default function SetupGuide({
   intro,
   title,
 }: SetupProps) {
-  const [isCoped, copyText] = useClipBoard();
   return (
     <div className="space-y-6 font-sans">
       <section className="text-base">
@@ -29,54 +25,10 @@ export default function SetupGuide({
               <h3 className=" font-semibold mb-2">{step.name}</h3>
               <p className="text-base mb-4">{step.description}</p>
               {step.example && (
-                <div className="relative w-full font-sans codeblock bg-zinc-950">
-                  <div className="flex items-center justify-between w-full px-6 py-1 pr-4 bg-zinc-800 text-zinc-100">
-                    <span className="text-xs lowercase">
-                      {step.example.language}
-                    </span>
-                    <div className="flex items-center space-x-1">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-xs hover:bg-zinc-800 focus-visible:ring-1 focus-visible:ring-slate-700 focus-visible:ring-offset-0"
-                        onClick={() => copyText(step.example?.codes)}
-                      >
-
-                        {isCoped ? (
-                          <CheckIcon size={15} />
-                        ) : (
-                          <CopyIcon size={15} />
-                        )}
-                        <span className="sr-only">Copy code</span>
-                      </Button>
-                    </div>
-                  </div>
-                  <SyntaxHighlighter
-                    language={step.example.language}
-                    style={oneDark}
-                    PreTag="div"
-                    wrapLongLines={true}
-                    showLineNumbers
-                    customStyle={{
-                      margin: 0,
-                      width: "100%",
-                      background: "transparent",
-                      padding: "1.5rem 1rem",
-                    }}
-                    lineNumberStyle={{
-                      userSelect: "none",
-                    }}
-                    wrapLines={true}
-                    codeTagProps={{
-                      style: {
-                        fontSize: "0.9rem",
-                        fontFamily: "var(--font-mono)",
-                      },
-                    }}
-                  >
-                    {step.example.codes}
-                  </SyntaxHighlighter>
-                </div>
+                <Code
+                  language={step.example.language}
+                  codes={step.example.codes}
+                />
               )}
             </li>
           ))}
@@ -86,6 +38,7 @@ export default function SetupGuide({
       <section className="text-base">
         <p>{overview}</p>
       </section>
+      <ButtonRow />
     </div>
   );
 }

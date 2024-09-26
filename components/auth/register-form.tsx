@@ -1,21 +1,18 @@
 "use client";
 import Link from "next/link";
-import { useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Image from "next/image";
-
-import { ReloadIcon } from "@radix-ui/react-icons";
 import Providers from "@/components/auth/providers";
+import { LogoIcon } from "@/components/ui/icons";
 
 export function RegisterForm() {
   return (
     <Card className="mx-auto w-96">
       <CardHeader>
         <CardTitle className="text-2xl flex justify-center">
-          <Image src={"/logo.png"} height={125} width={125} alt="logo" />
+          <LogoIcon className={"size-20"} />
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -64,15 +61,13 @@ export function RegisterForm() {
 }
 
 function SubmitButton() {
-  const { pending } = useFormStatus();
   return (
     <Button
-      disabled={pending}
+      disabled={true}
       type="submit"
       className="w-full disabled:cursor-not-allowed"
     >
-      {pending && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}{" "}
-      {pending ? "Registering..." : "Register"}
+      Register
     </Button>
   );
 }

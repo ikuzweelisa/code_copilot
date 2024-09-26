@@ -61,8 +61,7 @@ export async function getChats(userId: string) {
     });
 
     if (!user) return;
-
-    return user.chats;
+    return user.chats as Chat[];
   } catch (e) {
     console.log(e);
   }

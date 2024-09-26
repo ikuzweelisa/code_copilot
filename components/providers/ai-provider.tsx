@@ -4,13 +4,16 @@ import {
   Chat,
   ClientMessage,
   CodeAnalyzerProps,
+  CodeExampleProps,
   DebuggerProps,
+  DefineProps,
   Message,
   SetupProps,
   TableProps,
+  TopicPros,
   UuidGenProps,
 } from "@/lib/types";
-import { saveChatData } from "@/lib/server";
+import { saveChatData } from "../../lib/actions/server";
 import DisplayTable from "@/components/ai/table";
 import CodeSnippet from "@/components/ai/code-snippet";
 import SetupGuide from "@/components/ai/setup-guide";
@@ -19,6 +22,9 @@ import { UserMessage } from "@/components/ai/user-message";
 import { BotMessage } from "@/components/ai/bot-message";
 import { auth } from "@/app/auth";
 import Debugger from "@/components/ai/debugger";
+import CodeExample from "@/components/ai/code-example";
+import Define from "@/components/ai/define";
+import ExplainTopic from "@/components/ai/explain-topic";
 
 export type AIState = {
   chatId: string;
@@ -92,6 +98,18 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
             ) : tool.toolName === "debugCode" ? (
               <BotMessage>
                 <Debugger {...(tool.result as DebuggerProps)} />
+              </BotMessage>
+            ) : tool.toolName === "generateExample" ? (
+              <BotMessage>
+                <CodeExample {...(tool.result as CodeExampleProps)} />
+              </BotMessage>
+            ) : tool.toolName === "define" ? (
+              <BotMessage>
+                <Define {...(tool.result as DefineProps)} />
+              </BotMessage>
+            ) : tool.toolName === "explainTopic" ? (
+              <BotMessage>
+                <ExplainTopic {...(tool.result as TopicPros)} />
               </BotMessage>
             ) : null;
           })
