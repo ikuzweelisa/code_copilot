@@ -5,6 +5,7 @@ import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
 import prisma from "@/lib/db";
 import { Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 export async function saveChatData(chat: Chat) {
   try {
@@ -102,7 +103,7 @@ export async function deleteChat(
     await prisma.chat.delete({
       where: { id: id as string },
     });
-
+    revalidatePath("/") 
     return {
       status: "success",
       message: "chat deleted",

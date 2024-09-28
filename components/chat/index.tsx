@@ -55,8 +55,7 @@ export default function Chat({ chatId }: ChatProps) {
 
   useEffect(() => {
     if (!path.includes("chat") && messages.length === 1) {
-      console.log(`props id:${chatId} , state id:${chatId}`);
-      window.history.replaceState({}, "", `/chat/${chatId}`);
+      window.history.replaceState({}, "", `/chat/${state.chatId}`);
     }
   }, [chatId, messages, path]);
   useEffect(() => {
