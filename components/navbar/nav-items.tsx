@@ -12,12 +12,7 @@ export default async function NavItems() {
       new Date(b.updatedAt as Date).getTime() -
       new Date(a.updatedAt as Date).getTime(),
   );
-  const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve("done");
-    }, 2000);
-  });
-  await promise;
+
   return (
     <div>
       {sorted && sorted.length > 0 ? (

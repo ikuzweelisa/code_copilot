@@ -1,6 +1,5 @@
 "use server";
 import { AuthStatus, Chat } from "@/lib/types";
-import { revalidatePath } from "next/cache";
 import { AuthError } from "next-auth";
 import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
@@ -28,8 +27,6 @@ export async function saveChatData(chat: Chat) {
         },
       },
     });
-
-    return revalidatePath(chat.path);
   } catch (error) {
     console.error("Error saving chat data:", error);
   }
@@ -69,7 +66,7 @@ export async function getChats(userId: string) {
 
 export default async function signInWithProvider(
   prevState: AuthStatus | undefined,
-  formData: FormData,
+  formData: FormData
 ): Promise<AuthStatus> {
   try {
     const provider = formData.get("provider") as BuiltInProviderType;
@@ -94,5 +91,28 @@ export default async function signInWithProvider(
       }
     }
     throw e;
+  }
+}
+export async function deleteChat(
+  prevState: AuthStatus | undefined,
+  formData: FormData
+): Promise<AuthStatus> {
+  const id = formData.get("id");
+  try {
+    await prisma.chat.delete({
+      where: { id: id as string },
+    });
+
+    return {
+      status: "success",
+      message: "chat deleted",
+    };
+   
+  } catch (e) {
+     console.log(e)
+    return {
+      status: "error",
+      message: "chat not delete",
+    };
   }
 }

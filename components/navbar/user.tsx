@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { auth, signOut } from "@/app/auth";
+import ToggleMode from "./toggle-mode";
 
 export default async function User() {
   const session = await auth();
@@ -37,6 +38,9 @@ export default async function User() {
           </DropdownMenuItem>
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuItem>
+            <ToggleMode />
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <form

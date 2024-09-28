@@ -1,6 +1,5 @@
 "use client";
 import { UserMessage } from "@/components/ai/user-message";
-import { BotMessage } from "@/components/ai/bot-message";
 import { ClientMessage } from "@/lib/types";
 
 interface MessageProps {
@@ -14,7 +13,7 @@ export default function Messages({ messages }: MessageProps) {
           {message.role === "user" ? (
             <UserMessage>{message.display}</UserMessage>
           ) : (
-            <BotMessage>{message.display}</BotMessage>
+             message.display
           )}
         </div>
       ))}

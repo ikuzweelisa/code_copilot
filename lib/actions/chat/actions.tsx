@@ -36,9 +36,10 @@ import CodeExample from "@/components/ai/code-example";
 import ExplainTopic from "@/components/ai/explain-topic";
 import Define from "@/components/ai/define";
 import { getSystemMessage } from "@/lib/actions/server/message";
+import { sleep } from "@/lib/utils";
 
 export async function submitMessage(
-  userMessage: string,
+  userMessage: string
 ): Promise<ClientMessage> {
   const systemMessage = await getSystemMessage();
   const state = getMutableAIState<typeof AIProvider>();
@@ -54,7 +55,7 @@ export async function submitMessage(
     ],
   });
   const result = await streamUI({
-    model: google("models/gemini-1.5-flash-latest"),
+    model: google("gemini-1.5-flash-latest"),
     initial: <SpinnerMessage />,
     system: systemMessage,
     messages: [
@@ -64,7 +65,7 @@ export async function submitMessage(
         id: message.id,
       })),
     ] as CoreMessage[],
-    text: ({ done, content }) => {
+    text: async ({ done, content }) => {
       if (done) {
         state.done({
           ...state.get(),
@@ -77,12 +78,14 @@ export async function submitMessage(
             },
           ],
         });
+
+        return <BotMessage>{content}</BotMessage>;
       }
-      return <BotMessage>{content}</BotMessage>;
     },
     tools: {
       comparison: {
-        description: "Comparing or differentiation",
+        description:
+          "Comparing or differentiation.use this when the user tell you to compare,differentiate or contrasting",
         parameters: z.object({
           itemNames: z
             .array(z.string().describe("Item Name"))
@@ -129,11 +132,16 @@ export async function submitMessage(
               },
             ],
           });
-          return <DisplayTable {...data.object} />;
+          return (
+            <BotMessage>
+              <DisplayTable {...data.object} />
+            </BotMessage>
+          );
         },
       },
       codeAnalyzer: {
-        description: "Told to analyze or given codes",
+        description:
+          "Told to analyze or given codes.use this when the user give you codes ",
         parameters: z.object({
           codes: z.string().describe("a text of codes to analyze"),
         }),
@@ -147,7 +155,7 @@ export async function submitMessage(
              the improved version`,
           });
           const toolId = crypto.randomUUID();
-          state.update({
+          state.done({
             ...state.get(),
             messages: [
               ...state.get()?.messages,
@@ -177,12 +185,17 @@ export async function submitMessage(
               },
             ],
           });
-          return <CodeSnippet {...analyzed.object} />;
+          return (
+            <BotMessage>
+              {" "}
+              <CodeSnippet {...analyzed.object} />
+            </BotMessage>
+          );
         },
       },
       setupGuide: {
         description:
-          "steps to setup or install tools or how to setup or install tools",
+          "steps to setup or how to install tools .use this when the user ask you to help them to install or setup something",
         parameters: z.object({
           tool: z.string().describe("the name of the tool to setup"),
         }),
@@ -224,11 +237,16 @@ export async function submitMessage(
               },
             ],
           });
-          return <SetupGuide {...steps.object} />;
+          return (
+            <BotMessage>
+              <SetupGuide {...steps.object} />
+            </BotMessage>
+          );
         },
       },
       uuidGenerator: {
-        description: "generate a uuid",
+        description:
+          "generate a uuid.use this when the user tell you to generate auuid",
         parameters: z.object({
           version: z.number().optional().describe("version of the uuid"),
         }),
@@ -270,11 +288,16 @@ export async function submitMessage(
               },
             ],
           });
-          return <UuidGenerator {...response.object} />;
+          return (
+            <BotMessage>
+              <UuidGenerator {...response.object} />
+            </BotMessage>
+          );
         },
       },
-      debugCode: {
-        description: "Debug codes",
+      debugger: {
+        description:
+          "Debug codes.use this when the user give you codes that contain bugs",
         parameters: z.object({
           codes: z.string().describe("the codes to debug"),
         }),
@@ -296,7 +319,7 @@ export async function submitMessage(
                 content: [
                   {
                     toolCallId: toolId,
-                    toolName: "debugCode",
+                    toolName: "debugger",
                     args: { codes },
                     type: "tool-call",
                   },
@@ -308,7 +331,7 @@ export async function submitMessage(
                 content: [
                   {
                     toolCallId: toolId,
-                    toolName: "debugCode",
+                    toolName: "debugger",
                     type: "tool-result",
                     result: correctCode.object as DebuggerProps,
                   },
@@ -316,11 +339,15 @@ export async function submitMessage(
               },
             ],
           });
-          return <Debugger {...correctCode.object} />;
+          return (
+            <BotMessage>
+              <Debugger {...correctCode.object} />
+            </BotMessage>
+          );
         },
       },
       generateExample: {
-        description: "give example",
+        description: "give example.use this to show example to the user",
         parameters: z.object({
           language: z.string().describe("The programming language"),
         }),
@@ -362,11 +389,16 @@ export async function submitMessage(
               },
             ],
           });
-          return <CodeExample {...exampleCode.object} />;
+          return (
+            <BotMessage>
+              <CodeExample {...exampleCode.object} />
+            </BotMessage>
+          );
         },
       },
       explainTopic: {
-        description: "explain",
+        description:
+          "explain something.use this to explain in details something ",
         parameters: z.object({
           topicName: z.string().describe("the topic to explain about"),
         }),
@@ -408,11 +440,16 @@ export async function submitMessage(
               },
             ],
           });
-          return <ExplainTopic {...text.object} />;
+          return (
+            <BotMessage>
+              <ExplainTopic {...text.object} />
+            </BotMessage>
+          );
         },
       },
       define: {
-        description: "Define something",
+        description:
+          "Define something.use this to define something to the user",
         parameters: z.object({
           term: z.string().describe("The term to explain"),
         }),
@@ -454,11 +491,16 @@ export async function submitMessage(
               },
             ],
           });
-          return <Define {...definition.object} />;
+          return (
+            <BotMessage>
+              <Define {...definition.object} />
+            </BotMessage>
+          );
         },
       },
     },
   });
+ await sleep(1000)
   return {
     id: crypto.randomUUID(),
     role: "assistant",

@@ -3,19 +3,12 @@ import { IconOpenAI } from "@/components/ui/icons";
 
 import { cn } from "@/lib/utils";
 
-export function BotMessage({
-  children,
-  showAvatar = true,
-}: {
-  children: React.ReactNode;
-  showAvatar?: boolean;
-}) {
+export function BotMessage({ children }: { children: React.ReactNode }) {
   return (
     <div className="group relative flex items-start md:-ml-12">
       <div
         className={cn(
-          "flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-primary text-primary-foreground shadow-sm",
-          !showAvatar && "invisible",
+          "flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-primary text-primary-foreground shadow-sm"
         )}
       >
         <IconOpenAI />

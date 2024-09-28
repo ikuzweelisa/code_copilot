@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { MessageCircleCode, Trash2 } from "lucide-react";
+import AlertMessage from "@/components/auth/alert";
 import {
   Dialog,
   DialogClose,
@@ -13,13 +14,23 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Chat } from "@/lib/types";
-
+import { useFormState, useFormStatus } from "react-dom";
+import { deleteChat } from "@/lib/actions/server";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { redirect, usePathname } from "next/navigation";
 interface NavItemProps {
   chat: Chat;
 }
 
 export default function NavItem({ chat }: NavItemProps) {
   const [ishovered, setIshovered] = useState<boolean>(false);
+  const [state, dispatch] = useFormState(deleteChat, undefined);
+  const pathName = usePathname();
+  if (state?.status === "success") {
+    if (pathName === chat.path) {
+      redirect("/");
+    }
+  }
   return (
     <div
       className="w-full flex justify-start mb-2"
@@ -51,6 +62,9 @@ export default function NavItem({ chat }: NavItemProps) {
             <div className="flex items-center space-x-2">
               <div className="grid flex-1 gap-2">
                 Are you you want to Delete Chat
+                {state?.status && (
+                  <AlertMessage message={state.message} status={state.status} />
+                )}
               </div>
             </div>
             <DialogFooter>
@@ -58,8 +72,10 @@ export default function NavItem({ chat }: NavItemProps) {
                 <DialogClose asChild>
                   <Button variant={"default"}>No</Button>
                 </DialogClose>
-
-                <Button variant={"destructive"}>Yes</Button>
+                <form action={dispatch}>
+                  <input type={"hidden"} name={"id"} value={chat.id} />
+                  <Submit />
+                </form>
               </div>
             </DialogFooter>
           </DialogContent>
@@ -68,5 +84,14 @@ export default function NavItem({ chat }: NavItemProps) {
         ""
       )}
     </div>
+  );
+}
+function Submit() {
+  const { pending } = useFormStatus();
+  return (
+    <Button disabled={pending} type={"submit"} variant={"destructive"}>
+      {pending && <ReloadIcon />}
+      {pending ? "deleting.." : "remove"}{" "}
+    </Button>
   );
 }

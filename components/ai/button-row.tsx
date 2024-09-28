@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/tooltip";
 
 const buttons = [
-  { icon: AudioLines, tooltip: "Audio controls" },
+  { icon: AudioLines, tooltip: "read" },
   { icon: Copy, tooltip: "Copy to clipboard" },
   { icon: Repeat, tooltip: "Repeat action" },
   { icon: ThumbsUp, tooltip: "Like" },
@@ -18,7 +18,7 @@ const buttons = [
 
 export default function ButtonRow() {
   return (
-    <div className="flex gap-3">
+    <div className="flex gap-1">
       {buttons.map((button, index) => (
         <Tooltip key={index}>
           <TooltipTrigger asChild>

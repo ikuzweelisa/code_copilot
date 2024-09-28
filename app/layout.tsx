@@ -8,7 +8,7 @@ import { SessionProvider } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "ChatBot",
+  title: "Dev Bot",
   description: "An AI Powered ChatBot",
 };
 
@@ -22,12 +22,7 @@ export default function RootLayout({
       <body className={`${inter.className} font-sans antialiased`}>
         <SessionProvider>
           <TooltipProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
+            <ThemeProvider attribute="class" defaultTheme="dark">
               {children}
             </ThemeProvider>
           </TooltipProvider>

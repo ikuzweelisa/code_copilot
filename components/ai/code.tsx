@@ -13,7 +13,7 @@ export default function Code({ codes, language }: CodeProps) {
   const [isCopied, copyText] = useClipBoard();
   return (
     <div className="relative w-full font-sans codeblock bg-zinc-950">
-      <div className="flex items-center justify-between w-full px-6 py-1 pr-4 bg-zinc-800 text-zinc-100">
+      <div className="flex items-center justify-between w-full px-6 py-1 pr-4  border-2 bg-zinc-800 text-zinc-100">
         <span className="text-xs lowercase">{language}</span>
         <div className="flex items-center space-x-1">
           <Button
@@ -40,7 +40,7 @@ export default function Code({ codes, language }: CodeProps) {
       </div>
 
       <SyntaxHighlighter
-        language={language}
+        language={language.toLocaleLowerCase()}
         style={materialDark}
         PreTag="div"
         wrapLines={true}

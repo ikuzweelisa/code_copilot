@@ -75,7 +75,6 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
     .filter((message) => message.role !== "system")
     .map((msg, index) => ({
       id: `${msg.id}-${index}`,
-      role: msg.role,
       display:
         msg.role === "tool" ? (
           msg.content.map((tool) => {
@@ -95,7 +94,7 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
               <BotMessage>
                 <UuidGenerator {...(tool.result as UuidGenProps)} />
               </BotMessage>
-            ) : tool.toolName === "debugCode" ? (
+            ) : tool.toolName === "debugger" ? (
               <BotMessage>
                 <Debugger {...(tool.result as DebuggerProps)} />
               </BotMessage>

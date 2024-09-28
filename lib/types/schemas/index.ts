@@ -19,7 +19,7 @@ const setupGuideSchema = z.object({
             .optional()
             .describe("An optional example code for the step"),
         }),
-      }),
+      })
     )
     .describe("An array detailing the steps involved in the setup"),
   overview: z
@@ -39,7 +39,7 @@ const codeAnalyzerSchema = z.object({
         description: z
           .string()
           .describe("A brief description of the key concept"),
-      }),
+      })
     )
     .describe("Important concepts present in the code"),
   improvedCode: z.object({
@@ -54,13 +54,13 @@ const codeAnalyzerSchema = z.object({
           description: z
             .string()
             .describe("Explanation of the improved concept"),
-        }),
+        })
       )
       .describe("Important concepts in the improved code"),
     message: z
       .string()
       .describe("Explanation of the changes made to improve the code"),
-  }),
+  }).optional().describe("explanation of improved code"),
 });
 const tableSchema = z.object({
   message: z
@@ -79,9 +79,9 @@ const tableSchema = z.object({
         items: z
           .array(z.string().describe("How each item relates to the feature"))
           .describe(
-            "Values or properties of each item with respect to the feature",
+            "Values or properties of each item with respect to the feature"
           ),
-      }),
+      })
     )
     .describe("A comparison of the items based on their features"),
   overview: z.string().describe("A brief overview of the comparison"),
@@ -106,7 +106,7 @@ const debuggerSchema = z.object({
             .string()
             .describe("Name of the key concept in the updated code"),
           description: z.string().describe("Description of the key concept"),
-        }),
+        })
       )
       .describe("Key concepts in the corrected code"),
     message: z.string().describe("Explanation of the improvements made"),
@@ -134,7 +134,7 @@ const codeExampleSchema = z.object({
         description: z
           .string()
           .describe("Explanation of the key concept in the example"),
-      }),
+      })
     )
     .describe("Key concepts illustrated by the example code"),
 });
@@ -145,7 +145,7 @@ const topicSchema = z.object({
       z.object({
         name: z.string().describe("Name of the key concept within the topic"),
         description: z.string().describe("Description of the key concept"),
-      }),
+      })
     )
     .describe("Key concepts involved in the topic"),
   example: z.object({

@@ -12,10 +12,10 @@ export default function CodeSnippet({
   language,
   message,
 }: CodeAnalyzerProps) {
+ 
   return (
     <div className="space-y-6 font-sans ">
       <section>
-        <h3 className=" font-bold mb-2">Analysis</h3>
         <p className="text-base">{message}</p>
       </section>
 
@@ -34,7 +34,7 @@ export default function CodeSnippet({
         <section>
           <h3 className=" font-semibold mb-2">Improved Code</h3>
           <p className="text-base mb-4">{improvedCode.message}</p>
-
+           
           <Code language={language} codes={improvedCode.code} />
         </section>
       )}

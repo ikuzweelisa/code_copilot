@@ -13,7 +13,6 @@ export default function SetupGuide({
   return (
     <div className="space-y-6 font-sans">
       <section className="text-base">
-        <h3 className="text-xl font-bold mb-2">Introduction</h3>
         <p>{intro}</p>
       </section>
 

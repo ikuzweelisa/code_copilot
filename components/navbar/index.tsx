@@ -18,9 +18,9 @@ export default function Navbar() {
   return (
     <TooltipProvider>
       <aside className="fixed inset-y-0 left-0 w-80 flex flex-col dark:bg-zinc-950 text-white">
-        <div className="flex items-center gap-2 p-4 border-b border-zinc-700">
-          <LogoIcon className={"size-14"} />
-          <span className="font-semibold text-lg">AI Chat bot</span>
+        <div className="flex items-center mb-6 gap-2 p-4 border-b border-zinc-700">
+          <LogoIcon className="size-7" />
+          <span className="font-semibold text-lg">Dev chatbot</span>
         </div>
         <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full ">

@@ -56,12 +56,13 @@ export default function Chat({ chatId }: ChatProps) {
   useEffect(() => {
     if (!path.includes("chat") && messages.length === 1) {
       console.log(`props id:${chatId} , state id:${chatId}`);
-      window.history.replaceState({}, "", `/chat/${state?.chatId}`);
+      window.history.replaceState({}, "", `/chat/${chatId}`);
     }
   }, [chatId, messages, path]);
   useEffect(() => {
     const messagesLength = state?.messages?.length ?? 0;
     if (messagesLength === 2) {
+  
       router.refresh();
     }
   }, [state?.messages, router]);

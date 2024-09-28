@@ -1,10 +1,14 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Image from "next/image";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
+import { LogoIcon } from "@/components/ui/icons";
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "ChatBot-Error",
+  description: "error page",
+};
 export default async function Page({
   searchParams,
 }: {
@@ -15,7 +19,7 @@ export default async function Page({
     <Card className="mx-auto w-[45vw]  mt-24">
       <CardHeader>
         <CardTitle className="text-2xl flex justify-center">
-          <Image src={"/logo.png"} height={125} width={125} alt="logo" />
+          <LogoIcon className={"size-20"} />
         </CardTitle>
       </CardHeader>
       <CardContent>
