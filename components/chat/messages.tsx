@@ -13,7 +13,7 @@ export default function Messages({ messages }: MessageProps) {
           {message.role === "user" ? (
             <UserMessage>{message.display}</UserMessage>
           ) : (
-             message.display
+            message.display
           )}
         </div>
       ))}

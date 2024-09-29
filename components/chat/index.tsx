@@ -72,7 +72,7 @@ export default function Chat({ chatId }: ChatProps) {
           <Messages messages={messages} />
         </div>
       </ScrollArea>
-      <div className="flex-shrink-0 bg-gradient-to-b from-background/10 to-background/80 pt-6">
+      <div className="flex-shrink-0  pt-6">
         <div className="mx-auto sm:max-w-2xl px-4">
           <div className="rounded-t-xl mb-3">
             <InputField

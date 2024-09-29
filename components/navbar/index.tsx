@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageSquarePlus } from "lucide-react";
+import { MessageSquarePlus,History } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -17,14 +17,14 @@ import { LogoIcon } from "@/components/ui/icons";
 export default function Navbar() {
   return (
     <TooltipProvider>
-      <aside className="fixed inset-y-0 left-0 w-80 flex flex-col dark:bg-zinc-950 text-white">
-        <div className="flex items-center mb-6 gap-2 p-4 border-b border-zinc-700">
+      <aside className="fixed inset-y-0 left-0 w-80 flex flex-col bg-background border-r">
+        <div className="flex items-center mb-6 gap-2 p-4 border-b">
           <LogoIcon className="size-7" />
           <span className="font-semibold text-lg">Dev chatbot</span>
         </div>
         <div className="flex-1 overflow-hidden">
-          <ScrollArea className="h-full ">
-            <nav className="p-4 flex flex-col gap-3 ">
+          <ScrollArea className="h-full w-full">
+            <nav className="p-1 flex flex-col gap-3">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -32,31 +32,28 @@ export default function Navbar() {
                     variant="ghost"
                     className="w-full justify-start mb-2"
                   >
-                    <Link
-                      href="/"
-                      className="flex items-center gap-2 text-white"
-                    >
-                      <MessageSquarePlus className="h-5 w-5" />
-                      New Chat
+                    <Link href="/" className="flex items-center  text-zinc-400  gap-2">
+                      <MessageSquarePlus />
+                      New Chat 
                     </Link>
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="right">
-                  <span>Start a new chat</span>
+                  <span>New chat</span>
                 </TooltipContent>
               </Tooltip>
-              <h2 className="text-sm font-semibold text-zinc-400 mb-2">
-                Chat History
-              </h2>
-              <Suspense fallback={<Spinner />}>
+              <h2 className="text-sm font-semibold text-muted-foreground mb-2 flex  justify-center gap-1"><History size={20} /> Recent Chats</h2>
+              <Suspense fallback={<div className=" mt-7 flex justify-center"><Spinner /></div> }>
                 <NavItems />
               </Suspense>
             </nav>
           </ScrollArea>
         </div>
-        <div className="p-2 border-t border-zinc-700">
+        <div className="p-2 border-t">
           <User />
+       
         </div>
+       
       </aside>
     </TooltipProvider>
   );

@@ -15,10 +15,9 @@ export default function ToggleMode() {
     return;
   }
   return (
-    <Button variant="ghost" size="sm" onClick={ChangeTHeme}>
+    <Button variant="ghost" size="icon" onClick={ChangeTHeme}>
       <MoonIcon className=" rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
       <SunIcon className=" rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      {theme === "light" ? "dark" : "light"}
     </Button>
   );
 }

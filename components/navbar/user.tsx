@@ -38,9 +38,6 @@ export default async function User() {
           </DropdownMenuItem>
           <DropdownMenuItem>Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuItem>
-            <ToggleMode />
-          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <form
@@ -56,7 +53,10 @@ export default async function User() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <span>{session?.user?.email}</span>
+      <div className=" flex gap-3 items-center justify-center">
+        <span className=" font-medium ">{session?.user?.email}</span>
+        <ToggleMode />
+      </div>
     </div>
   );
 }

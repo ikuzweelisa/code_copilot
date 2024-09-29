@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Table,
@@ -19,27 +20,30 @@ export default function DisplayTable({
   message,
 }: TableProps) {
   return (
-    <div className="p-1 flex flex-col gap-4  rounded-lg">
-      <span>{message}</span>
-      <Table className={"rounded-md w-full"}>
-        <TableHeader className=" py-1 bg-zinc-800 text-zinc-100">
-          <TableRow>
-            <TableHead className="text-zinc-300">Feature</TableHead>
+    <div className=" flex flex-col gap-5">
+      <span className="text-foreground">{message}</span>
+      <Table className="w-full  border-x-border border-2  rounded-md overflow-hidden">
+        <TableHeader>
+          <TableRow className="bg-muted">
+            <TableHead className="dark:text-zinc-100  font-medium">
+              Feature
+            </TableHead>
             {itemNames.map((item, index) => (
-              <TableHead key={index} className="text-zinc-300">
+              <TableHead
+                key={index}
+                className=" dark:text-zinc-100  font-medium"
+              >
                 {item}
               </TableHead>
             ))}
           </TableRow>
         </TableHeader>
-        <TableBody className="w-full font-sans bg-zinc-950 rounded-md overflow-hidden">
+        <TableBody>
           {comparison.map((compare, index) => (
-            <TableRow key={index}>
-              <TableCell className="text-zinc-300">{compare.feature}</TableCell>
+            <TableRow key={index} className="border-t border-border">
+              <TableCell className="font-medium">{compare.feature}</TableCell>
               {compare.items.map((item, index) => (
-                <TableCell key={index} className="text-zinc-300">
-                  {item}
-                </TableCell>
+                <TableCell key={index}>{item}</TableCell>
               ))}
             </TableRow>
           ))}

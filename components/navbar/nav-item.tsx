@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { MessageCircleCode, Trash2 } from "lucide-react";
+import { MessageSquareText, Trash2 } from "lucide-react";
 import AlertMessage from "@/components/auth/alert";
 import {
   Dialog,
@@ -33,17 +33,19 @@ export default function NavItem({ chat }: NavItemProps) {
   }
   return (
     <div
-      className="w-full flex justify-start mb-2"
+      className="w-full flex gap-2 justify-start mb-2"
       onMouseEnter={() => setIshovered(true)}
       onMouseLeave={() => setIshovered(false)}
     >
       <Button asChild variant="ghost" className={"w-full flex-grow"}>
         <Link
           href={chat.path}
-          className="flex items-center justify-between  gap-2 text-zinc-400 hover:text-white"
+          className={`flex items-center justify-between  gap-2 ${
+            pathName === chat.path ? "text-inherit" : " text-zinc-400 "
+          } hover:text-inherit`}
         >
-          <span className={"flex items-center gap-2"}>
-            <MessageCircleCode className="h-5 w-5" />
+          <span className={"capitalize flex items-center gap-4"}>
+          <MessageSquareText />
             {chat.title}
           </span>
         </Link>
@@ -51,7 +53,7 @@ export default function NavItem({ chat }: NavItemProps) {
       {ishovered ? (
         <Dialog>
           <DialogTrigger asChild>
-            <Button size={"sm"} variant={"destructive"}>
+            <Button size={"sm"} variant={"default"}>
               <Trash2 className="h-4 w-4" />
             </Button>
           </DialogTrigger>

@@ -8,8 +8,20 @@ import { SessionProvider } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Dev Bot",
-  description: "An AI Powered ChatBot",
+  title: "Dev-ChatBot",
+  description: "A Programming AI Powered Assistant",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon-16x16.png",
+    apple: "/apple-touch-icon.png",
+  },
+  metadataBase: new URL("https://devchat-bot.vercel.app/"),
+  keywords: [
+    "Programming assistant",
+    "Code analysis",
+    "AI-powered coding",
+    "Code debugging",
+  ],
 };
 
 export default function RootLayout({

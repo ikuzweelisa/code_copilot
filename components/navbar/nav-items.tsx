@@ -14,12 +14,12 @@ export default async function NavItems() {
   );
 
   return (
-    <div>
+    <>
       {sorted && sorted.length > 0 ? (
         sorted.map((chat, index) => <NavItem key={index} chat={chat} />)
       ) : (
         <span>No recent chats</span>
       )}
-    </div>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+"use client"
 import { UuidGenProps } from "@/lib/types";
 import Code from "@/components/ai/code";
 import ButtonRow from "@/components/ai/button-row";

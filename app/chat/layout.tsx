@@ -4,8 +4,8 @@ import {Metadata} from "next";
 
 export const metadata:Metadata={
     title:{
-      template:"%s-ChatBot",
-      default:"new"
+      template:"%s -ChatBot",
+      default:"Untitled Chat"
     }
 }
 export default function Layout({ children }: { children: React.ReactNode }) {
