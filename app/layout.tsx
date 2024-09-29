@@ -34,7 +34,12 @@ export default function RootLayout({
       <body className={`${inter.className} font-sans antialiased`}>
         <SessionProvider>
           <TooltipProvider>
-            <ThemeProvider attribute="class" defaultTheme="dark">
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
               {children}
             </ThemeProvider>
           </TooltipProvider>

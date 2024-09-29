@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -48,7 +48,7 @@ export default function Code({ codes, language }: CodeProps) {
 
       <SyntaxHighlighter
         language={language.toLowerCase()}
-        style={materialLight}
+        style={theme === "dark" ? materialDark : materialLight}
         PreTag="div"
         wrapLines={true}
         showLineNumbers
