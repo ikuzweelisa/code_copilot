@@ -1,5 +1,3 @@
-"use client";
-
 import { AudioLines, Copy, Repeat, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {

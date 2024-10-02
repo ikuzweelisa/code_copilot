@@ -46,21 +46,24 @@ const codeAnalyzerSchema = z.object({
     message: z.string().describe("A message about the improved code"),
     code: z.string().optional().describe("The improved version of the code"),
   }),
-  improvedKeyConcepts: z.object({
-    concepts: z
-      .array(
-        z.object({
-          name: z.string().describe("Name of the improved concept"),
-          description: z
-            .string()
-            .describe("Explanation of the improved concept"),
-        })
-      )
-      .describe("Important concepts in the improved code"),
-    message: z
-      .string()
-      .describe("Explanation of the changes made to improve the code"),
-  }).optional().describe("explanation of improved code"),
+  improvedKeyConcepts: z
+    .object({
+      concepts: z
+        .array(
+          z.object({
+            name: z.string().describe("Name of the improved concept"),
+            description: z
+              .string()
+              .describe("Explanation of the improved concept"),
+          })
+        )
+        .describe("Important concepts in the improved code"),
+      message: z
+        .string()
+        .describe("Explanation of the changes made to improve the code"),
+    })
+    .optional()
+    .describe("explanation of improved code"),
 });
 const tableSchema = z.object({
   message: z
@@ -112,17 +115,22 @@ const debuggerSchema = z.object({
     message: z.string().describe("Explanation of the improvements made"),
   }),
 });
+
 const codeExampleSchema = z.object({
   message: z
     .string()
-    .describe("A message providing context about the code example"),
+    .describe("A message providing context about the code example."),
   example: z
     .object({
       language: z
         .string()
         .describe("The programming language used in the code example"),
       codes: z.string().describe("The actual code example"),
-      title: z.string().describe("A title summarizing the code example"),
+      title: z
+        .string()
+        .describe(
+          "A title summarizing the example, including framework/library if applicable."
+        ),
     })
     .describe("Details of the code example"),
   concepts: z
@@ -138,6 +146,7 @@ const codeExampleSchema = z.object({
     )
     .describe("Key concepts illustrated by the example code"),
 });
+
 const topicSchema = z.object({
   introduction: z.string().describe("A detailed introduction to the topic"),
   keyConcepts: z
