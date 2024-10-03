@@ -2,7 +2,9 @@
 import { getMutableAIState, streamUI } from "ai/rsc";
 import { google } from "@ai-sdk/google";
 import { BotMessage } from "@/components/ai/bot-message";
+import fs from "fs";
 import {
+  Attachment,
   ClientMessage,
   CodeAnalyzerProps,
   CodeExampleProps,
@@ -39,9 +41,9 @@ import { getSystemMessage } from "@/lib/actions/server/message";
 import { sleep } from "@/lib/utils";
 import ErrorMessage from "@/components/ai/error-message";
 
-const abortController = new AbortController();
 export async function submitMessage(
-  userMessage: string
+  userMessage: string,
+  attachment?: Attachment
 ): Promise<ClientMessage> {
   try {
     const systemMessage = await getSystemMessage();
@@ -55,14 +57,31 @@ export async function submitMessage(
           id: crypto.randomUUID(),
           role: "user",
 
-          content: userMessage,
+          content: attachment
+            ? [
+                {
+                  id: attachment.id,
+                  type: "file",
+                  data: fs.readFileSync(attachment.path),
+                  mimeType: attachment.type,
+                },
+                {
+                  type: "text",
+                  text: userMessage,
+                },
+              ]
+            : [
+                {
+                  type: "text",
+                  text: userMessage,
+                },
+              ],
         },
       ],
     });
     const result = await streamUI({
       model: google("gemini-1.5-flash-latest"),
       initial: <SpinnerMessage />,
-      abortSignal: abortController.signal,
       system: systemMessage,
       messages: [
         ...state.get()?.messages.map((message) => ({
@@ -531,8 +550,5 @@ export async function submitMessage(
         </BotMessage>
       ),
     };
-   
-  } finally {
-    abortController.abort();
   }
 }

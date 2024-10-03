@@ -6,7 +6,9 @@ import Messages from "@/components/chat/messages";
 import { useActions, useAIState, useUIState } from "ai/rsc";
 import AIProvider from "@/components/providers/ai-provider";
 import { usePathname, useRouter } from "next/navigation";
-import { Message } from "@/lib/types";
+import { Message, Attachment } from "@/lib/types";
+import UploadDialog from "./upload-dialog";
+import MessageText from "../ai/message";
 
 interface ChatProps {
   initialMessages?: Message[];
@@ -23,19 +25,23 @@ export default function Chat({ chatId }: ChatProps) {
   const { submitMessage } = useActions();
   const [input, setInput] = useState("");
   const formRef = useRef<HTMLFormElement | null>(null);
+  const [attachment, setAttachment] = useState<Attachment | undefined>(
+    undefined
+  );
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setInput("");
+    setAttachment(undefined);
     setMessages((currentMessage) => [
       ...currentMessage,
       {
         id: crypto.randomUUID(),
         role: "user",
-        display: input,
+        display: <MessageText text={input} attachment={attachment} />,
       },
     ]);
-    const response = await submitMessage(input);
+    const response = await submitMessage(input, attachment);
     setMessages((prevMessages) => [...prevMessages, response]);
   }
 
@@ -61,10 +67,10 @@ export default function Chat({ chatId }: ChatProps) {
   useEffect(() => {
     const messagesLength = state?.messages?.length ?? 0;
     if (messagesLength === 2) {
-  
       router.refresh();
     }
   }, [state?.messages, router]);
+
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
       <ScrollArea className="flex-grow" ref={scrollAreaRef}>
@@ -81,7 +87,13 @@ export default function Chat({ chatId }: ChatProps) {
               handleChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
               formRef={formRef}
-            />
+            >
+              <UploadDialog
+                attachment={attachment}
+                chatId={state.chatId}
+                setAttachment={setAttachment}
+              />
+            </InputField>
           </div>
         </div>
       </div>

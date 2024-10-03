@@ -1,11 +1,13 @@
 "use server";
-import { AuthStatus, Chat } from "@/lib/types";
+import { AuthStatus, Chat, Attachment } from "@/lib/types";
 import { AuthError } from "next-auth";
 import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
 import prisma from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import fs from "fs/promises";
 
 export async function saveChatData(chat: Chat) {
   try {
@@ -103,17 +105,73 @@ export async function deleteChat(
     await prisma.chat.delete({
       where: { id: id as string },
     });
-    revalidatePath("/") 
+    revalidatePath("/");
     return {
       status: "success",
       message: "chat deleted",
     };
-   
   } catch (e) {
-     console.log(e)
+    console.log(e);
     return {
       status: "error",
       message: "chat not delete",
     };
   }
+}
+
+export type FileState = {
+  attachment?: Attachment;
+  error?: string;
+};
+const fileSchema = z
+  .instanceof(File, { message: "File is Required" })
+  .refine((file) => file.type.startsWith("application/pdf"), {
+    message: "Only PDF files supported.",
+  });
+
+export async function saveFile(formData: FormData): Promise<FileState> {
+  try {
+    const fileValidate = fileSchema.safeParse(formData.get("file"));
+    if (!fileValidate.success) {
+      return {
+        error:
+          fileValidate.error.errors[0]?.message || "File Format not supported",
+      };
+    }
+    const chatId = formData.get("chatId") as string;
+    const file = fileValidate.data;
+    await fs.mkdir("assets", { recursive: true });
+    const filePath = `assets/chat-data/${crypto.randomUUID()}-${file.name}`;
+    await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
+    const newFile = await prisma.attachment.create({
+      data: {
+        name: file.name,
+        path: filePath,
+        type: file.type,
+        chatId: chatId,
+      },
+    });
+    return {
+      attachment: {
+        id: newFile.id,
+        name: file.name,
+        path: filePath,
+        type: file.type,
+      },
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      error: "Error uploading file",
+    };
+  }
+}
+
+export async function getAttachmentById(fileId: string) {
+  const attachment = await prisma.attachment.findUnique({
+    where: {
+      id: fileId,
+    },
+  });
+  return attachment;
 }
