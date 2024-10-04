@@ -39,7 +39,6 @@ import { getSystemMessage } from "@/lib/actions/server/message";
 import { sleep } from "@/lib/utils";
 import ErrorMessage from "@/components/ai/error-message";
 
-const abortController = new AbortController();
 export async function submitMessage(
   userMessage: string
 ): Promise<ClientMessage> {
@@ -62,7 +61,6 @@ export async function submitMessage(
     const result = await streamUI({
       model: google("gemini-1.5-flash-latest"),
       initial: <SpinnerMessage />,
-      abortSignal: abortController.signal,
       system: systemMessage,
       messages: [
         ...state.get()?.messages.map((message) => ({
@@ -531,8 +529,5 @@ export async function submitMessage(
         </BotMessage>
       ),
     };
-   
-  } finally {
-    abortController.abort();
-  }
+}
 }
