@@ -14,7 +14,7 @@ export default function MessageText({ attachment, text }: MessageProps) {
           <span>{attachment.name}</span>
         </span>
       )}
-      <span>{text}</span>
+      <div className="flex-1 flex-col">{text}</div>
     </span>
   );
 }

@@ -56,23 +56,6 @@ export type Attachment = {
   createdAt?: Date;
   chatId?: string;
 };
-type DataContent = string | Uint8Array | ArrayBuffer | Buffer;
-
-/**
-File content part of a prompt. It contains a file.
- */
-export type FilePart = {
-  type: "file";
-  /**
-
-   */
-  data: DataContent | URL;
-  /**
-
-   */
-  mimeType: string;
-};
-
 export type CodeAnalyzerProps = z.infer<typeof codeAnalyzerSchema>;
 export type TableProps = z.infer<typeof tableSchema>;
 export type SetupProps = z.infer<typeof setupGuideSchema>;

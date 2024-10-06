@@ -63,7 +63,7 @@ export default function Chat({ chatId }: ChatProps) {
     if (!path.includes("chat") && messages.length === 1) {
       window.history.replaceState({}, "", `/chat/${state.chatId}`);
     }
-  }, [chatId, messages, path]);
+  }, [state.chatId, messages, path]);
   useEffect(() => {
     const messagesLength = state?.messages?.length ?? 0;
     if (messagesLength === 2) {

@@ -25,6 +25,7 @@ import Debugger from "@/components/ai/debugger";
 import CodeExample from "@/components/ai/code-example";
 import Define from "@/components/ai/define";
 import ExplainTopic from "@/components/ai/explain-topic";
+import MessageText from "../ai/message";
 
 export type AIState = {
   chatId: string;
@@ -113,7 +114,19 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
             ) : null;
           })
         ) : msg.role === "user" ? (
-          <UserMessage>{msg.content as string}</UserMessage>
+          <UserMessage>
+            {typeof msg.content === "string" ? (
+              msg.content
+            ) : (
+              <MessageText
+                text={
+                  msg.content.find((content) => content.type === "text")
+                    ?.text || ""
+                }
+                attachment={msg.content.find((content) => content.type === "file")}
+              />
+            )}
+          </UserMessage>
         ) : msg.role === "assistant" && typeof msg.content === "string" ? (
           <BotMessage>{msg.content}</BotMessage>
         ) : null,
