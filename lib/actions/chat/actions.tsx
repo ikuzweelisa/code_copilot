@@ -27,16 +27,13 @@ import { sleep } from "@/lib/utils";
 import { google } from "@ai-sdk/google";
 import { CoreMessage } from "ai";
 import { getMutableAIState, streamUI } from "ai/rsc";
-import fs from "fs/promises";
+import fs from "fs";
 
 export async function submitMessage(
   userMessage: string,
   attachment: Attachment | undefined
 ): Promise<ClientMessage> {
-  let fileData;
-  if (attachment) {
-    fileData = await fs.readFile(attachment.path, { encoding: "base64" });
-  }
+
   try {
     const systemMessage = await getSystemMessage();
     const state = getMutableAIState<typeof AIProvider>();
@@ -54,7 +51,7 @@ export async function submitMessage(
                   name: attachment.name,
                   path: attachment.path,
                   type: "file",
-                  data: fileData || "",
+                  data: fs.readFileSync(attachment.path),
                   mimeType: attachment.type,
                 },
                 {
@@ -107,6 +104,7 @@ export async function submitMessage(
             title,
           }) {
             yield <SpinnerMessage />;
+            await sleep(1000);
             const toolId = crypto.randomUUID();
             state.done({
               ...state.get(),
@@ -169,6 +167,7 @@ export async function submitMessage(
             improvedKeyConcepts,
           }) {
             yield <SpinnerMessage />;
+            await sleep(1000);
             const toolId = crypto.randomUUID();
             state.done({
               ...state.get(),
@@ -231,7 +230,7 @@ export async function submitMessage(
           parameters: setupGuideSchema,
           generate: async function* ({ intro, steps, title, overview }) {
             yield <SpinnerMessage />;
-
+            await sleep(1000);
             const toolId = crypto.randomUUID();
             state.done({
               ...state.get(),
@@ -281,7 +280,7 @@ export async function submitMessage(
           parameters: uuidGenSchema,
           generate: async function* ({ message, uuid }) {
             yield <SpinnerMessage />;
-
+            await sleep(1000);
             const toolId = crypto.randomUUID();
             state.done({
               ...state.get(),
@@ -326,7 +325,7 @@ export async function submitMessage(
           parameters: debuggerSchema,
           generate: async function* ({ correctCode, error, updated }) {
             yield <SpinnerMessage />;
-
+            await sleep(1000);
             const toolId = crypto.randomUUID();
             state.done({
               ...state.get(),
@@ -374,6 +373,7 @@ export async function submitMessage(
           parameters: codeExampleSchema,
           generate: async function* ({ concepts, example, message }) {
             yield <SpinnerMessage />;
+            await sleep(1000);
             const toolId = crypto.randomUUID();
             state.done({
               ...state.get(),
@@ -427,7 +427,7 @@ export async function submitMessage(
             overview,
           }) {
             yield <SpinnerMessage />;
-
+            await sleep(1000);
             const toolId = crypto.randomUUID();
             state.done({
               ...state.get(),

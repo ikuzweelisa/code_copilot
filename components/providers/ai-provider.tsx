@@ -120,10 +120,11 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
             ) : (
               <MessageText
                 text={
-                  msg.content.find((content) => content.type === "text")
-                    ?.text || ""
+                  msg.content.find((content) => content.type === "text")?.text
                 }
-                attachment={msg.content.find((content) => content.type === "file")}
+                attachment={msg.content.find(
+                  (content) => content.type === "file"
+                )}
               />
             )}
           </UserMessage>
