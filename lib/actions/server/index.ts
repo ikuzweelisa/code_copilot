@@ -117,3 +117,66 @@ export async function deleteChat(
     };
   }
 }
+<<<<<<< Updated upstream
+=======
+
+export async function authenticate(formData: FormData) {
+  return await signIn("credentials", formData);
+}
+export type FileState = {
+  attachment?: Attachment;
+  error?: string;
+};
+const fileSchema = z
+  .instanceof(File, { message: "File is Required" })
+  .refine((file) => file.type.startsWith("application/pdf"), {
+    message: "Only PDF files supported.",
+  });
+
+// export async function saveFile(formData: FormData): Promise<FileState> {
+//   try {
+//     const fileValidate = fileSchema.safeParse(formData.get("file"));
+//     if (!fileValidate.success) {
+//       return {
+//         error:
+//           fileValidate.error.errors[0]?.message || "File Format not supported",
+//       };
+//     }
+//     const chatId = formData.get("chatId") as string;
+//     const file = fileValidate.data;
+//     await fs.mkdir("assets", { recursive: true });
+//     const filePath = `assets/chat-data/${crypto.randomUUID()}-${file.name}`;
+//     await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
+//     const newFile = await prisma.attachment.create({
+//       data: {
+//         name: file.name,
+//         path: filePath,
+//         type: file.type,
+//         chatId: chatId,
+//       },
+//     });
+//     return {
+//       attachment: {
+//         id: newFile.id,
+//         name: file.name,
+//         path: filePath,
+//         type: file.type,
+//       },
+//     };
+//   } catch (error) {
+//     console.log(error);
+//     return {
+//       error: "Error uploading file",
+//     };
+//   }
+// }
+
+// export async function getAttachmentById(fileId: string) {
+//   const attachment = await prisma.attachment.findUnique({
+//     where: {
+//       id: fileId,
+//     },
+//   });
+//   return attachment;
+// }
+>>>>>>> Stashed changes

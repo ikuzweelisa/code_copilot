@@ -2,6 +2,7 @@
 import { getMutableAIState, streamUI } from "ai/rsc";
 import { google } from "@ai-sdk/google";
 import { BotMessage } from "@/components/ai/bot-message";
+<<<<<<< Updated upstream
 import {
   ClientMessage,
   CodeAnalyzerProps,
@@ -38,13 +39,28 @@ import Define from "@/components/ai/define";
 import { getSystemMessage } from "@/lib/actions/server/message";
 import { sleep } from "@/lib/utils";
 import ErrorMessage from "@/components/ai/error-message";
+=======
+import ErrorMessage from "@/components/ai/error-message";
+import { Markdown } from "@/components/ai/markdown";
+import { SpinnerMessage } from "@/components/ai/spinner-message";
+import AIProvider from "@/components/providers/ai-provider";
+
+import { Attachment, ClientMessage } from "@/lib/types";
+import { google } from "@ai-sdk/google";
+import { CoreMessage } from "ai";
+import { getMutableAIState, streamUI } from "ai/rsc";
+>>>>>>> Stashed changes
 
 const abortController = new AbortController();
 export async function submitMessage(
   userMessage: string
 ): Promise<ClientMessage> {
   try {
-    const systemMessage = await getSystemMessage();
+    const message = `\You are a highly capable programming assistant.
+       If auser ask anything not related to programming , respond saying that you are a Programming assistant you cannot do that.and suggest what you can assist them,
+      if a user  impossible tasks such as Running codes and other programming tasks  you are not capable , respond Saying that the This feature is currently unavailable and may added in the future.
+      your answers should be well explained.
+    `;
     const state = getMutableAIState<typeof AIProvider>();
 
     state.update({
@@ -54,7 +70,10 @@ export async function submitMessage(
         {
           id: crypto.randomUUID(),
           role: "user",
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
           content: userMessage,
         },
       ],
@@ -62,8 +81,12 @@ export async function submitMessage(
     const result = await streamUI({
       model: google("gemini-1.5-flash-latest"),
       initial: <SpinnerMessage />,
+<<<<<<< Updated upstream
       abortSignal: abortController.signal,
       system: systemMessage,
+=======
+      system: message,
+>>>>>>> Stashed changes
       messages: [
         ...state.get()?.messages.map((message) => ({
           role: message.role,
@@ -85,9 +108,14 @@ export async function submitMessage(
             ],
           });
 
-          return <BotMessage>{content}</BotMessage>;
+          return (
+            <BotMessage>
+              <Markdown>{content}</Markdown>
+            </BotMessage>
+          );
         }
       },
+<<<<<<< Updated upstream
       tools: {
         comparison: {
           description:
@@ -446,8 +474,10 @@ export async function submitMessage(
           },
         },
       },
+=======
+>>>>>>> Stashed changes
     });
-    await sleep(1000);
+
     return {
       id: crypto.randomUUID(),
       role: "assistant",
@@ -463,8 +493,11 @@ export async function submitMessage(
         </BotMessage>
       ),
     };
+<<<<<<< Updated upstream
 
   } finally {
     abortController.abort();
+=======
+>>>>>>> Stashed changes
   }
 }

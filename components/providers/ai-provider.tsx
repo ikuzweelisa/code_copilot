@@ -1,30 +1,18 @@
 import { createAI, getAIState } from "ai/rsc";
 import { submitMessage } from "@/lib/actions/chat/actions";
-import {
-  Chat,
-  ClientMessage,
-  CodeAnalyzerProps,
-  CodeExampleProps,
-  DebuggerProps,
-  DefineProps,
-  Message,
-  SetupProps,
-  TableProps,
-  TopicPros,
-  UuidGenProps,
-} from "@/lib/types";
+import { Chat, ClientMessage, Message } from "@/lib/types";
 import { saveChatData } from "../../lib/actions/server";
-import DisplayTable from "@/components/ai/table";
-import CodeSnippet from "@/components/ai/code-snippet";
-import SetupGuide from "@/components/ai/setup-guide";
-import UuidGenerator from "@/components/ai/uuid-generator";
 import { UserMessage } from "@/components/ai/user-message";
 import { BotMessage } from "@/components/ai/bot-message";
 import { auth } from "@/app/auth";
+<<<<<<< Updated upstream
 import Debugger from "@/components/ai/debugger";
 import CodeExample from "@/components/ai/code-example";
 import Define from "@/components/ai/define";
 import ExplainTopic from "@/components/ai/explain-topic";
+=======
+import { Markdown } from "../ai/markdown";
+>>>>>>> Stashed changes
 
 export type AIState = {
   chatId: string;
@@ -45,18 +33,19 @@ const AIProvider = createAI<AIState, UIState>({
   onSetAIState: async ({ state, done }) => {
     "use server";
     const session = await auth();
-    if (!done) return;
-    const firstMessage = state.messages[0]?.content as string;
-    const title = firstMessage?.substring(0, 100) || "New Chat";
-    const path = `/chat/${state.chatId}`;
-    const chat: Chat = {
-      id: state.chatId,
-      messages: state.messages,
-      title: title,
-      path: path,
-      userId: session?.user?.id as string,
-    };
-    await saveChatData(chat);
+    if (done) {
+      const firstMessage = state.messages[0]?.content as string;
+      const title = firstMessage?.substring(0, 100) || "New Chat";
+      const path = `/chat/${state.chatId}`;
+      const chat: Chat = {
+        id: state.chatId,
+        messages: state.messages,
+        title: title,
+        path: path,
+        userId: session?.user?.id as string,
+      };
+      await saveChatData(chat);
+    }
   },
   onGetUIState: async (): Promise<ClientMessage[]> => {
     "use server";
@@ -76,6 +65,7 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
     .map((msg, index) => ({
       id: `${msg.id}-${index}`,
       display:
+<<<<<<< Updated upstream
         msg.role === "tool" ? (
           msg.content.map((tool) => {
             return tool.toolName === "comparison" ? (
@@ -113,9 +103,15 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
             ) : null;
           })
         ) : msg.role === "user" ? (
+=======
+        msg.role === "user" ? (
+>>>>>>> Stashed changes
           <UserMessage>{msg.content as string}</UserMessage>
         ) : msg.role === "assistant" && typeof msg.content === "string" ? (
-          <BotMessage>{msg.content}</BotMessage>
+          <BotMessage>
+            {" "}
+            <Markdown>{msg.content}</Markdown>
+          </BotMessage>
         ) : null,
     })) as ClientMessage[];
 }

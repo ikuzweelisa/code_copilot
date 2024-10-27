@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -7,6 +9,7 @@ import {
 } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import useClipBoard from "@/lib/hooks/use-clipboard";
 import { useTheme } from "next-themes";
+import { Card } from "../ui/card";
 
 interface CodeProps {
   language: string;
@@ -18,9 +21,9 @@ export default function Code({ codes, language }: CodeProps) {
   const { theme } = useTheme();
 
   return (
-    <div className="relative w-full font-sans codeblock bg-zinc-950  dark:bg-zinc-950 rounded-md overflow-hidden">
-      <div className="flex items-center justify-between w-full px-6 py-2 pr-4 bg-muted  dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700">
-        <span className="text-xs lowercase font-medium">{language}</span>
+    <Card className="relative w-full font-sans bg-zinc-950 dark:bg-zinc-950 rounded-sm overflow-hidden border">
+      <div className="flex items-center justify-between w-full px-1 bg-muted text-zinc-800 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700">
+        <span className="text-xs lowercase">{language}</span>
         <div className="flex items-center space-x-1">
           <Button
             variant="ghost"
@@ -32,12 +35,12 @@ export default function Code({ codes, language }: CodeProps) {
           >
             {isCopied ? (
               <span>
-                <CheckIcon size={15} />
+                <CheckIcon size={12} />
                 <span className="sr-only">Copied!</span>
               </span>
             ) : (
               <span>
-                <CopyIcon size={15} />
+                <CopyIcon size={12} />
                 <span className="sr-only">Copy code</span>
               </span>
             )}
@@ -45,31 +48,41 @@ export default function Code({ codes, language }: CodeProps) {
         </div>
       </div>
 
-      <SyntaxHighlighter
-        language={language.toLowerCase()}
-        style={theme === "dark" ? materialDark : materialLight}
-        PreTag="div"
-        wrapLines={true}
-        showLineNumbers
-        customStyle={{
-          margin: 0,
-          width: "100%",
-          background: "transparent",
-          padding: "1.5rem 1rem",
-        }}
-        lineNumberStyle={{
-          userSelect: "none",
-          color: theme === "dark" ? "#4B5563" : "#9CA3AF",
-        }}
-        codeTagProps={{
-          style: {
-            fontSize: "0.9rem",
-            fontFamily: "var(--font-mono)",
-          },
-        }}
-      >
-        {codes}
-      </SyntaxHighlighter>
-    </div>
+      <div className="relative w-full max-w-full overflow-x-auto">
+        <SyntaxHighlighter
+          language={language.toLowerCase()}
+          style={theme === "dark" ? materialDark : materialLight}
+          PreTag="div"
+          customStyle={{
+            margin: 0,
+            width: "100%",
+            background: "transparent",
+            padding: "1.5rem 1rem",
+            overflow: "auto",
+            wordBreak: "break-word",
+            whiteSpace: "pre-wrap",
+            maxWidth: "100%",
+          }}
+          lineNumberStyle={{
+            userSelect: "none",
+            color: theme === "dark" ? "#4B5563" : "#9CA3AF",
+          }}
+          wrapLines={true}
+          wrapLongLines={true}
+          codeTagProps={{
+            style: {
+              fontSize: "0.9rem",
+              fontFamily: "var(--font-mono)",
+              wordBreak: "break-word",
+              whiteSpace: "pre-wrap",
+              overflowWrap: "break-word",
+            },
+          }}
+          className="max-w-full"
+        >
+          {codes}
+        </SyntaxHighlighter>
+      </div>
+    </Card>
   );
 }

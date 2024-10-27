@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Providers from "@/components/auth/providers";
 import { LogoIcon } from "@/components/ui/icons";
+import { authenticate } from "@/lib/actions/server";
 
 export function LoginForm() {
   return (
@@ -18,7 +19,7 @@ export function LoginForm() {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <form className={"flex flex-col gap-4"}>
+          <form className={"flex flex-col gap-4"} action={authenticate}>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -59,11 +60,7 @@ export function LoginForm() {
 
 function SubmitButton() {
   return (
-    <Button
-      disabled={true}
-      type="submit"
-      className="w-full disabled:cursor-not-allowed"
-    >
+    <Button type="submit" className="w-full disabled:cursor-not-allowed">
       Login
     </Button>
   );
