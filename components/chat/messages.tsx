@@ -7,13 +7,11 @@ interface MessageProps {
 }
 export default function Messages({ messages }: MessageProps) {
   return (
-    <div className={"w-full max-w-full flex flex-col gap-4"}>
+    <div className={"w-full max-w-full flex flex-col gap-4 p-1 sm:p-5 md:p-4 lg:p-1"}>
       {messages.map((message) => (
-        <div key={message.id} className={"flex flex-col "}>
+        <div key={message.id} className={"flex flex-col w-full"}>
           {message.role === "user" ? (
-            <UserMessage> 
-               {message.display}
-               </UserMessage>
+            <UserMessage >{message.display}</UserMessage>
           ) : (
             message.display
           )}

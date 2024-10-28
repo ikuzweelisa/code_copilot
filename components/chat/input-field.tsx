@@ -28,8 +28,9 @@ export default function InputField({
   return (
     <>
       <form onSubmit={handleSubmit} ref={formRef}>
-        <div className="relative flex max-h-60 w-full grow flex-col overflow-hidden  dark:bg-zinc-950 px-8 sm:rounded-xl sm:border sm:px-12">
-          {children}
+        <div className="relative flex max-h-60  grow flex-col overflow-hidden   dark:bg-zinc-950 rounded-xl border px-8 ">
+          <div >{children}</div>
+
           <Textarea
             tabIndex={0}
             onKeyDown={onKeyDown}
@@ -44,7 +45,7 @@ export default function InputField({
             onChange={handleChange}
             value={input}
           />
-          <div className="absolute right-0 top-[13px] sm:right-4">
+          <div className="absolute right-0 top-[13px] sm:right-4 px-1">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button

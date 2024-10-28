@@ -1,6 +1,6 @@
 "use client";
 import { IconOpenAI } from "@/components/ui/icons";
- import ButtonRow from "@/components/ai/button-row"
+import ButtonRow from "@/components/ai/button-row";
 import { cn } from "@/lib/utils";
 
 export function BotMessage({ children }: { children: React.ReactNode }) {
@@ -13,8 +13,9 @@ export function BotMessage({ children }: { children: React.ReactNode }) {
       >
         <IconOpenAI />
       </div>
-      <div className="ml-4 flex-1 flex-col pl-2">{children}
-      <ButtonRow/>
+      <div className="ml-4 flex-1 flex-col text-xs md:text-sm lg:text-base">
+        {children}
+        <ButtonRow />
       </div>
     </div>
   );

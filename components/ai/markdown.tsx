@@ -1,5 +1,4 @@
 "use client";
-
 import { memo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -28,7 +27,7 @@ const components = {
   ),
   th: ({ node, ...props }: any) => (
     <TableHead
-      className="px-4 py-1 font-semibold border bg-muted text-inherit"
+      className="px-3 py-1 font-semibold border bg-muted text-inherit"
       {...props}
     />
   ),
@@ -94,25 +93,46 @@ const components = {
     );
   },
   p: ({ children, className, ...props }: any) => (
-    <p className={cn("my-2 leading-7", className)} {...props}>
+    <p
+      className={cn(
+        "my-2 leading-7 text-xs md:text-sm lg:text-base",
+        className
+      )}
+      {...props}
+    >
       {children}
     </p>
   ),
   h1: ({ children, className, ...props }: any) => (
-    <h1 className={cn("text-3xl font-bold mt-8 mb-2", className)} {...props}>
+    <h1
+      className={cn(
+        "text-xl md:text-2xl lg:text-3xl font-bold mt-8 mb-2",
+        className
+      )}
+      {...props}
+    >
       {children}
     </h1>
   ),
   h2: ({ children, className, ...props }: any) => (
     <h2
-      className={cn("text-2xl font-semibold mt-2 mb-2", className)}
+      className={cn(
+        "text-lg md:text-xl lg:text-2xl font-semibold mt-2 mb-2",
+        className
+      )}
       {...props}
     >
       {children}
     </h2>
   ),
   h3: ({ children, className, ...props }: any) => (
-    <h3 className={cn("text-xl font-semibold mt-4 mb-2", className)} {...props}>
+    <h3
+      className={cn(
+        "text-base md:text-lg lg:text-xl font-semibold mt-4 mb-2",
+        className
+      )}
+      {...props}
+    >
       {children}
     </h3>
   ),
@@ -120,11 +140,11 @@ const components = {
 
 export function Markdown({ children }: { children: string }) {
   return (
-    <div className="prose dark:prose-invert">
+    <div className="prose dark:prose-invert sm:prose sm:dark:prose-invert md:prose-lg md:dark:prose-lg">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={components}
-        className="prose dark:prose-invert max-w-none space-y-2"
+        className="max-w-none space-y-2"
       >
         {children}
       </ReactMarkdown>

@@ -60,7 +60,7 @@ export function LoginForm() {
 
 function SubmitButton() {
   return (
-    <Button type="submit" className="w-full disabled:cursor-not-allowed">
+    <Button type="submit" disabled className="w-full disabled:cursor-not-allowed">
       Login
     </Button>
   );

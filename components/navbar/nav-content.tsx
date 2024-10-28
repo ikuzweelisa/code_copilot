@@ -10,7 +10,7 @@ import { History } from "lucide-react";
 import UserButton from "./user";
 import Link from "next/link"
 
-export default function NavContent() {
+export default function NavContent({children}:{children:React.ReactNode}) {
     
     return (<>
     <div className="flex items-center mb-6 gap-2 p-4 border-b">
@@ -43,19 +43,11 @@ export default function NavContent() {
             <h2 className="text-sm font-semibold text-muted-foreground mb-2 flex justify-center gap-1">
               <History /> Recent Chats
             </h2>
-            <Suspense
-              fallback={
-                <div className="mt-7 flex justify-center">
-                  <Spinner />
-                </div>
-              }
-            >
-              <NavItems />
-            </Suspense>
+           {children}
           </nav>
         </ScrollArea>
       </div>
-      <div className="p-2 border-t">
+      <div className="p-2 border-t mt-auto">
         <UserButton />
       </div>
     </>)
