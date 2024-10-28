@@ -34,12 +34,3 @@ export type AuthStatus = {
   status: Status;
   message: string;
 };
-
-export type Attachment = {
-  id?: string;
-  name: string;
-  type: string;
-  path: string;
-  createdAt?: Date;
-  chatId?: string;
-};

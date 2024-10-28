@@ -4,7 +4,7 @@ import ThemeProvider from "@/components/providers/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
-
+import { Toaster} from "@/components/ui/sonner";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
@@ -41,6 +41,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               {children}
+              <Toaster/>
             </ThemeProvider>
           </TooltipProvider>
         </SessionProvider>

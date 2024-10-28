@@ -11,7 +11,9 @@ export default function Messages({ messages }: MessageProps) {
       {messages.map((message) => (
         <div key={message.id} className={"flex flex-col "}>
           {message.role === "user" ? (
-            <UserMessage>{message.display}</UserMessage>
+            <UserMessage> 
+               {message.display}
+               </UserMessage>
           ) : (
             message.display
           )}
