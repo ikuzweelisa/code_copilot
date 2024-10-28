@@ -6,9 +6,10 @@ import Messages from "@/components/chat/messages";
 import { useActions, useAIState, useUIState } from "ai/rsc";
 import AIProvider from "@/components/providers/ai-provider";
 import { usePathname, useRouter } from "next/navigation";
-import { Message, Attachment } from "@/lib/types";
-import UploadDialog from "./upload-dialog";
-import MessageText from "../ai/message";
+import { Message } from "@/lib/types";
+import { Attachment } from "@prisma/client";
+import UploadDialog from "@/components/chat/upload-dialog";
+import MessageText from "@/components/ai/message";
 
 interface ChatProps {
   initialMessages?: Message[];
@@ -49,7 +50,7 @@ export default function Chat({ chatId }: ChatProps) {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
-  }, []);
+  }, [messages]);
 
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (!formRef.current) return;
@@ -60,10 +61,10 @@ export default function Chat({ chatId }: ChatProps) {
   }
 
   useEffect(() => {
-    if (!path.includes("chat") && messages.length === 1) {
+    if (!path.includes("chat") && state.messages.length === 1) {
       window.history.replaceState({}, "", `/chat/${state.chatId}`);
     }
-  }, [state.chatId, messages, path]);
+  }, [state.chatId, state.messages, path]);
   useEffect(() => {
     const messagesLength = state?.messages?.length ?? 0;
     if (messagesLength === 2) {
@@ -74,13 +75,14 @@ export default function Chat({ chatId }: ChatProps) {
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
       <ScrollArea className="flex-grow" ref={scrollAreaRef}>
-        <div className="min-h-full w-full flex flex-col gap-3 max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="min-h-full w-full flex flex-col gap-3 max-w-2xl mx-auto sm:mx-0 md:mx-0 lg:mx-auto p-2">
           <Messages messages={messages} />
         </div>
       </ScrollArea>
-      <div className="flex-shrink-0  pt-6">
-        <div className="mx-auto sm:max-w-2xl px-4">
-          <div className="rounded-t-xl mb-3">
+
+      <div className="sticky bottom-0 left-0 w-full px-3 mb-2">
+        <div className=" mx-auto sm:mx-0 md:mx-0 lg:mx-auto  sm:max-w-2xl px-4">
+          <div className="rounded-t-xl">
             <InputField
               input={input}
               handleSubmit={handleSubmit}

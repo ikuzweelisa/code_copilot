@@ -1,11 +1,12 @@
 "use server";
-import { AuthStatus, Chat, Attachment } from "@/lib/types";
+import { AuthStatus, Chat } from "@/lib/types";
 import { AuthError } from "next-auth";
 import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
 import prisma from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { Attachment } from "@prisma/client";
 import { z } from "zod";
 import fs from "fs/promises";
 
@@ -119,6 +120,9 @@ export async function deleteChat(
   }
 }
 
+export async function authenticate(formData: FormData) {
+  return await signIn("credentials", formData);
+}
 export type FileState = {
   attachment?: Attachment;
   error?: string;
@@ -157,6 +161,8 @@ export async function saveFile(formData: FormData): Promise<FileState> {
         name: file.name,
         path: filePath,
         type: file.type,
+        chatId: newFile.chatId,
+        createdAt: newFile.createdAt,
       },
     };
   } catch (error) {

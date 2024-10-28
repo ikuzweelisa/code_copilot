@@ -1,14 +1,12 @@
 import { Suspense } from "react";
+import NavContent from "./nav-content";
 import Spinner from "../ai/spinner";
-import DesktopNavbar from "./desktop-navbar";
-import MobileNav from "./mobile-nav";
 import NavItems from "./nav-items";
 
-export default function Navbar() {
+export default function DesktopNavbar() {
   return (
-    <>
-      <DesktopNavbar />
-      <MobileNav>
+    <aside className="fixed inset-y-0 left-0 w-80 hidden lg:flex flex-col bg-background border-r">
+      <NavContent>
         <Suspense
           fallback={
             <div className="mt-7 flex justify-center">
@@ -18,7 +16,7 @@ export default function Navbar() {
         >
           <NavItems />
         </Suspense>
-      </MobileNav>
-    </>
+      </NavContent>
+    </aside>
   );
 }

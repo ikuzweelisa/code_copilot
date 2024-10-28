@@ -2,6 +2,8 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { Avatar, AvatarFallback } from "./avatar";
+import { AvatarImage } from "@radix-ui/react-avatar";
 
 export function IconOpenAI({
   className,
@@ -25,13 +27,12 @@ export function IconOpenAI({
 export function IconUser() {
   const session = useSession();
   return (
-    <Image
-      src={session.data?.user?.image ?? "https://i.pravatar.cc"}
-      width={26}
-      height={36}
-      alt="Avatar"
-      className="overflow-hidden rounded-full"
-    />
+    <Avatar>
+      <AvatarImage src={session.data?.user?.image || ""} />
+      <AvatarFallback >
+        {session.data?.user?.name?.substring(0, 2).toLocaleUpperCase()}
+      </AvatarFallback>
+    </Avatar>
   );
 }
 
