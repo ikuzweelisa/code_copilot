@@ -1,13 +1,7 @@
 import React from "react";
 import Navbar from "@/components/navbar";
-import {Metadata} from "next";
+import { Toaster } from "sonner";
 
-export const metadata:Metadata={
-    title:{
-      template:"%s -ChatBot",
-      default:"Untitled Chat"
-    }
-}
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen">
@@ -16,7 +10,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className={"w-72"}>
             <Navbar />
           </div>
-          <div className={"flex flex-col flex-grow "}>{children} </div>
+          <div className="w-full min-h-screen flex flex-col">{children}
+            <Toaster/>
+          </div>
+
         </div>
       </main>
     </div>

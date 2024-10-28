@@ -10,7 +10,7 @@ export default async function NavItems() {
   const sorted = chats?.sort(
     (a, b) =>
       new Date(b.updatedAt as Date).getTime() -
-      new Date(a.updatedAt as Date).getTime(),
+      new Date(a.updatedAt as Date).getTime()
   );
 
   return (
@@ -18,7 +18,7 @@ export default async function NavItems() {
       {sorted && sorted.length > 0 ? (
         sorted.map((chat, index) => <NavItem key={index} chat={chat} />)
       ) : (
-        <span>No recent chats</span>
+        <span className="text-center">No recent chats</span>
       )}
     </>
   );

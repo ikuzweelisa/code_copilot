@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className={"w-72"}>
             <Navbar />
           </div>
-          <div className={"flex flex-col flex-grow "}>{children} </div>
+          <div className="w-full min-h-screen flex flex-col">{children}</div>
         </div>
       </main>
     </div>

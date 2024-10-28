@@ -12,50 +12,59 @@ import {
   TableRow,
 } from "../ui/table";
 import Code from "./code";
+import { cn } from "@/lib/utils";
 
 const components = {
-  table: ({ node, ...props }: any) => (
-    <Table className="w-full border border-border  rounded-md " {...props} />
+  table: ({ node, className, ...props }: any) => (
+    <div className="my-6">
+      <Table
+        className={cn("w-full border border-border rounded-md", className)}
+        {...props}
+      />
+    </div>
   ),
-  thead: ({ node, ...props }: any) => (
-    <TableHeader className="bg-muted" {...props} />
+  thead: ({ node, className, ...props }: any) => (
+    <TableHeader className={cn("bg-muted", className)} {...props} />
   ),
   th: ({ node, ...props }: any) => (
     <TableHead
-      className="px-4 py-2 font-semibold   border bg-muted  text-inherit"
+      className="px-4 py-1 font-semibold border bg-muted text-inherit"
       {...props}
     />
   ),
   tr: ({ node, ...props }: any) => (
-    <TableRow className="px-4 py-2 text-inherit border " {...props} />
+    <TableRow className="px-4 py-2 text-inherit border" {...props} />
   ),
   td: ({ node, ...props }: any) => (
     <TableCell className="px-4 py-2 text-inherit border" {...props} />
   ),
-  ul: ({ children, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
-    <ul className="list-decimal list-outside ml-4" {...props}>
+  ul: ({ children, className, ...props }: any) => (
+    <ul
+      className={cn("list-disc list-outside ml-4 space-y-1 my-2", className)}
+      {...props}
+    >
       {children}
     </ul>
   ),
-  ol: ({ children, ...props }: React.HTMLAttributes<HTMLOListElement>) => (
-    <ol className="list-decimal list-outside ml-4" {...props}>
+  ol: ({ children, className, ...props }: any) => (
+    <ol className="list-decimal list-outside ml-4 space-y-1 my-2" {...props}>
       {children}
     </ol>
   ),
-  li: ({ children, ...props }: React.HTMLAttributes<HTMLLIElement>) => (
-    <li className="ml-4" {...props}>
+  li: ({ children, className, ...props }: any) => (
+    <li className={cn("ml-4 mb-1", className)} {...props}>
       {children}
     </li>
   ),
-  strong: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <strong className="font-bold" {...props}>
+  strong: ({ children, className, ...props }: any) => (
+    <strong className={cn("font-bold", className)} {...props}>
       {children}
     </strong>
   ),
-  a: ({ node, children, ...props }: any) => {
+  a: ({ node, children, className, ...props }: any) => {
     return (
       <Link
-        className="text-blue-500 hover:underline"
+        className={cn("text-blue-500 hover:underline", className)}
         target="_blank"
         rel="noreferrer"
         {...props}
@@ -67,29 +76,59 @@ const components = {
   code: ({ node, inline, className, children, ...props }: any) => {
     const match = /language-(\w+)/.exec(className || "");
     return !inline && match ? (
-      <pre {...props} className={`${className}`}>
-        <Code language={match[1]} codes={String(children).trim()} />
-      </pre>
+      <div className="my-6">
+        <pre {...props} className={`${className}`}>
+          <Code language={match[1]} codes={String(children).trim()} />
+        </pre>
+      </div>
     ) : (
       <code
-        className={`${className} text-sm bg-zinc-100 dark:bg-zinc-800 py-0.5 px-1 rounded-md`}
+        className={cn(
+          "text-sm bg-zinc-100 dark:bg-zinc-800 py-0.5 px-1 rounded-md",
+          className
+        )}
         {...props}
       >
         {children}
       </code>
     );
   },
+  p: ({ children, className, ...props }: any) => (
+    <p className={cn("my-2 leading-7", className)} {...props}>
+      {children}
+    </p>
+  ),
+  h1: ({ children, className, ...props }: any) => (
+    <h1 className={cn("text-3xl font-bold mt-8 mb-2", className)} {...props}>
+      {children}
+    </h1>
+  ),
+  h2: ({ children, className, ...props }: any) => (
+    <h2
+      className={cn("text-2xl font-semibold mt-2 mb-2", className)}
+      {...props}
+    >
+      {children}
+    </h2>
+  ),
+  h3: ({ children, className, ...props }: any) => (
+    <h3 className={cn("text-xl font-semibold mt-4 mb-2", className)} {...props}>
+      {children}
+    </h3>
+  ),
 };
 
 export function Markdown({ children }: { children: string }) {
   return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      components={components}
-      className="prose dark:prose-invert max-w-none"
-    >
-      {children}
-    </ReactMarkdown>
+    <div className="prose dark:prose-invert">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={components}
+        className="prose dark:prose-invert max-w-none space-y-2"
+      >
+        {children}
+      </ReactMarkdown>
+    </div>
   );
 }
 

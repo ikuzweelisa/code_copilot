@@ -7,6 +7,9 @@ import { useActions, useAIState, useUIState } from "ai/rsc";
 import AIProvider from "@/components/providers/ai-provider";
 import { usePathname, useRouter } from "next/navigation";
 import { Message } from "@/lib/types";
+import { Attachment } from "@prisma/client";
+import UploadDialog from "@/components/chat/upload-dialog";
+import MessageText from "@/components/ai/message";
 
 interface ChatProps {
   initialMessages?: Message[];
@@ -23,19 +26,23 @@ export default function Chat({ chatId }: ChatProps) {
   const { submitMessage } = useActions();
   const [input, setInput] = useState("");
   const formRef = useRef<HTMLFormElement | null>(null);
+  const [attachment, setAttachment] = useState<Attachment | undefined>(
+    undefined
+  );
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setInput("");
+    setAttachment(undefined);
     setMessages((currentMessage) => [
       ...currentMessage,
       {
         id: crypto.randomUUID(),
         role: "user",
-        display: input,
+        display: <MessageText text={input} attachment={attachment} />,
       },
     ]);
-    const response = await submitMessage(input);
+    const response = await submitMessage(input, attachment);
     setMessages((prevMessages) => [...prevMessages, response]);
   }
 
@@ -43,7 +50,7 @@ export default function Chat({ chatId }: ChatProps) {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
-  }, []);
+  }, [messages]); // Scroll on message change
 
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (!formRef.current) return;
@@ -57,14 +64,14 @@ export default function Chat({ chatId }: ChatProps) {
     if (!path.includes("chat") && messages.length === 1) {
       window.history.replaceState({}, "", `/chat/${state.chatId}`);
     }
-  }, [chatId, messages, path]);
+  }, [state.chatId, messages, path]);
   useEffect(() => {
     const messagesLength = state?.messages?.length ?? 0;
     if (messagesLength === 2) {
-  
       router.refresh();
     }
   }, [state?.messages, router]);
+
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
       <ScrollArea className="flex-grow" ref={scrollAreaRef}>
@@ -72,16 +79,23 @@ export default function Chat({ chatId }: ChatProps) {
           <Messages messages={messages} />
         </div>
       </ScrollArea>
-      <div className="flex-shrink-0  pt-6">
+
+      <div className="sticky bottom-0 left-0 w-full px-3 mb-2">
         <div className="mx-auto sm:max-w-2xl px-4">
-          <div className="rounded-t-xl mb-3">
+          <div className="rounded-t-xl">
             <InputField
               input={input}
               handleSubmit={handleSubmit}
               handleChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
               formRef={formRef}
-            />
+            >
+              <UploadDialog
+                attachment={attachment}
+                chatId={state.chatId}
+                setAttachment={setAttachment}
+              />
+            </InputField>
           </div>
         </div>
       </div>
