@@ -10,6 +10,8 @@ import { Message } from "@/lib/types";
 import { Attachment } from "@prisma/client";
 import UploadDialog from "@/components/chat/upload-dialog";
 import MessageText from "@/components/ai/message";
+import useScroll from "@/lib/hooks/use-scroll";
+import { ScrollToBottom } from "./scroll-to-bottom";
 
 interface ChatProps {
   initialMessages?: Message[];
@@ -21,8 +23,8 @@ export default function Chat({ chatId }: ChatProps) {
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, _] = useAIState<typeof AIProvider>();
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useUIState<typeof AIProvider>();
+
   const { submitMessage } = useActions();
   const [input, setInput] = useState("");
   const formRef = useRef<HTMLFormElement | null>(null);
@@ -45,13 +47,6 @@ export default function Chat({ chatId }: ChatProps) {
     const response = await submitMessage(input, attachment);
     setMessages((prevMessages) => [...prevMessages, response]);
   }
-
-  useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
-    }
-  }, [messages]);
-
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (!formRef.current) return;
     if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
@@ -71,15 +66,30 @@ export default function Chat({ chatId }: ChatProps) {
       router.refresh();
     }
   }, [state?.messages, router]);
-
+  const {
+    isAtBottom,
+    isVisible,
+    scrollToBottom,
+    messagesRef,
+    scrollRef,
+    visibilityRef,
+  } = useScroll();
   return (
-    <div className="flex flex-col h-screen w-full overflow-hidden pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
-      <ScrollArea className="flex-grow" ref={scrollAreaRef}>
-        <div className="min-h-full w-full flex flex-col gap-3 max-w-2xl mx-auto sm:mx-0 md:mx-0 lg:mx-auto p-2">
+    <div ref={visibilityRef} className="flex flex-col h-screen w-full overflow-hidden pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
+      <ScrollArea className="flex-grow" ref={scrollRef}>
+        <div
+          ref={messagesRef}
+          className="min-h-full w-full flex flex-col gap-3 max-w-2xl mx-auto sm:mx-0 md:mx-0 lg:mx-auto p-2"
+        >
           <Messages messages={messages} />
         </div>
       </ScrollArea>
-
+      <div  className="mx-auto flex justify-center items-center p-4">
+        <ScrollToBottom
+          isAtBottom={isAtBottom}
+          scrollToBottom={scrollToBottom}
+        />
+      </div>
       <div className="sticky bottom-0 left-0 w-full px-3 mb-2">
         <div className=" mx-auto sm:mx-0 md:mx-0 lg:mx-auto  sm:max-w-2xl px-4">
           <div className="rounded-t-xl">
