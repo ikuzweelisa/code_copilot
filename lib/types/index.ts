@@ -34,3 +34,4 @@ export type AuthStatus = {
   status: Status;
   message: string;
 };
+

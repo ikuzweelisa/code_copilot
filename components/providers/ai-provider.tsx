@@ -5,7 +5,6 @@ import { saveChatData } from "../../lib/actions/server";
 import { UserMessage } from "@/components/ai/user-message";
 import { BotMessage } from "@/components/ai/bot-message";
 import { auth } from "@/app/auth";
-import { Markdown } from "../ai/markdown";
 
 export type AIState = {
   chatId: string;
@@ -61,10 +60,7 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
         msg.role === "user" ? (
           <UserMessage>{msg.content as string}</UserMessage>
         ) : msg.role === "assistant" && typeof msg.content === "string" ? (
-          <BotMessage>
-            {" "}
-            <Markdown>{msg.content}</Markdown>
-          </BotMessage>
+          <BotMessage>{msg.content}</BotMessage>
         ) : null,
     })) as ClientMessage[];
 }

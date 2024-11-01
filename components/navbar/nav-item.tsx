@@ -27,7 +27,7 @@ export default function NavItem({ chat }: NavItemProps) {
   const [state, dispatch] = useFormState(deleteChat, undefined);
   const pathName = usePathname();
   if (state?.status === "success") {
-    if (pathName === chat.path) {
+    if (pathName.endsWith(chat.path)) {
       redirect("/");
     }
   }

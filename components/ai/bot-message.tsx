@@ -2,8 +2,16 @@
 import { IconOpenAI } from "@/components/ui/icons";
 import ButtonRow from "@/components/ai/button-row";
 import { cn } from "@/lib/utils";
+import { StreamableValue } from "ai/rsc";
+import useStreamText from "@/lib/hooks/use-stream";
+import { Markdown } from "./markdown";
 
-export function BotMessage({ children }: { children: React.ReactNode }) {
+export function BotMessage({
+  children,
+}: {
+  children: string | StreamableValue<string>;
+}) {
+  const stream = useStreamText(children);
   return (
     <div className="group relative flex items-start md:-ml-12">
       <div
@@ -14,7 +22,7 @@ export function BotMessage({ children }: { children: React.ReactNode }) {
         <IconOpenAI />
       </div>
       <div className="ml-4 flex-1 flex-col text-xs md:text-sm lg:text-base">
-        {children}
+        <Markdown>{stream}</Markdown>
         <ButtonRow />
       </div>
     </div>

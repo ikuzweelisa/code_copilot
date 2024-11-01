@@ -73,15 +73,21 @@ export default function Chat({ chatId }: ChatProps) {
   }, [state?.messages, router]);
 
   return (
-    <div className="flex flex-col h-screen w-full overflow-hidden pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
-      <ScrollArea className="flex-grow" ref={scrollAreaRef}>
-        <div className="min-h-full w-full flex flex-col gap-3 max-w-2xl mx-auto sm:mx-0 md:mx-0 lg:mx-auto p-2">
+    <div className="flex flex-col h-screen w-full overflow-hidden ">
+      {messages && messages.length > 0 ? (
+        <ScrollArea className="flex-grow" ref={scrollAreaRef}>
+          <div className="min-h-full w-full flex flex-col gap-3 max-w-2xl mx-auto sm:mx-0 md:mx-0 lg:mx-auto p-2">
+            <Messages messages={messages} />
+          </div>
+        </ScrollArea>
+      ) : (
+        <div className="w-full flex flex-col justify-center items-center gap-3 max-w-2xl mx-auto h-full p-2">
           <Messages messages={messages} />
         </div>
-      </ScrollArea>
+      )}
 
       <div className="sticky bottom-0 left-0 w-full px-3 mb-2">
-        <div className=" mx-auto sm:mx-0 md:mx-0 lg:mx-auto  sm:max-w-2xl px-4">
+        <div className="mx-auto sm:mx-0 md:mx-0 lg:mx-auto  sm:max-w-2xl px-4">
           <div className="rounded-t-xl">
             <InputField
               input={input}
