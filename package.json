@@ -27,7 +27,7 @@
     "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@types/react-syntax-highlighter": "^15.5.13",
-    "ai": "^3.4.7",
+    "ai": "^3.4.31",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.441.0",
