@@ -5,6 +5,7 @@ import { saveChatData } from "../../lib/actions/server";
 import { UserMessage } from "@/components/ai/user-message";
 import { BotMessage } from "@/components/ai/bot-message";
 import { auth } from "@/app/auth";
+import { getChatTitle } from "@/lib/actions/chat/helpers";
 
 export type AIState = {
   chatId: string;
@@ -26,9 +27,13 @@ const AIProvider = createAI<AIState, UIState>({
     "use server";
     const session = await auth();
     if (done) {
-      const firstMessage = state.messages[0]?.content as string;
-      const title = firstMessage?.substring(0, 100) || "New Chat";
+      const first = state.messages.length === 2;
+      const title = first
+        ? await getChatTitle(state.messages)
+        : "Untitled chat";
+
       const path = `/chat/${state.chatId}`;
+
       const chat: Chat = {
         id: state.chatId,
         messages: state.messages,

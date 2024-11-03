@@ -7,16 +7,11 @@ export default async function NavItems() {
   const session = await auth();
   if (!session?.user?.id) notFound();
   const chats = await getChats(session.user.id);
-  const sorted = chats?.sort(
-    (a, b) =>
-      new Date(b.updatedAt as Date).getTime() -
-      new Date(a.updatedAt as Date).getTime()
-  );
 
   return (
     <>
-      {sorted && sorted.length > 0 ? (
-        sorted.map((chat, index) => <NavItem key={index} chat={chat} />)
+      {chats && chats.length > 0 ? (
+        chats.map((chat, index) => <NavItem key={index} chat={chat} />)
       ) : (
         <span className="text-center">No recent chats</span>
       )}

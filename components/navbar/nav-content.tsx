@@ -25,7 +25,7 @@ export default function NavContent({
         <LogoIcon className="size-5" />
         <span className="font-semibold text-lg">Dev chatbot</span>
       </div>
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden ">
         <ScrollArea className="h-full w-full">
           <nav className="p-1 flex flex-col gap-3">
             <Tooltip>
@@ -55,9 +55,9 @@ export default function NavContent({
           </nav>
         </ScrollArea>
       </div>
-      <div className="p-2 border-t mt-auto">
+      <nav className="p-2 border-t mt-auto">
         <UserButton />
-      </div>
+      </nav>
     </>
   );
 }

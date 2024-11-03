@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import Textarea from "react-textarea-autosize";
 import { Send } from "lucide-react";
 import React, { ChangeEvent, FormEvent, RefObject, useEffect, useRef } from "react";
-import { saveFile } from "@/lib/actions/server";
+
 
 interface InputFieldProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
@@ -39,7 +39,7 @@ export default function InputField({
             tabIndex={0}
             onKeyDown={onKeyDown}
             placeholder="Enter a message."
-            className="min-h-[60px] w-full resize-none bg-transparent px-5 py-4 focus-within:outline-none sm:text-sm"
+            className="min-h-[60px]   w-full resize-none bg-transparent px-5 py-4 focus-within:outline-none sm:text-sm"
             autoFocus
             spellCheck={false}
             ref={inputRef}

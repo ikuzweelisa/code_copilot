@@ -2,12 +2,12 @@ const exampleMessages = [
   {
     heading: "What is Typescript",
     subheading: "How to install typecript",
-    message: `How to install Typecript`,
+    message: `How to setup typescript project`,
   },
   {
     heading: "What In a ORM ",
-    subheading: "Why use an ORM instead of raw sql",
-    message: "Why use an ORM instead of raw sql?",
+    subheading: "Benefits of using ORM",
+    message: "Benefits of using an ORM?",
   },
   {
     heading: "What is Next js",
@@ -15,7 +15,7 @@ const exampleMessages = [
     message: `How to create a nextjs project`,
   },
   {
-    heading: "What Is rest API",
+    heading: "What Is Rest API",
     subheading: `How does REST apis work`,
     message: `How does REST apis work`,
   },

@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ThemeProvider from "@/components/providers/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "New-Chat-Dev-ChatBot",
@@ -31,7 +32,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} font-sans antialiased`}>
+      <body
+        className={cn(
+          "font-sans antialiased",
+          GeistSans.variable,
+          GeistMono.variable
+        )}
+      >
         <SessionProvider>
           <TooltipProvider>
             <ThemeProvider

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { MessageSquareText, Trash2 } from "lucide-react";
+import { Ban, MessageSquareText, Trash2 } from "lucide-react";
 import AlertMessage from "@/components/auth/alert";
 import {
   Dialog,
@@ -18,6 +18,7 @@ import { useFormState, useFormStatus } from "react-dom";
 import { deleteChat } from "@/lib/actions/server";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { redirect, usePathname } from "next/navigation";
+import { DialogDescription } from "@radix-ui/react-dialog";
 interface NavItemProps {
   chat: Chat;
 }
@@ -27,10 +28,11 @@ export default function NavItem({ chat }: NavItemProps) {
   const [state, dispatch] = useFormState(deleteChat, undefined);
   const pathName = usePathname();
   if (state?.status === "success") {
-    if (pathName.endsWith(chat.path)) {
+    if (pathName===chat.path) {
       redirect("/");
     }
   }
+
   return (
     <div
       className="w-full flex gap-2 justify-start mb-2"
@@ -45,7 +47,7 @@ export default function NavItem({ chat }: NavItemProps) {
           } hover:text-inherit`}
         >
           <span className={"capitalize flex items-center gap-4"}>
-          <MessageSquareText />
+            <MessageSquareText />
             {chat.title}
           </span>
         </Link>
@@ -58,8 +60,11 @@ export default function NavItem({ chat }: NavItemProps) {
             </Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader className="flex flex-col justify-between">
-              <DialogTitle>Confirmation</DialogTitle>
+            <DialogHeader className="flex flex-col justify-center ">
+              <DialogTitle className=" text-center">Confirmation</DialogTitle>
+              <DialogDescription className=" text-muted-foreground">
+                Please confirm that you want to delete {chat.title}
+              </DialogDescription>
             </DialogHeader>
             <div className="flex items-center space-x-2">
               <div className="grid flex-1 gap-2">
@@ -72,7 +77,10 @@ export default function NavItem({ chat }: NavItemProps) {
             <DialogFooter>
               <div className={"flex gap-2 justify-center"}>
                 <DialogClose asChild>
-                  <Button variant={"default"}>No</Button>
+                  <Button variant={"default"}>
+                    <Ban className="h-4 w-4" />
+                    No
+                  </Button>
                 </DialogClose>
                 <form action={dispatch}>
                   <input type={"hidden"} name={"id"} value={chat.id} />
@@ -92,8 +100,15 @@ function Submit() {
   const { pending } = useFormStatus();
   return (
     <Button disabled={pending} type={"submit"} variant={"destructive"}>
-      {pending && <ReloadIcon />}
-      {pending ? "deleting.." : "remove"}{" "}
+      {pending && <ReloadIcon className="animate-spin " />}
+      {pending ? (
+        "deleting.."
+      ) : (
+        <span className=" flex items-center gap-2">
+          <Trash2 className="h-4 w-4" />
+          Delete
+        </span>
+      )}
     </Button>
   );
 }
