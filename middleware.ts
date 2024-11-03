@@ -1,10 +1,9 @@
 import { auth } from "@/app/auth";
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 
-export default async function middleware(request: NextRequest) {
+export default auth((request) => {
   const { nextUrl } = request;
-  const session = await auth();
-  const isLoggedIn = !!session?.user;
+  const isLoggedIn = !!request.auth?.user;
   const isAuthRoute = nextUrl.pathname.startsWith("/auth");
   if (isAuthRoute) {
     if (isLoggedIn) {
@@ -17,7 +16,7 @@ export default async function middleware(request: NextRequest) {
     }
     return NextResponse.next();
   }
-}
+});
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
 };

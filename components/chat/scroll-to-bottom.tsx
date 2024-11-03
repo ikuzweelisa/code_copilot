@@ -8,14 +8,14 @@ interface Props {
   isAtBottom: boolean;
   scrollToBottom: () => void;
 }
-export function ScrollToBottom({ isAtBottom, scrollToBottom }: Props) {
+export function ScrollAnchor({ isAtBottom, scrollToBottom }: Props) {
   return (
     <Button
       variant={"outline"}
       size={"icon"}
-      disabled={!isAtBottom}
       className={cn(
-        "z-10 bg-background transition-opacity duration-300 sm:right-8 md:top-2 rounded-full "
+        "z-10 bg-background transition-opacity duration-300 sm:right-8 md:top-2 rounded-full ",
+        isAtBottom ? "opacity-0" : "opacity-100"
       )}
       onClick={scrollToBottom}
     >
@@ -24,3 +24,4 @@ export function ScrollToBottom({ isAtBottom, scrollToBottom }: Props) {
     </Button>
   );
 }
+

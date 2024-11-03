@@ -15,13 +15,11 @@ export async function saveChatData(chat: Chat) {
     await prisma.chat.upsert({
       where: { id: chat.id },
       update: {
-        title: chat.title,
         messages: chat.messages as Prisma.InputJsonValue[],
-        path: chat.path,
       },
       create: {
         id: chat.id,
-        title: chat.title,
+        title: chat.title as string,
         messages: chat.messages as Prisma.InputJsonValue[],
         path: chat.path,
         user: {
@@ -32,7 +30,7 @@ export async function saveChatData(chat: Chat) {
       },
     });
   } catch (error) {
-    console.error("Error saving chat data:", error);
+    return;
   }
 }
 
@@ -57,7 +55,11 @@ export async function getChats(userId: string) {
         id: userId,
       },
       include: {
-        chats: true,
+        chats: {
+          orderBy: {
+            updatedAt: "desc",
+          },
+        },
       },
     });
 
@@ -115,7 +117,7 @@ export async function deleteChat(
     console.log(e);
     return {
       status: "error",
-      message: "chat not delete",
+      message: "Error deleting chat",
     };
   }
 }

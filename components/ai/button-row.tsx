@@ -8,8 +8,8 @@ import {
 
 const buttons = [
   { icon: AudioLines, tooltip: "read" },
-  { icon: Copy, tooltip: "Copy to clipboard" },
-  { icon: Repeat, tooltip: "Repeat action" },
+  { icon: Copy, tooltip: "Copy" },
+  { icon: Repeat, tooltip: "Regenerate" },
   { icon: ThumbsUp, tooltip: "Like" },
   { icon: ThumbsDown, tooltip: "Dislike" },
 ];

@@ -14,7 +14,7 @@ export async function generateMetadata({
   const chat = (await getChat(id)) as unknown as TChat;
   if (!chat) notFound();
   return {
-    title: capitalize(chat.title),
+    title: capitalize(chat?.title||"Untitled"),
     description: chat?.title
   };
 }

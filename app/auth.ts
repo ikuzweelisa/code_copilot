@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
+import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/db";
 
@@ -17,13 +18,23 @@ export const { signIn, signOut, handlers, auth } = NextAuth({
       clientId: process.env.AUTH_GITHUB_ID,
       allowDangerousEmailAccountLinking: true,
     }),
+    Credentials({
+      authorize: async (credentials) => {
+        return {
+          email: "shemaelisaa@gmail.com",
+          id: "66f474ee92e9df997684d051",
+          name: "Ikuzwe shema",
+          image:
+            "https://lh3.googleusercontent.com/a/ACg8ocIGJ7klpyZmmuyQuLsjwCw0j4aHmlrOI_AJAm1x_ujVrjNpukw=s96-c",
+        };
+      },
+    }),
   ],
 
   session: {
     strategy: "jwt",
   },
   pages: {
-    signIn: "/auth/login",
     error: "/auth/error",
   },
   callbacks: {

@@ -36,3 +36,4 @@ yarn-error.log*
 .gitpod.yml
 next-env.d.ts
 assets/
+.idea

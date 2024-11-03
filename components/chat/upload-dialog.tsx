@@ -73,12 +73,12 @@ import {
         <Popover>
           <PopoverTrigger asChild>
             <Button
-              variant="outline"
+              variant="ghost"
               size="icon"
               type="button"
               className="absolute left-0 top-[14px] size-8 bg-background p-0 sm:left-4"
             >
-              <Paperclip size={20} />
+              <Paperclip size={17} />
               {attachment && (
                 <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
                   {1}

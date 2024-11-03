@@ -11,7 +11,8 @@ import { Attachment } from "@prisma/client";
 import UploadDialog from "@/components/chat/upload-dialog";
 import MessageText from "@/components/ai/message";
 import useScroll from "@/lib/hooks/use-scroll";
-import { ScrollToBottom } from "./scroll-to-bottom";
+import  {ScrollAnchor}  from "./scroll-to-bottom";
+import EmptyScreen from "./empty-messages";
 
 interface ChatProps {
   initialMessages?: Message[];
@@ -47,6 +48,7 @@ export default function Chat({ chatId }: ChatProps) {
     const response = await submitMessage(input, attachment);
     setMessages((prevMessages) => [...prevMessages, response]);
   }
+ 
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (!formRef.current) return;
     if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
@@ -54,7 +56,7 @@ export default function Chat({ chatId }: ChatProps) {
       e.preventDefault();
     }
   }
-
+  
   useEffect(() => {
     if (!path.includes("chat") && state.messages.length === 1) {
       window.history.replaceState({}, "", `/chat/${state.chatId}`);
@@ -68,47 +70,65 @@ export default function Chat({ chatId }: ChatProps) {
   }, [state?.messages, router]);
   const {
     isAtBottom,
-    isVisible,
     scrollToBottom,
     messagesRef,
-    scrollRef,
     visibilityRef,
+    handleScroll,
   } = useScroll();
   return (
-    <div ref={visibilityRef} className="flex flex-col h-screen w-full overflow-hidden pl-0 peer-[[data-state=open]]:lg:pl-[250px] peer-[[data-state=open]]:xl:pl-[300px]">
-      <ScrollArea className="flex-grow" ref={scrollRef}>
-        <div
-          ref={messagesRef}
-          className="min-h-full w-full flex flex-col gap-3 max-w-2xl mx-auto sm:mx-0 md:mx-0 lg:mx-auto p-2"
+    <div className="flex flex-col h-screen w-full overflow-auto">
+      {messages.length === 0 ? (
+        <EmptyScreen
+          formRef={formRef}
+          handleSubmit={handleSubmit}
+          input={input}
+          onKeyDown={onKeyDown}
+          setInput={setInput}
         >
-          <Messages messages={messages} />
-        </div>
-      </ScrollArea>
-      <div  className="mx-auto flex justify-center items-center p-4">
-        <ScrollToBottom
-          isAtBottom={isAtBottom}
-          scrollToBottom={scrollToBottom}
-        />
-      </div>
-      <div className="sticky bottom-0 left-0 w-full px-3 mb-2">
-        <div className=" mx-auto sm:mx-0 md:mx-0 lg:mx-auto  sm:max-w-2xl px-4">
-          <div className="rounded-t-xl">
-            <InputField
-              input={input}
-              handleSubmit={handleSubmit}
-              handleChange={(e) => setInput(e.target.value)}
-              onKeyDown={onKeyDown}
-              formRef={formRef}
+          <UploadDialog
+            attachment={attachment}
+            chatId={state.chatId}
+            setAttachment={setAttachment}
+          />
+        </EmptyScreen>
+      ) : (
+        <>
+          <ScrollArea onScrollCapture={handleScroll} className="h-full w-full">
+            <div
+              ref={visibilityRef}
+              className="min-h-full w-full flex flex-col gap-3 sm:max-w-full lg:max-w-2xl mx-auto sm:mx-0 md:mx-0 lg:mx-auto"
             >
-              <UploadDialog
-                attachment={attachment}
-                chatId={state.chatId}
-                setAttachment={setAttachment}
-              />
-            </InputField>
+              <Messages messageRef={messagesRef} messages={messages} />
+            </div>
+          </ScrollArea>
+          <div className="mx-auto flex justify-center items-center p-4">
+            <ScrollAnchor
+              isAtBottom={isAtBottom}
+              scrollToBottom={scrollToBottom}
+            />
           </div>
-        </div>
-      </div>
+
+          <div className="sticky bottom-0  left-0 w-full px-3 mb-3">
+            <div className="mx-auto sm:mx-0 md:mx-0 lg:mx-auto  sm:max-w-2xl px-4">
+              <div className="rounded-t-xl">
+                <InputField
+                  input={input}
+                  handleSubmit={handleSubmit}
+                  handleChange={(e) => setInput(e.target.value)}
+                  onKeyDown={onKeyDown}
+                  formRef={formRef}
+                >
+                  <UploadDialog
+                    attachment={attachment}
+                    chatId={state.chatId}
+                    setAttachment={setAttachment}
+                  />
+                </InputField>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
