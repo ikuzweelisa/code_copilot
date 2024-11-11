@@ -12,8 +12,7 @@ export const metadata: Metadata = {
   title: "Code Copilot",
   description: "A Programming AI Powered Assistant",
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "/favicon.ico"
   },
   metadataBase: new URL("https://devchat-bot.vercel.app/"),
   keywords: [

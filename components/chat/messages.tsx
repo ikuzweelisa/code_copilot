@@ -10,7 +10,7 @@ interface MessageProps {
 export default function Messages({ messages, messageRef }: MessageProps) {
   return (
     <div
-      ref={messageRef}
+      ref={messageRef as React.RefObject<HTMLDivElement>}
       className={
         "w-full max-w-full flex flex-col gap-4 p-1 sm:p-5 md:p-4 lg:p-1"
       }

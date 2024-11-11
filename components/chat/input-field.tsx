@@ -36,7 +36,7 @@ export default function InputField({
     inputRef.current.focus();
   }, []);
   return (
-    <form onSubmit={handleSubmit} ref={formRef}>
+    <form onSubmit={handleSubmit} ref={formRef as RefObject<HTMLFormElement>}>
       <div className="relative flex items-center  dark:bg-zinc-950/80  rounded-2xl border shadow-md p-0">
         {children}
         <Textarea
