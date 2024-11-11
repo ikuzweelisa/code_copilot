@@ -1,38 +1,7 @@
-"use server";
-import { AuthStatus, Chat } from "@/lib/types";
-import { AuthError } from "next-auth";
-import { BuiltInProviderType } from "@auth/core/providers";
-import { signIn } from "@/app/auth";
-import prisma from "@/lib/db";
-import { Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
-import { Attachment } from "@prisma/client";
-import { z } from "zod";
-import fs from "fs/promises";
+import "server-only";
 
-export async function saveChatData(chat: Chat) {
-  try {
-    await prisma.chat.upsert({
-      where: { id: chat.id },
-      update: {
-        messages: chat.messages as Prisma.InputJsonValue[],
-      },
-      create: {
-        id: chat.id,
-        title: chat.title as string,
-        messages: chat.messages as Prisma.InputJsonValue[],
-        path: chat.path,
-        user: {
-          connect: {
-            id: chat.userId,
-          },
-        },
-      },
-    });
-  } catch (error) {
-    return;
-  }
-}
+import prisma from "@/lib/db";
+import { Chat } from "@/lib/types";
 
 export async function getChat(cid: string) {
   try {
@@ -44,11 +13,11 @@ export async function getChat(cid: string) {
     if (!chat) return null;
     return chat;
   } catch (e) {
-    console.log(e);
+    return null;
   }
 }
 
-export async function getChats(userId: string) {
+export async function getChats(userId: string | undefined) {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -59,6 +28,7 @@ export async function getChats(userId: string) {
           orderBy: {
             updatedAt: "desc",
           },
+          take: 10,
         },
       },
     });
@@ -66,120 +36,13 @@ export async function getChats(userId: string) {
     if (!user) return;
     return user.chats as Chat[];
   } catch (e) {
-    console.log(e);
+    return [] ;
   }
 }
-
-export default async function signInWithProvider(
-  prevState: AuthStatus | undefined,
-  formData: FormData
-): Promise<AuthStatus> {
-  try {
-    const provider = formData.get("provider") as BuiltInProviderType;
-    await signIn(provider);
-    return {
-      status: "success",
-      message: "login successfully",
-    };
-  } catch (e) {
-    if (e instanceof AuthError) {
-      switch (e.type) {
-        case "OAuthCallbackError":
-          return {
-            status: "error",
-            message: e.message,
-          };
-        default:
-          return {
-            status: "error",
-            message: "something went wrong",
-          };
-      }
-    }
-    throw e;
-  }
-}
-export async function deleteChat(
-  prevState: AuthStatus | undefined,
-  formData: FormData
-): Promise<AuthStatus> {
-  const id = formData.get("id");
-  try {
-    await prisma.chat.delete({
-      where: { id: id as string },
-    });
-    revalidatePath("/");
-    return {
-      status: "success",
-      message: "chat deleted",
-    };
-  } catch (e) {
-    console.log(e);
-    return {
-      status: "error",
-      message: "Error deleting chat",
-    };
-  }
-}
-
-export async function authenticate(formData: FormData) {
-  return await signIn("credentials", formData);
-}
-export type FileState = {
-  attachment?: Attachment;
-  error?: string;
-};
-const fileSchema = z
-  .instanceof(File, { message: "File is Required" })
-  .refine((file) => file.type.startsWith("application/pdf"), {
-    message: "Only PDF files supported.",
-  });
-
-export async function saveFile(formData: FormData): Promise<FileState> {
-  try {
-    const fileValidate = fileSchema.safeParse(formData.get("file"));
-    if (!fileValidate.success) {
-      return {
-        error:
-          fileValidate.error.errors[0]?.message || "File Format not supported",
-      };
-    }
-    const chatId = formData.get("chatId") as string;
-    const file = fileValidate.data;
-    await fs.mkdir("assets", { recursive: true });
-    const filePath = `assets/chat-data/${crypto.randomUUID()}-${file.name}`;
-    await fs.writeFile(filePath, Buffer.from(await file.arrayBuffer()));
-    const newFile = await prisma.attachment.create({
-      data: {
-        name: file.name,
-        path: filePath,
-        type: file.type,
-        chatId: chatId,
-      },
-    });
-    return {
-      attachment: {
-        id: newFile.id,
-        name: file.name,
-        path: filePath,
-        type: file.type,
-        chatId: newFile.chatId,
-        createdAt: newFile.createdAt,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      error: "Error uploading file",
-    };
-  }
-}
-
 export async function getAttachmentById(fileId: string) {
-  const attachment = await prisma.attachment.findUnique({
+  return prisma.attachment.findUnique({
     where: {
       id: fileId,
     },
   });
-  return attachment;
 }

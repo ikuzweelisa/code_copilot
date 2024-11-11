@@ -1,23 +1,33 @@
 const exampleMessages = [
   {
-    heading: "What is Typescript",
-    subheading: "How to install typecript",
-    message: `How to setup typescript project`,
+    heading: "What is TypeScript?",
+    subheading: "Steps to Install TypeScript",
+    message: "How do I set up a TypeScript project?",
   },
   {
-    heading: "What In a ORM ",
-    subheading: "Benefits of using ORM",
-    message: "Benefits of using an ORM?",
+    heading: "What is an ORM?",
+    subheading: "Advantages of Using an ORM",
+    message: "What are the main benefits of using an ORM?",
   },
   {
-    heading: "What is Next js",
-    subheading: "How to create a nextjs project",
-    message: `How to create a nextjs project`,
+    heading: "What is Next.js?",
+    subheading: "Guide to Creating a Next.js Project",
+    message: "How do I create a Next.js project?",
   },
   {
-    heading: "What Is Rest API",
-    subheading: `How does REST apis work`,
-    message: `How does REST apis work`,
+    heading: "What is a REST API?",
+    subheading: "Understanding How REST APIs Work",
+    message: "How does a REST API work?",
+  },
+  {
+    heading: "What is TRPC?",
+    subheading: "How to Get Started with TRPC",
+    message: "How do I set up and use TRPC?",
+  },
+  {
+    heading: "What is CI/CD?",
+    subheading: "Understanding Continuous Integration and Deployment",
+    message: "How does CI/CD work, and why is it important?",
   },
 ];
 

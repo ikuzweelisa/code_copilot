@@ -2,6 +2,7 @@ import NavItem from "@/components/navbar/nav-item";
 import { getChats } from "@/lib/actions/server";
 import { auth } from "@/app/auth";
 import { notFound } from "next/navigation";
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 
 export default async function NavItems() {
   const session = await auth();
@@ -9,12 +10,14 @@ export default async function NavItems() {
   const chats = await getChats(session.user.id);
 
   return (
-    <>
-      {chats && chats.length > 0 ? (
-        chats.map((chat, index) => <NavItem key={index} chat={chat} />)
+    <SidebarMenu className=" w-full">
+      {chats && chats?.length > 0 ? (
+        chats?.map((chat) => <NavItem key={chat.id} chat={chat} />)
       ) : (
-        <span className="text-center">No recent chats</span>
+        <SidebarMenuItem className="mt-2">
+          <SidebarMenuButton>No recent chats</SidebarMenuButton>
+        </SidebarMenuItem>
       )}
-    </>
+    </SidebarMenu>
   );
 }

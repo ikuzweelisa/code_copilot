@@ -24,4 +24,3 @@ export function ScrollAnchor({ isAtBottom, scrollToBottom }: Props) {
     </Button>
   );
 }
-

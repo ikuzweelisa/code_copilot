@@ -3,7 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { LogoIcon } from "@/components/ui/icons";
+import { IconOpenAI, LogoIcon } from "@/components/ui/icons";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "ChatBot-Error",
@@ -19,7 +19,7 @@ export default async function Page({
     <Card className="mx-auto w-[45vw]  mt-24">
       <CardHeader>
         <CardTitle className="text-2xl flex justify-center">
-          <LogoIcon className={"size-20"} />
+          <IconOpenAI />
         </CardTitle>
       </CardHeader>
       <CardContent>

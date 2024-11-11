@@ -95,7 +95,7 @@ const components = {
   p: ({ children, className, ...props }: any) => (
     <p
       className={cn(
-        "my-2 leading-7 text-xs md:text-sm lg:text-base",
+        "my-2 leading-7 text-sm md:text-sm lg:text-base",
         className
       )}
       {...props}

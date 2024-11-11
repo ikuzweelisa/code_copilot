@@ -13,15 +13,15 @@ export function BotMessage({
 }) {
   const stream = useStreamText(children);
   return (
-    <div className="group relative flex items-start md:-ml-12">
+    <div className="group relative flex items-start  md:-ml-12">
       <div
         className={cn(
-          "flex size-[24px] shrink-0 select-none items-center justify-center rounded-md border bg-primary text-primary-foreground shadow-sm"
+          "flex size-[24px] shrink-0 select-none items-center justify-center rounded-md  bg-primary text-primary-foreground "
         )}
       >
-        <IconOpenAI />
+        <IconOpenAI size={18} />
       </div>
-      <div className="ml-4 flex-1 flex-col text-xs md:text-sm lg:text-base">
+      <div className="ml-1 flex-1 flex-col text-sm md:text-sm lg:text-base">
         <Markdown>{stream}</Markdown>
         <ButtonRow />
       </div>

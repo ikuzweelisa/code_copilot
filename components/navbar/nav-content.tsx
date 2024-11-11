@@ -1,63 +1,68 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
+"use client";
+import React from "react";
+import { IconOpenAI, LogoIcon } from "../ui/icons";
+import { ScrollArea } from "../ui/scroll-area";
 import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip";
-import { MessageSquarePlus } from "lucide-react";
-import { Suspense } from "react";
-import Spinner from "../ai/spinner";
-import { Button } from "../ui/button";
-import { LogoIcon } from "../ui/icons";
-import NavItems from "./nav-items";
-import { History } from "lucide-react";
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupLabel,
+  SidebarHeader,
+  useSidebar,
+} from "../ui/sidebar";
 import UserButton from "./user";
+import { History, MessageSquarePlus } from "lucide-react";
 import Link from "next/link";
+import NavLinks from "./nav-links";
+import { Session } from "next-auth";
 
-export default function NavContent({
-  children,
-}: {
+interface Props {
   children: React.ReactNode;
-}) {
+  sessionPromise: Promise<Session | null>;
+}
+
+export default function NavContent({ children, sessionPromise }: Props) {
+  const { state } = useSidebar();
+  const collapsed = state === "collapsed";
   return (
-    <>
-      <div className="flex items-center mb-6 gap-2 p-4 border-b">
-        <LogoIcon className="size-5" />
-        <span className="font-semibold text-lg">Dev chatbot</span>
-      </div>
-      <div className="flex-1 overflow-hidden ">
-        <ScrollArea className="h-full w-full">
-          <nav className="p-1 flex flex-col gap-3">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  asChild
-                  variant="ghost"
-                  className="w-full justify-start mb-2"
-                >
-                  <Link
-                    href="/"
-                    className="flex items-center text-zinc-400 gap-2"
-                  >
-                    <MessageSquarePlus />
-                    New Chat
-                  </Link>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <span>New chat</span>
-              </TooltipContent>
-            </Tooltip>
-            <h2 className="text-sm font-semibold text-muted-foreground mb-2 flex justify-center gap-1">
-              <History /> Recent Chats
-            </h2>
+    <Sidebar
+      data-collapsed={collapsed}
+      variant="sidebar"
+      collapsible={"icon"}
+      className="group px-0  dark:bg-zinc-950 "
+    >
+      
+      <SidebarHeader className="p-2 space-y-2 border-b">
+        <Link href={"/"} className="flex items-center gap-1">
+          <IconOpenAI size={28} />
+          <span className="font-semibold text-xl group-data-[collapsible=icon]:hidden">
+            Dev chatbot
+          </span>
+        </Link>
+      </SidebarHeader>
+      <SidebarContent className="mt-4">
+        <ScrollArea className="flex-grow">
+          <NavLinks />
+          <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+            <SidebarGroupLabel className="flex text-sm text-muted-foreground  items-center py-1">
+              <History className="h-4 w-4" />
+              Recent Chats
+            </SidebarGroupLabel>
+            <SidebarGroupAction title="New chat" asChild>
+             <Link href={"/"}>
+             <MessageSquarePlus className="h-4 w-4" />
+             <span className="sr-only text- ">New chat</span>
+             </Link>
+            </SidebarGroupAction>
             {children}
-          </nav>
+          </SidebarGroup>
         </ScrollArea>
-      </div>
-      <nav className="p-2 border-t mt-auto">
-        <UserButton />
-      </nav>
-    </>
+      </SidebarContent>
+      <SidebarFooter className="border-t">
+        <UserButton sessionPromise={sessionPromise} />
+      </SidebarFooter>
+    </Sidebar>
   );
 }

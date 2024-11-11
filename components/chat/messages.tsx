@@ -7,7 +7,6 @@ interface MessageProps {
   messageRef: React.RefObject<HTMLDivElement>;
 }
 
-
 export default function Messages({ messages, messageRef }: MessageProps) {
   return (
     <div

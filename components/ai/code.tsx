@@ -21,10 +21,10 @@ export default function Code({ codes, language }: CodeProps) {
   const { theme } = useTheme();
 
   return (
-    <Card className="relative w-full font-sans  bg-zinc-950 dark:bg-zinc-950 rounded-sm overflow-hidden border">
+    <Card className="relative w-full font-sans  dark:bg-zinc-950 rounded-md overflow-hidden border">
       <div className="flex items-center justify-between w-full px-1 bg-muted text-zinc-800 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700">
         <span className="text-[10px] sm:text-xs lowercase">{language}</span>
-        <div className="flex items-center space-x-1">
+        <div className="flex items-center space-x-1 ">
           <Button
             variant="ghost"
             size="icon"
@@ -48,7 +48,7 @@ export default function Code({ codes, language }: CodeProps) {
         </div>
       </div>
 
-      <div className="relative w-full max-w-full overflow-x-auto">
+      <div className="relative w-full max-w-full overflow-x-auto  bg-zinc-950">
         <SyntaxHighlighter
           language={language.toLowerCase()}
           style={theme === "dark" ? materialDark : materialLight}

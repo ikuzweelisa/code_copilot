@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useFormState, useFormStatus } from "react-dom";
-import signInWithProvider from "../../../lib/actions/server";
+import signInWithProvider from "@/lib/actions/server/actions";
 import { GitHubLogoIcon, ReloadIcon } from "@radix-ui/react-icons";
 import AlertMessage from "@/components/auth/alert";
 import Image from "next/image";
@@ -34,6 +34,7 @@ function SubmitButton({ name }: { name: BuiltInProviderType }) {
     <Button
       disabled={pending}
       variant="outline"
+       size={"lg"}
       className={"w-full flex gap-2"}
       type={"submit"}
     >
@@ -41,7 +42,7 @@ function SubmitButton({ name }: { name: BuiltInProviderType }) {
       {name === "google" ? (
         <Image src={"/Google.png"} width={22} alt={"google"} height={22} />
       ) : (
-        <GitHubLogoIcon />
+        <GitHubLogoIcon className="mr-2 h-6 w-6" />
       )}
       Continue with {name}
     </Button>

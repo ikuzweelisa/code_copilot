@@ -5,17 +5,15 @@ import { BotMessage } from "@/components/ai/bot-message";
 
 import { SpinnerMessage } from "@/components/ai/spinner-message";
 import AIProvider from "@/components/providers/ai-provider";
-
 import { ClientMessage } from "@/lib/types";
-
 import { CoreMessage } from "ai";
-import { sleep } from "@/lib/utils";
+import React from "react";
 
 export async function submitMessage(
   userMessage: string
 ): Promise<ClientMessage> {
   const message = `\You are a highly capable programming assistant.
-       If auser ask anything not related to programming , respond saying that you are a Programming assistant you cannot do that.and suggest what you can assist them,
+       If a user ask anything not related to programming , respond saying that you are a Programming assistant you cannot do that.and suggest what you can assist them,
       if a user  impossible tasks such as Running codes and other programming tasks  you are not capable , respond Saying that the This feature is currently unavailable and may added in the future.
       your answers should be well explained.
     `;
@@ -35,7 +33,7 @@ export async function submitMessage(
     ],
   });
   const result = await streamUI({
-    model: google("gemini-1.5-flash-latest"),
+    model: google("gemini-1.5-pro-latest"),
     initial: <SpinnerMessage />,
     system: message,
     messages: [
