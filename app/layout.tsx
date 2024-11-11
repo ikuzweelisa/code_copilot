@@ -9,12 +9,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
-  title: "New-Chat-Dev-ChatBot",
+  title: "Code Copilot",
   description: "A Programming AI Powered Assistant",
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: "/favicon.ico"
   },
   metadataBase: new URL("https://devchat-bot.vercel.app/"),
   keywords: [
@@ -38,6 +36,7 @@ export default function RootLayout({
           GeistSans.variable,
           GeistMono.variable
         )}
+        suppressContentEditableWarning
       >
         <SessionProvider>
           <TooltipProvider>
@@ -48,6 +47,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               {children}
+
               <Toaster />
             </ThemeProvider>
           </TooltipProvider>

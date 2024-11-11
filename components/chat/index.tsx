@@ -11,7 +11,7 @@ import { Attachment } from "@prisma/client";
 import UploadDialog from "@/components/chat/upload-dialog";
 import MessageText from "@/components/ai/message";
 import useScroll from "@/lib/hooks/use-scroll";
-import  {ScrollAnchor}  from "./scroll-to-bottom";
+import { ScrollAnchor } from "./scroll-to-bottom";
 import EmptyScreen from "./empty-messages";
 
 interface ChatProps {
@@ -48,7 +48,7 @@ export default function Chat({ chatId }: ChatProps) {
     const response = await submitMessage(input, attachment);
     setMessages((prevMessages) => [...prevMessages, response]);
   }
- 
+
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (!formRef.current) return;
     if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
@@ -56,9 +56,9 @@ export default function Chat({ chatId }: ChatProps) {
       e.preventDefault();
     }
   }
-  
+
   useEffect(() => {
-    if (!path.includes("chat") && state.messages.length === 1) {
+    if (!path.includes("chat") && state.messages.length === 2) {
       window.history.replaceState({}, "", `/chat/${state.chatId}`);
     }
   }, [state.chatId, state.messages, path]);
@@ -76,7 +76,7 @@ export default function Chat({ chatId }: ChatProps) {
     handleScroll,
   } = useScroll();
   return (
-    <div className="flex flex-col h-screen w-full overflow-auto">
+    <div className="flex flex-col h-screen w-full overflow-hidden">
       {messages.length === 0 ? (
         <EmptyScreen
           formRef={formRef}
@@ -93,10 +93,13 @@ export default function Chat({ chatId }: ChatProps) {
         </EmptyScreen>
       ) : (
         <>
-          <ScrollArea onScrollCapture={handleScroll} className="h-full w-full">
+          <ScrollArea
+            onScrollCapture={handleScroll}
+            className="flex-grow w-full overflow-y-auto"
+          >
             <div
               ref={visibilityRef}
-              className="min-h-full w-full flex flex-col gap-3 sm:max-w-full lg:max-w-2xl mx-auto sm:mx-0 md:mx-0 lg:mx-auto"
+              className="min-h-full w-full flex flex-col gap-3 sm:max-w-full lg:max-w-2xl mx-auto p-2"
             >
               <Messages messageRef={messagesRef} messages={messages} />
             </div>
@@ -108,8 +111,8 @@ export default function Chat({ chatId }: ChatProps) {
             />
           </div>
 
-          <div className="sticky bottom-0  left-0 w-full px-3 mb-3">
-            <div className="mx-auto sm:mx-0 md:mx-0 lg:mx-auto  sm:max-w-2xl px-4">
+          <div className="sticky bottom-0 left-0 w-full shadow-sm mb-10">
+            <div className="mx-auto sm:mx-0 md:mx-0 lg:mx-auto sm:max-w-xl p-2">
               <div className="rounded-t-xl">
                 <InputField
                   input={input}

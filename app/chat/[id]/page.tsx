@@ -5,20 +5,22 @@ import { type Chat as TChat } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { capitalize } from "@/lib/utils";
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const { id } = params;
   const chat = (await getChat(id)) as unknown as TChat;
   if (!chat) notFound();
   return {
-    title: capitalize(chat?.title||"Untitled"),
-    description: chat?.title
+    title: capitalize(chat?.title || "Untitled"),
+    description: chat?.title,
   };
 }
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const { id } = params;
   const chat = (await getChat(id)) as unknown as TChat;
   if (!chat) notFound();

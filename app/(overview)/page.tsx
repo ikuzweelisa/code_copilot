@@ -5,7 +5,7 @@ export default function Home() {
   const chatId = crypto.randomUUID();
   return (
     <AIProvider initialAIState={{ chatId: chatId, messages: [] }}>
-      <div className={"flex justify-center "}>
+      <div className={"flex justify-center h-full w-full "}>
         <Chat chatId={chatId} />
       </div>
     </AIProvider>

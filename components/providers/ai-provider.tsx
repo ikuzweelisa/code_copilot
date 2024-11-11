@@ -1,7 +1,7 @@
 import { createAI, getAIState } from "ai/rsc";
 import { submitMessage } from "@/lib/actions/chat/actions";
 import { Chat, ClientMessage, Message } from "@/lib/types";
-import { saveChatData } from "../../lib/actions/server";
+import { saveChatData } from "@/lib/actions/server/actions";
 import { UserMessage } from "@/components/ai/user-message";
 import { BotMessage } from "@/components/ai/bot-message";
 import { auth } from "@/app/auth";

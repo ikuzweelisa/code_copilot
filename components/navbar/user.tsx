@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { User, Settings, LogOut, SquareChevronUp } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,24 +13,42 @@ import {
 import { Button } from "@/components/ui/button";
 import ModeToggle from "@/components/navbar/toggle-mode";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Session } from "next-auth";
+import { use } from "react";
 
-export default function UserButton() {
-  const session = useSession();
+interface Props {
+  sessionPromise: Promise<Session | null>;
+}
+
+export default function UserButton({ sessionPromise }: Props) {
+  const session = use(sessionPromise);
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild className="p-0">
         <div className="flex gap-1 cursor-pointer">
           <Button variant="ghost" size="icon" className="relative ">
-            <Avatar>
-              <AvatarImage src={session?.data?.user?.image ?? ""} />
+            <Avatar className="rounded-md h-10 w-10">
+              <AvatarImage src={session?.user?.image ?? ""} />
               <AvatarFallback>
-                {session?.data?.user?.name?.substring(0, 2).toUpperCase()}
+                {session?.user?.name
+                  ?.split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </Button>
 
-          <div className="flex items-center gap-1">
-            {session?.data?.user?.email}
+          <div className="flex items-center gap-1 w-full  ">
+            <div className="w-full flex flex-col group-data-[collapsible=icon]:hidden">
+              <span className="font-semibold text-base">
+                {session?.user?.name}
+              </span>
+              <span className="text-sm text-muted-foreground">
+                {session?.user?.email}
+              </span>
+            </div>
+
             <SquareChevronUp className="h-4 w-4" />
           </div>
         </div>
@@ -39,10 +57,10 @@ export default function UserButton() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {session?.data?.user?.name}
+              {session?.user?.name}
             </p>
             <p className="text-xs leading-none text-muted-foreground">
-              {session?.data?.user?.email}
+              {session?.user?.email}
             </p>
           </div>
         </DropdownMenuLabel>

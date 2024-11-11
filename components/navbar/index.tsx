@@ -1,24 +1,27 @@
+import { getChats } from "@/lib/actions/server";
+import NavContent from "./nav-content";
+import { auth } from "@/app/auth";
 import { Suspense } from "react";
 import Spinner from "../ai/spinner";
-import DesktopNavbar from "./desktop-navbar";
-import MobileNav from "./mobile-nav";
+import { SidebarGroupContent } from "../ui/sidebar";
 import NavItems from "./nav-items";
 
-export default function Navbar() {
+export default async function Navbar() {
+  const session = auth();
+
   return (
-    <>
-      <DesktopNavbar />
-      <MobileNav>
+    <NavContent sessionPromise={session}>
+      <SidebarGroupContent>
         <Suspense
           fallback={
-            <div className="mt-7 flex justify-center">
+            <div className={"flex justify-center items-center mt-6"}>
               <Spinner />
             </div>
           }
         >
           <NavItems />
         </Suspense>
-      </MobileNav>
-    </>
+      </SidebarGroupContent>
+    </NavContent>
   );
 }
