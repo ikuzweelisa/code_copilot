@@ -4,7 +4,7 @@ import { ClientMessage } from "@/lib/types";
 import React from "react";
 interface MessageProps {
   messages: ClientMessage[];
-  messageRef: React.RefObject<HTMLDivElement>;
+  messageRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function Messages({ messages, messageRef }: MessageProps) {

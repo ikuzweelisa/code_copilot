@@ -37,6 +37,7 @@ export default function RootLayout({
           GeistSans.variable,
           GeistMono.variable
         )}
+        suppressContentEditableWarning
       >
         <SessionProvider>
           <TooltipProvider>

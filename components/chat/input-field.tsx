@@ -19,7 +19,7 @@ interface InputFieldProps {
   handleChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   input: string;
-  formRef: RefObject<HTMLFormElement>;
+  formRef: RefObject<HTMLFormElement | null>;
   children: React.ReactNode;
 }
 export default function InputField({

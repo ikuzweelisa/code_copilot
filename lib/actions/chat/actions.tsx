@@ -33,7 +33,7 @@ export async function submitMessage(
     ],
   });
   const result = await streamUI({
-    model: google("gemini-1.5-pro-latest"),
+    model: google("gemini-1.5-flash-latest"),
     initial: <SpinnerMessage />,
     system: message,
     messages: [

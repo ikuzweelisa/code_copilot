@@ -1,7 +1,8 @@
+import { useActionState } from "react";
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import signInWithProvider from "@/lib/actions/server/actions";
 import { GitHubLogoIcon, ReloadIcon } from "@radix-ui/react-icons";
 import AlertMessage from "@/components/auth/alert";
@@ -12,7 +13,7 @@ type ProviderProps = {
   name: BuiltInProviderType;
 };
 export default function Provider({ name }: ProviderProps) {
-  const [status, dispatch] = useFormState(signInWithProvider, undefined);
+  const [status, dispatch] = useActionState(signInWithProvider, undefined);
   return (
     <div className="grid gap-2 w-full">
       <form action={dispatch}>

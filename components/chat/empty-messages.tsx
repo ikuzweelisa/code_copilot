@@ -9,7 +9,7 @@ interface Props {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   input: string;
-  formRef: RefObject<HTMLFormElement>;
+  formRef: RefObject<HTMLFormElement | null>;
   children: React.ReactNode;
   setInput: React.Dispatch<React.SetStateAction<string>>;
 }
