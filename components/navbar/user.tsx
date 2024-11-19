@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { User, Settings, LogOut, SquareChevronUp } from "lucide-react";
+import {  Settings, LogOut, SquareChevronUp } from "lucide-react";
 import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
@@ -67,12 +67,6 @@ export default function UserButton({ sessionPromise }: Props) {
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="/admin/profile" className="flex w-full items-center">
-            <User className="mr-2 h-4 w-4" />
-            Profile
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/admin/profile" className="flex w-full items-center">
             <Settings className="mr-2 h-4 w-4" />
             Settings
           </Link>
@@ -83,9 +77,14 @@ export default function UserButton({ sessionPromise }: Props) {
           Toggle theme
           <ModeToggle />
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <LogOut className="mr-2 h-4 w-4" />
-          <Button variant={"ghost"} size={"sm"} onClick={() => signOut()}>
+        <DropdownMenuItem asChild>
+          <Button
+            variant={"ghost"}
+            size={"sm"}
+            className="flex items-center gap-1 w-full justify-center"
+            onClick={() => signOut()}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
             Log out
           </Button>
         </DropdownMenuItem>

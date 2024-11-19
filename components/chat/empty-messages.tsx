@@ -34,6 +34,7 @@ export default function EmptyScreen({
             <div
               key={example.heading}
               onClick={() => {
+                setInput("");
                 setInput((currentInput) => example.message);
                 if (input) {
                   formRef.current?.requestSubmit();

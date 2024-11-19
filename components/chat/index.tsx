@@ -58,16 +58,16 @@ export default function Chat({ chatId }: ChatProps) {
   }
 
   useEffect(() => {
-    if (!path.includes("chat") && state.messages.length === 2) {
+    if (!path.includes("chat") && messages.length === 2) {
       window.history.replaceState({}, "", `/chat/${state.chatId}`);
     }
-  }, [state.chatId, state.messages, path]);
+  }, [state, messages, path]);
   useEffect(() => {
-    const messagesLength = state?.messages?.length ?? 0;
+    const messagesLength = messages?.length ?? 0;
     if (messagesLength === 2) {
       router.refresh();
     }
-  }, [state?.messages, router]);
+  }, [messages, router]);
   const {
     isAtBottom,
     scrollToBottom,

@@ -6,9 +6,5 @@ export const metadata: Metadata = {
   description: "Login page for the AI ChatBot",
 };
 export default async function Page() {
-  return (
-    <div className=" flex justify-center flex-col mt-20">
-      <LoginForm />
-    </div>
-  );
+  return <LoginForm />;
 }
