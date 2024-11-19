@@ -38,7 +38,7 @@ export default function NavContent({ children, sessionPromise }: Props) {
         <Link href={"/"} className="flex items-center gap-1">
           <IconOpenAI size={28} />
           <span className="font-semibold text-xl group-data-[collapsible=icon]:hidden">
-            Dev chatbot
+            CODE COPILOT
           </span>
         </Link>
       </SidebarHeader>

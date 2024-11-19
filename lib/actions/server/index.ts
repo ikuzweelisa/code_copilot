@@ -2,8 +2,9 @@ import "server-only";
 
 import prisma from "@/lib/db";
 import { Chat } from "@/lib/types";
+import { cache } from "react";
 
-export async function getChat(cid: string) {
+export const getChat = cache(async (cid: string) => {
   try {
     const chat = await prisma.chat.findFirst({
       where: {
@@ -15,9 +16,9 @@ export async function getChat(cid: string) {
   } catch (e) {
     return null;
   }
-}
+});
 
-export async function getChats(userId: string | undefined) {
+export const getChats = cache(async (userId: string | undefined) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -36,9 +37,9 @@ export async function getChats(userId: string | undefined) {
     if (!user) return;
     return user.chats as Chat[];
   } catch (e) {
-    return [] ;
+    return [];
   }
-}
+});
 export async function getAttachmentById(fileId: string) {
   return prisma.attachment.findUnique({
     where: {

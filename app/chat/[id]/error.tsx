@@ -20,7 +20,7 @@ export default function Error({
             </AlertTitle> 
             <AlertDescription className={"mt-3 flex justify-center"}>
               <span className={"text-md"}>
-                {error?.message || "something went wrong"}
+                {"something went wrong our team is already notified"}
               </span>
             </AlertDescription>
           </Alert>

@@ -2,7 +2,6 @@
 import { createStreamableValue, getMutableAIState, streamUI } from "ai/rsc";
 import { google } from "@ai-sdk/google";
 import { BotMessage } from "@/components/ai/bot-message";
-
 import { SpinnerMessage } from "@/components/ai/spinner-message";
 import AIProvider from "@/components/providers/ai-provider";
 import { ClientMessage } from "@/lib/types";
