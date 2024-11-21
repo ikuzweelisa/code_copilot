@@ -13,10 +13,10 @@ const nextConfig: NextConfig = {
     reactCompiler: {
       compilationMode: "annotation",
     },
-    staleTimes:{
-      dynamic:30
-    }
-  
+    staleTimes: {
+      dynamic: 120,
+      static: 200,
+    },
   },
 };
 

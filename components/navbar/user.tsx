@@ -39,7 +39,7 @@ export default function UserButton({ sessionPromise }: Props) {
             </Avatar>
           </Button>
 
-          <div className="flex items-center gap-1 w-full  ">
+          <div className="flex items-center gap-0 w-full  ">
             <div className="w-full flex flex-col group-data-[collapsible=icon]:hidden">
               <span className="font-semibold text-base">
                 {session?.user?.name}

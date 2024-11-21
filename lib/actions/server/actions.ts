@@ -28,6 +28,7 @@ export async function saveChatData(chat: Chat) {
       },
     });
     revalidatePath("/", "layout");
+    revalidatePath(chat.path, "page");
   } catch (error) {
     return null;
   }
@@ -131,4 +132,3 @@ export async function saveFile(formData: FormData): Promise<FileState> {
     };
   }
 }
-
