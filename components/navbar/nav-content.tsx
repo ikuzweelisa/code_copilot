@@ -31,14 +31,14 @@ export default function NavContent({ children, sessionPromise }: Props) {
       data-collapsed={collapsed}
       variant="sidebar"
       collapsible={"icon"}
-      className="group px-0  dark:bg-zinc-950 "
+      className="group px-0 "
     >
       
       <SidebarHeader className="p-2 space-y-2 border-b">
         <Link href={"/"} className="flex items-center gap-1">
           <IconOpenAI size={28} />
           <span className="font-semibold text-xl group-data-[collapsible=icon]:hidden">
-            Dev chatbot
+            CODE COPILOT
           </span>
         </Link>
       </SidebarHeader>

@@ -34,15 +34,15 @@ function SubmitButton({ name }: { name: BuiltInProviderType }) {
     <Button
       disabled={pending}
       variant="outline"
-       size={"lg"}
-      className={"w-full flex gap-2"}
+      size={"lg"}
+      className={"w-full flex gap-2  p-6 rounded-md"}
       type={"submit"}
     >
       {pending && <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />}
       {name === "google" ? (
-        <Image src={"/Google.png"} width={22} alt={"google"} height={22} />
+        <Image src={"/Google.png"} width={35} alt={"google"} height={35} />
       ) : (
-        <GitHubLogoIcon className="mr-2 h-6 w-6" />
+        <GitHubLogoIcon className="h-14 w-14" />
       )}
       Continue with {name}
     </Button>

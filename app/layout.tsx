@@ -12,9 +12,9 @@ export const metadata: Metadata = {
   title: "Code Copilot",
   description: "A Programming AI Powered Assistant",
   icons: {
-    icon: "/favicon.ico"
+    icon: "/favicon.ico",
   },
-  metadataBase: new URL("https://devchat-bot.vercel.app/"),
+  metadataBase: new URL("https://code-copilot.vercel.app/"),
   keywords: [
     "Programming assistant",
     "Code analysis",
@@ -29,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           "font-sans antialiased",

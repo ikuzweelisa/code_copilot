@@ -4,13 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build ",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@ai-sdk/google": "^0.0.48",
+    "@ai-sdk/google": "^1.0.0",
     "@auth/core": "^0.35.3",
     "@auth/prisma-adapter": "^2.7.3",
     "@prisma/client": "5.20.0",
@@ -29,7 +29,8 @@
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
     "@types/react-syntax-highlighter": "^15.5.13",
-    "ai": "^3.4.33",
+    "ai": "^4.0.0",
+    "babel-plugin-react-compiler": "19.0.0-beta-0dec889-20241115",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

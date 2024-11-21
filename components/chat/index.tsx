@@ -13,6 +13,7 @@ import MessageText from "@/components/ai/message";
 import useScroll from "@/lib/hooks/use-scroll";
 import { ScrollAnchor } from "./scroll-to-bottom";
 import EmptyScreen from "./empty-messages";
+import { sleep } from "@/lib/utils";
 
 interface ChatProps {
   initialMessages?: Message[];
@@ -58,16 +59,21 @@ export default function Chat({ chatId }: ChatProps) {
   }
 
   useEffect(() => {
-    if (!path.includes("chat") && state.messages.length === 2) {
+    if (!path.includes("chat") && messages.length === 2) {
       window.history.replaceState({}, "", `/chat/${state.chatId}`);
     }
-  }, [state.chatId, state.messages, path]);
+  }, [state, messages, path]);
   useEffect(() => {
-    const messagesLength = state?.messages?.length ?? 0;
-    if (messagesLength === 2) {
-      router.refresh();
+    async function main() {
+      const messagesLength = state.messages?.length ?? 0;
+      if (messagesLength === 2) {
+       await sleep(2000);
+        router.refresh();
+      }
+      return
     }
-  }, [state?.messages, router]);
+    main();
+  }, [state.messages, router]);
   const {
     isAtBottom,
     scrollToBottom,

@@ -25,14 +25,16 @@ export default function EmptyScreen({
   return (
     <div className="flex flex-col min-h-screen items-center justify-center p-4 w-full">
       <div className="flex flex-col items-center justify-center w-full max-w-xl">
-        <span className="text-xl sm:text-xl md:text-2xl lg:text-3xl flex items-center justify-center gap-2 font-semibold text-center p-5"><IconOpenAI size={37}/> {`${greet()} ,${
-          session?.data?.user?.name
-        }!`}</span>
+        <span className="text-xl sm:text-xl md:text-2xl lg:text-3xl flex items-center justify-center gap-2 font-semibold text-center p-5">
+          <IconOpenAI size={37} />{" "}
+          {`${greet()} ,${session?.data?.user?.name || "user"}!`}
+        </span>
         <div className="w-full grid gap-2 sm:grid-cols-1 lg:grid-cols-2">
           {exampleMessages.map((example, index) => (
             <div
               key={example.heading}
               onClick={() => {
+                setInput("");
                 setInput((currentInput) => example.message);
                 if (input) {
                   formRef.current?.requestSubmit();
