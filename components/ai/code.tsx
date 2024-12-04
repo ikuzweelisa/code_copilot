@@ -7,7 +7,7 @@ import {
   materialDark,
   materialLight,
 } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import useClipBoard from "@/lib/hooks/use-clipboard";
+import {useClipBoard} from "@/lib/hooks";
 import { useTheme } from "next-themes";
 import { Card } from "../ui/card";
 

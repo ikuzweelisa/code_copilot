@@ -1,9 +1,7 @@
 import { StreamableValue, readStreamableValue } from "ai/rsc";
 import { useEffect, useState } from "react";
 
-export const useStreamableText = (
-  content: string | StreamableValue<string>
-) => {
+const useStreamableText = (content: string | StreamableValue<string>) => {
   const [rawContent, setRawContent] = useState(
     typeof content === "string" ? content : ""
   );
@@ -24,4 +22,4 @@ export const useStreamableText = (
   return rawContent;
 };
 
-export default useStreamableText;
+export { useStreamableText };

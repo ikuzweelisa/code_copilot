@@ -1,38 +1,12 @@
 "use server";
-import { AuthStatus, Chat } from "@/lib/types";
+import { AuthStatus } from "@/lib/types";
 import { AuthError } from "next-auth";
 import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
 import prisma from "@/lib/db";
-import { Attachment, Prisma } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { Attachment } from "@prisma/client";
+import { revalidatePath, unstable_expireTag as expireTag } from "next/cache";
 import { z } from "zod";
-
-export async function saveChatData(chat: Chat) {
-  try {
-    await prisma.chat.upsert({
-      where: { id: chat.id },
-      update: {
-        messages: chat.messages as Prisma.InputJsonValue[],
-      },
-      create: {
-        id: chat.id,
-        title: chat.title as string,
-        messages: chat.messages as Prisma.InputJsonValue[],
-        path: chat.path,
-        user: {
-          connect: {
-            id: chat.userId,
-          },
-        },
-      },
-    });
-    revalidatePath("/", "layout");
-    revalidatePath(chat.path, "page");
-  } catch (error) {
-    return null;
-  }
-}
 
 export default async function signInWithProvider(
   prevState: AuthStatus | undefined,
@@ -131,4 +105,7 @@ export async function saveFile(formData: FormData): Promise<FileState> {
       error: "Error uploading file",
     };
   }
+}
+export async function revalidateChats() {
+  revalidatePath("/");
 }

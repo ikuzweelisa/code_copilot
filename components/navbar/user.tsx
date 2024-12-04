@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import {  Settings, LogOut, SquareChevronUp } from "lucide-react";
+import { Settings, LogOut, SquareChevronUp } from "lucide-react";
 import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
@@ -53,7 +53,7 @@ export default function UserButton({ sessionPromise }: Props) {
           </div>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-56 space-y-2 ">
+      <DropdownMenuContent align="start" className="w-60 space-y-1 ">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">

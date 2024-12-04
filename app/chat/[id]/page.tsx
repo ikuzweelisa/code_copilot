@@ -1,7 +1,6 @@
 import Chat from "@/components/chat";
 import AIProvider from "@/components/providers/ai-provider";
 import { getChat } from "@/lib/actions/server";
-import { type Chat as TChat } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { capitalize } from "@/lib/utils";
@@ -10,7 +9,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const { id } = params;
-  const chat = (await getChat(id)) as unknown as TChat;
+  const chat = await getChat(id);
   if (!chat) notFound();
   return {
     title: capitalize(chat?.title || "Untitled"),
@@ -20,7 +19,7 @@ export async function generateMetadata(props: {
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
   const { id } = params;
-  const chat = (await getChat(id)) as unknown as TChat;
+  const chat = await getChat(id);
   if (!chat) notFound();
   return (
     <AIProvider initialAIState={{ chatId: chat.id, messages: chat.messages }}>

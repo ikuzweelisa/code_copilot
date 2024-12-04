@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-function useClipBoard(): [boolean, (text: string|undefined) => void] {
+function useClipBoard() {
   const [isCopied, setIsCopied] = useState<boolean>(false);
   function copyText(text: string|undefined) {
     if (!text || typeof window === undefined) return;
@@ -14,7 +14,7 @@ function useClipBoard(): [boolean, (text: string|undefined) => void] {
     });
   }
 
-  return [isCopied, copyText];
+  return [isCopied, copyText] as const;
 }
 
-export default useClipBoard;
+export { useClipBoard};

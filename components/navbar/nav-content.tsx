@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { IconOpenAI, LogoIcon } from "../ui/icons";
 import { ScrollArea } from "../ui/scroll-area";
 import {
@@ -33,7 +33,6 @@ export default function NavContent({ children, sessionPromise }: Props) {
       collapsible={"icon"}
       className="group px-0 "
     >
-      
       <SidebarHeader className="p-2 space-y-2 border-b">
         <Link href={"/"} className="flex items-center gap-1">
           <IconOpenAI size={28} />
@@ -51,17 +50,19 @@ export default function NavContent({ children, sessionPromise }: Props) {
               Recent Chats
             </SidebarGroupLabel>
             <SidebarGroupAction title="New chat" asChild>
-             <Link href={"/"}>
-             <MessageSquarePlus className="h-4 w-4" />
-             <span className="sr-only text- ">New chat</span>
-             </Link>
+              <Link href={"/"}>
+                <MessageSquarePlus className="h-4 w-4" />
+                <span className="sr-only text- ">New chat</span>
+              </Link>
             </SidebarGroupAction>
             {children}
           </SidebarGroup>
         </ScrollArea>
       </SidebarContent>
       <SidebarFooter className="border-t">
-        <UserButton sessionPromise={sessionPromise} />
+        <Suspense fallback={null}>
+          <UserButton sessionPromise={sessionPromise} />
+        </Suspense>
       </SidebarFooter>
     </Sidebar>
   );

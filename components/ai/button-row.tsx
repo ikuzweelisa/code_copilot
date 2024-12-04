@@ -42,7 +42,7 @@ export default function ButtonRow() {
     });
   }
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-0">
       {buttons.map((button, index) => (
         <Tooltip key={index}>
           <TooltipTrigger asChild>
@@ -51,7 +51,7 @@ export default function ButtonRow() {
               size="icon"
               onClick={() => button.onClick()}
             >
-              <button.icon className="h-4 w-4" />
+              <button.icon className="h-3.5 w-3.5" />
               <span className="sr-only">{button.tooltip}</span>
             </Button>
           </TooltipTrigger>

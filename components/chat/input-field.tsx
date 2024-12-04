@@ -6,57 +6,57 @@ import {
 import { Button } from "@/components/ui/button";
 import Textarea from "react-textarea-autosize";
 import { Send } from "lucide-react";
-import React, {
-  ChangeEvent,
-  FormEvent,
-  RefObject,
-  useEffect,
-  useRef,
-} from "react";
+import React, { ChangeEvent, FormEvent, forwardRef, useRef } from "react";
+import { cn } from "@/lib/utils";
+import { LoadingButton } from "../ai/spinner-message";
 
 interface InputFieldProps {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   input: string;
-  formRef: RefObject<HTMLFormElement | null>;
   children: React.ReactNode;
+  isNew: boolean;
+  isLoading: boolean;
 }
-export default function InputField({
-  handleChange,
-  handleSubmit,
-  input,
-  formRef,
-  onKeyDown,
-  children,
-}: InputFieldProps) {
-  const inputRef = useRef<HTMLTextAreaElement | null>(null);
-  useEffect(() => {
-    if (!inputRef.current) return;
-    inputRef.current.focus();
-  }, []);
-  return (
-    <form onSubmit={handleSubmit} ref={formRef as RefObject<HTMLFormElement>}>
-      <div className="relative flex items-center  dark:bg-zinc-950/80  rounded-2xl border shadow-md p-0">
-        {children}
-        <Textarea
-          tabIndex={0}
-          onKeyDown={onKeyDown}
-          placeholder="Enter a message."
-          className="min-h-[60px]    w-full resize-none bg-transparent px-12 py-4 focus-within:outline-none "
-          autoFocus
-          spellCheck={false}
-          ref={inputRef}
-          autoComplete="off"
-          autoCorrect="off"
-          name="message"
-          rows={1}
-          onChange={handleChange}
-          value={input}
-        />
-        <div className="absolute right-0 top-[13px] sm:right-4 px-1">
-          <Tooltip>
-            <TooltipTrigger asChild>
+
+const InputField = forwardRef<HTMLFormElement, InputFieldProps>(
+  ({ handleChange, handleSubmit, input, isNew, children, isLoading }, ref) => {
+    const inputRef = useRef<HTMLTextAreaElement | null>(null);
+
+    function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+      if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+        e.currentTarget.form?.requestSubmit();
+        e.preventDefault();
+      }
+    }
+    return (
+      <form onSubmit={handleSubmit} ref={ref}>
+        <div
+          className={cn(
+            "relative flex items-center bg-card  rounded-2xl border  p-0",
+            isNew ? "h-24" : "h-16"
+          )}
+        >
+          {children}
+          <Textarea
+            tabIndex={0}
+            onKeyDown={onKeyDown}
+            placeholder="Enter a message."
+            className="h-full w-full resize-none bg-transparent px-12  focus-within:outline-none text-base"
+            autoFocus
+            spellCheck={false}
+            ref={inputRef}
+            autoComplete="off"
+            autoCorrect="off"
+            name="message"
+            rows={1}
+            onChange={handleChange}
+            value={input}
+          />
+          <div className="absolute right-0 top-[13px] sm:right-4 px-1">
+            {isLoading ? (
+              <LoadingButton />
+            ) : (
               <Button
                 variant={"ghost"}
                 disabled={input.trim() === ""}
@@ -66,11 +66,12 @@ export default function InputField({
                 <Send size={22} />
                 <span className="sr-only">Send</span>
               </Button>
-            </TooltipTrigger>
-            <TooltipContent>Send</TooltipContent>
-          </Tooltip>
+            )}
+          </div>
         </div>
-      </div>
-    </form>
-  );
-}
+      </form>
+    );
+  }
+);
+
+export default InputField;

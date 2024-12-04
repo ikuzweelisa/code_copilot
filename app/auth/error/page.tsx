@@ -9,11 +9,9 @@ export const metadata: Metadata = {
   title: "ChatBot-Error",
   description: "error page",
 };
-export default async function Page(
-  props: {
-    searchParams: Promise<{ error: string }>;
-  }
-) {
+export default async function Page(props: {
+  searchParams: Promise<{ error: string }>;
+}) {
   const searchParams = await props.searchParams;
   const { error } = searchParams;
   return (

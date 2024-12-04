@@ -1,16 +1,21 @@
 "use client";
 import { UserMessage } from "@/components/ai/user-message";
 import { ClientMessage } from "@/lib/types";
-import React from "react";
+import React, { forwardRef } from "react";
+import { SpinnerMessage } from "../ai/spinner-message";
 interface MessageProps {
   messages: ClientMessage[];
-  messageRef: React.RefObject<HTMLDivElement | null>;
+  error: string | undefined;
+  loading: boolean;
 }
 
-export default function Messages({ messages, messageRef }: MessageProps) {
+const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
+  { messages, error, loading }: MessageProps,
+  ref
+) {
   return (
     <div
-      ref={messageRef as React.RefObject<HTMLDivElement>}
+      ref={ref}
       className={
         "w-full max-w-full flex flex-col gap-4 p-1 sm:p-5 md:p-4 lg:p-1"
       }
@@ -24,6 +29,14 @@ export default function Messages({ messages, messageRef }: MessageProps) {
           )}
         </div>
       ))}
+      {loading && (
+        <div className="flex flex-col w-full">
+          <SpinnerMessage />
+        </div>
+      )}
+      {error && <div className="flex flex-col w-full"></div>}
     </div>
   );
-}
+});
+
+export default Messages;

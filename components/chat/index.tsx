@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useEffect, useRef, useState } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import InputField from "@/components/chat/input-field";
 import Messages from "@/components/chat/messages";
@@ -10,70 +10,63 @@ import { Message } from "@/lib/types";
 import { Attachment } from "@prisma/client";
 import UploadDialog from "@/components/chat/upload-dialog";
 import MessageText from "@/components/ai/message";
-import useScroll from "@/lib/hooks/use-scroll";
-import { ScrollAnchor } from "./scroll-to-bottom";
+import { useScroll } from "@/lib/hooks";
+import ScrollAnchor from "./scroll-to-bottom";
 import EmptyScreen from "./empty-messages";
-import { sleep } from "@/lib/utils";
-
+import { generateId } from "ai";
+import UseLocalStorage from "@/lib/types/use-local-storage";
+import { cn, sleep } from "@/lib/utils";
 interface ChatProps {
   initialMessages?: Message[];
   chatId: string;
 }
-
 export default function Chat({ chatId }: ChatProps) {
   const path = usePathname();
-  const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [state, _] = useAIState<typeof AIProvider>();
   const [messages, setMessages] = useUIState<typeof AIProvider>();
-
+  const [newChat, setChatId] = UseLocalStorage(chatId, {
+    key: "chatId",
+  });
   const { submitMessage } = useActions();
   const [input, setInput] = useState("");
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [attachment, setAttachment] = useState<Attachment | undefined>(
     undefined
   );
+  const [error, setError] = useState<string | undefined>(undefined);
+  const isNew = !path.includes("chat");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setInput("");
-    setAttachment(undefined);
-    setMessages((currentMessage) => [
-      ...currentMessage,
-      {
-        id: crypto.randomUUID(),
-        role: "user",
-        display: <MessageText text={input} attachment={attachment} />,
-      },
-    ]);
-    const response = await submitMessage(input, attachment);
-    setMessages((prevMessages) => [...prevMessages, response]);
-  }
-
-  function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (!formRef.current) return;
-    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
-      formRef.current.requestSubmit();
-      e.preventDefault();
-    }
-  }
-
-  useEffect(() => {
-    if (!path.includes("chat") && messages.length === 2) {
-      window.history.replaceState({}, "", `/chat/${state.chatId}`);
-    }
-  }, [state, messages, path]);
-  useEffect(() => {
-    async function main() {
-      const messagesLength = state.messages?.length ?? 0;
-      if (messagesLength === 2) {
-       await sleep(2000);
-        router.refresh();
+    try {
+      event.preventDefault();
+      setInput("");
+      setAttachment(undefined);
+      setMessages((currentMessage) => [
+        ...currentMessage,
+        {
+          id: generateId(20),
+          role: "user",
+          display: <MessageText text={input} attachment={attachment} />,
+        },
+      ]);
+      setIsLoading(true);
+      const response = await submitMessage(input, attachment);
+      setMessages((prevMessages) => [...prevMessages, response]);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
       }
-      return
+    } finally {
+      setIsLoading(false);
+      if (isNew && messages.length === 0) {
+        history.pushState({}, "", `/chat/${state.chatId}`);
+        setChatId(state.chatId);
+      }
     }
-    main();
-  }, [state.messages, router]);
+  }
+
   const {
     isAtBottom,
     scrollToBottom,
@@ -81,22 +74,11 @@ export default function Chat({ chatId }: ChatProps) {
     visibilityRef,
     handleScroll,
   } = useScroll();
+
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden">
-      {messages.length === 0 ? (
-        <EmptyScreen
-          formRef={formRef}
-          handleSubmit={handleSubmit}
-          input={input}
-          onKeyDown={onKeyDown}
-          setInput={setInput}
-        >
-          <UploadDialog
-            attachment={attachment}
-            chatId={state.chatId}
-            setAttachment={setAttachment}
-          />
-        </EmptyScreen>
+      {isNew ? (
+        <EmptyScreen input={input} setInput={setInput} />
       ) : (
         <>
           <ScrollArea
@@ -107,7 +89,12 @@ export default function Chat({ chatId }: ChatProps) {
               ref={visibilityRef}
               className="min-h-full w-full flex flex-col gap-3 sm:max-w-full lg:max-w-2xl mx-auto p-2"
             >
-              <Messages messageRef={messagesRef} messages={messages} />
+              <Messages
+                error={error}
+                loading={isLoading}
+                ref={messagesRef}
+                messages={messages}
+              />
             </div>
           </ScrollArea>
           <div className="mx-auto flex justify-center items-center p-4">
@@ -116,28 +103,28 @@ export default function Chat({ chatId }: ChatProps) {
               scrollToBottom={scrollToBottom}
             />
           </div>
-
-          <div className="sticky bottom-0 left-0 w-full shadow-sm mb-10">
-            <div className="mx-auto sm:mx-0 md:mx-0 lg:mx-auto sm:max-w-xl p-2">
-              <div className="rounded-t-xl">
-                <InputField
-                  input={input}
-                  handleSubmit={handleSubmit}
-                  handleChange={(e) => setInput(e.target.value)}
-                  onKeyDown={onKeyDown}
-                  formRef={formRef}
-                >
-                  <UploadDialog
-                    attachment={attachment}
-                    chatId={state.chatId}
-                    setAttachment={setAttachment}
-                  />
-                </InputField>
-              </div>
-            </div>
-          </div>
         </>
       )}
+      <div className={cn("w-full", isNew ? "" : "mb-12")}>
+        <div className={cn("mx-auto p-2", isNew ? "max-w-2xl" : "max-w-xl")}>
+          <div className="rounded-t-xl">
+            <InputField
+              isLoading={isLoading}
+              input={input}
+              handleSubmit={handleSubmit}
+              handleChange={(e) => setInput(e.target.value)}
+              ref={formRef}
+              isNew={isNew}
+            >
+              <UploadDialog
+                attachment={attachment}
+                chatId={state.chatId}
+                setAttachment={setAttachment}
+              />
+            </InputField>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

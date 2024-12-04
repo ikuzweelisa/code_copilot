@@ -1,3 +1,4 @@
+
 import NavItem from "@/components/navbar/nav-item";
 import { getChats } from "@/lib/actions/server";
 import { auth } from "@/app/auth";
@@ -6,8 +7,10 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 
 export default async function NavItems() {
   const session = await auth();
-  if (!session?.user?.id) notFound();
-  const chats = await getChats(session.user.id);
+  if (!session) {
+    notFound();
+  }
+  const chats = await getChats(session.user?.id);
 
   return (
     <SidebarMenu className=" w-full">
