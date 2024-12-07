@@ -10,7 +10,7 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
-    "@ai-sdk/google": "^1.0.0",
+    "@ai-sdk/google": "^1.0.5",
     "@auth/core": "^0.35.3",
     "@auth/prisma-adapter": "^2.7.3",
     "@prisma/client": "5.20.0",
@@ -26,21 +26,20 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-tooltip": "^1.1.3",
-    "ai": "^4.0.0",
+    "ai": "^4.0.13",
     "babel-plugin-react-compiler": "19.0.0-beta-df7b47d-20241124",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "eslint": "9.14.0",
     "framer-motion": "^11.11.11",
-    "geist": "^1.3.1",
     "lucide-react": "^0.441.0",
     "motion": "^11.12.0",
-    "next": "15.0.4-canary.30",
+    "next": "15.0.4-canary.45",
     "next-auth": "5.0.0-beta.25",
     "next-themes": "^0.3.0",
-    "react": "19.0.0-rc-66855b96-20241106",
-    "react-dom": "19.0.0-rc-66855b96-20241106",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "react-intersection-observer": "^9.13.1",
     "react-markdown": "^9.0.1",
     "react-syntax-highlighter": "^15.6.1",
@@ -54,10 +53,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.17.6",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "19.0.1",
+    "@types/react-dom": "19.0.1",
     "@types/react-syntax-highlighter": "^15.5.13",
-    "eslint-config-next": "15.0.3",
+    "eslint-config-next": "15.0.4",
     "postcss": "^8.4.48",
     "prisma": "^5.22.0",
     "tailwindcss": "^3.4.14",
@@ -65,8 +64,10 @@
   },
   "pnpm": {
     "overrides": {
-      "react": "^19.0.0-rc",
-      "react-dom": "^19.0.0-rc"
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0",
+      "@types/react": "19.0.1",
+      "@types/react-dom": "19.0.1"
     }
   }
 }

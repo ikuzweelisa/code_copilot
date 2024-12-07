@@ -1,13 +1,11 @@
 import "server-only";
 import prisma from "@/lib/db";
 import { Chat } from "@/lib/types";
-import { cache } from "react";
 import {
   unstable_cacheLife as cacheLife,
   unstable_cacheTag as cacheTag,
 } from "next/cache";
 import { Prisma } from "@prisma/client";
-
 
 export const getChat = async (cid: string) => {
   try {

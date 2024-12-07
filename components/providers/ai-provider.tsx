@@ -7,7 +7,7 @@ import { BotMessage } from "@/components/ai/bot-message";
 import { auth } from "@/app/auth";
 import { getChatTitle } from "@/lib/actions/chat/helpers";
 import { generateId } from "ai";
-import { revalidateChats } from "@/lib/actions/server/actions";
+
 
 export type AIState = {
   chatId: string;
@@ -26,7 +26,7 @@ const AIProvider = createAI<AIState, UIState>({
   },
   initialUIState: [],
   onSetAIState: async ({ state, done }) => {
-      "use server"
+    "use server";
     if (done) {
       const first = state.messages.length === 2;
       const session = auth();
@@ -44,13 +44,11 @@ const AIProvider = createAI<AIState, UIState>({
         userId: userId,
       };
       await saveChatData(chat);
-      if (first) {
-        await revalidateChats();
-      }
+      console.log("updating messages",state.messages)
     }
   },
   onGetUIState: async (): Promise<ClientMessage[]> => {
-    "use server"
+    "use server";
     const state = getAIState() as Chat;
     if (!state) return [];
     const uiState = (await getUiState(state)) as ClientMessage[];
@@ -61,7 +59,7 @@ const AIProvider = createAI<AIState, UIState>({
 
 export default AIProvider;
 
-export async function getUiState(state: Chat): Promise<ClientMessage[]> {
+ async function getUiState(state: Chat): Promise<ClientMessage[]> {
   return state.messages
     .filter((message) => message.role !== "system")
     .map((msg, index) => ({

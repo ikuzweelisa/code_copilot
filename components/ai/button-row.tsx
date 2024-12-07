@@ -1,4 +1,4 @@
-import { AudioLines, Copy, Repeat, ThumbsDown, ThumbsUp } from "lucide-react";
+import { Copy, LucideIcon, Repeat, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -8,8 +8,11 @@ import {
 import { toast } from "sonner";
 
 export default function ButtonRow() {
-  const buttons = [
-    { icon: AudioLines, tooltip: "read", onClick: like },
+  const buttons: Array<{
+    icon: LucideIcon;
+    tooltip: string;
+    onClick: () => void;
+  }> = [
     {
       icon: Copy,
       tooltip: "Copy",
@@ -42,21 +45,17 @@ export default function ButtonRow() {
     });
   }
   return (
-    <div className="flex gap-0">
-      {buttons.map((button, index) => (
+    <div className="flex gap-0 mt-2">
+      {buttons.map(({ icon: Icon, onClick, tooltip }, index) => (
         <Tooltip key={index}>
           <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => button.onClick()}
-            >
-              <button.icon className="h-3.5 w-3.5" />
-              <span className="sr-only">{button.tooltip}</span>
+            <Button variant="ghost" size="icon" onClick={() => onClick()}>
+              <Icon className="h-3 w-3" />
+              <span className="sr-only">{tooltip}</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>{button.tooltip}</p>
+            <p>{tooltip}</p>
           </TooltipContent>
         </Tooltip>
       ))}

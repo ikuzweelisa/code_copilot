@@ -23,4 +23,4 @@ function UseLocalStorage<T>(
   return [value, setItem] as const;
 }
 
-export default UseLocalStorage;
+export  {UseLocalStorage}

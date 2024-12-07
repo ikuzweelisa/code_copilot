@@ -17,8 +17,8 @@ export default async function NavItems() {
       {chats && chats?.length > 0 ? (
         chats?.map((chat) => <NavItem key={chat.id} chat={chat} />)
       ) : (
-        <SidebarMenuItem className="mt-2">
-          <SidebarMenuButton>No recent chats</SidebarMenuButton>
+        <SidebarMenuItem className="mt-2 text-center">
+          <SidebarMenuButton >No recent chats</SidebarMenuButton>
         </SidebarMenuItem>
       )}
     </SidebarMenu>

@@ -10,11 +10,11 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    dynamicIO: true,
+    ppr: true,
     reactCompiler: {
       compilationMode: "annotation",
     },
-    dynamicIO: true,
-    ppr:true
   },
 };
 

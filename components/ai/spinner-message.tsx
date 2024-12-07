@@ -1,5 +1,4 @@
 import { IconOpenAI } from "@/components/ui/icons";
-import { spinner } from "@/components/ai/spinner";
 import { Loader2 } from "lucide-react";
 
 export function SpinnerMessage() {
@@ -9,7 +8,7 @@ export function SpinnerMessage() {
         <IconOpenAI />
       </div>
       <div className="ml-4 h-[24px] flex flex-row items-center flex-1 space-y-2 overflow-hidden px-1">
-        {spinner}
+        <Loader2 className="h-4 w-4 animate-spin text-gray-600" />
       </div>
     </div>
   );

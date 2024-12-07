@@ -14,7 +14,7 @@ import { useScroll } from "@/lib/hooks";
 import ScrollAnchor from "./scroll-to-bottom";
 import EmptyScreen from "./empty-messages";
 import { generateId } from "ai";
-import UseLocalStorage from "@/lib/types/use-local-storage";
+import {UseLocalStorage} from "@/lib/hooks";
 import { cn, sleep } from "@/lib/utils";
 interface ChatProps {
   initialMessages?: Message[];
@@ -60,9 +60,11 @@ export default function Chat({ chatId }: ChatProps) {
       }
     } finally {
       setIsLoading(false);
-      if (isNew && messages.length === 0) {
+      if (isNew) {
         history.pushState({}, "", `/chat/${state.chatId}`);
         setChatId(state.chatId);
+        await sleep(5000);
+        router.refresh();
       }
     }
   }

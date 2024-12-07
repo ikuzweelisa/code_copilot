@@ -15,7 +15,6 @@ function ScrollAnchor({ isAtBottom, scrollToBottom }: Props) {
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.8 }}
         transition={{ duration: 0.3 }}
-        className="w-full"
       >
         <motion.div
           animate={{

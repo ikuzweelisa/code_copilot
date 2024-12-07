@@ -26,7 +26,7 @@ const exampleMessages = [
   },
   {
     heading: "What is CI/CD?",
-    subheading: "Understanding Continuous Integration and Deployment",
+    subheading: "Understanding Continuous Integration",
     message: "How does CI/CD work, and why is it important?",
   },
 ];

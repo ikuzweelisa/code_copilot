@@ -5,7 +5,7 @@ import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
 import prisma from "@/lib/db";
 import { Attachment } from "@prisma/client";
-import { revalidatePath, unstable_expireTag as expireTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export default async function signInWithProvider(
@@ -106,6 +106,4 @@ export async function saveFile(formData: FormData): Promise<FileState> {
     };
   }
 }
-export async function revalidateChats() {
-  revalidatePath("/");
-}
+

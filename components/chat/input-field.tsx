@@ -1,11 +1,6 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import Textarea from "react-textarea-autosize";
-import { Send } from "lucide-react";
+import { MoveUp, Send } from "lucide-react";
 import React, { ChangeEvent, FormEvent, forwardRef, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { LoadingButton } from "../ai/spinner-message";
@@ -20,7 +15,7 @@ interface InputFieldProps {
 }
 
 const InputField = forwardRef<HTMLFormElement, InputFieldProps>(
-  ({ handleChange, handleSubmit, input, isNew, children, isLoading }, ref) => {
+  function InputField ({ handleChange, handleSubmit, input, isNew, children, isLoading }, ref) {
     const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
     function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -58,12 +53,12 @@ const InputField = forwardRef<HTMLFormElement, InputFieldProps>(
               <LoadingButton />
             ) : (
               <Button
-                variant={"ghost"}
+                variant={"default"}
                 disabled={input.trim() === ""}
                 type="submit"
                 size="icon"
               >
-                <Send size={22} />
+                <MoveUp className="h-3 w-4"/>
                 <span className="sr-only">Send</span>
               </Button>
             )}

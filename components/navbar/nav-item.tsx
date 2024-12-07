@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Chat } from "@/lib/types";
 import { motion } from "motion/react";
-import UseLocalStorage from "@/lib/types/use-local-storage";
+import {UseLocalStorage} from "@/lib/hooks";
 
 interface NavItemProps {
   chat: Chat;
