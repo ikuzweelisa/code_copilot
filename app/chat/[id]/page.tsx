@@ -4,6 +4,7 @@ import { getChat } from "@/lib/actions/server";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { capitalize } from "@/lib/utils";
+import { Suspense } from "react";
 export async function generateMetadata(props: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
@@ -22,10 +23,12 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const chat = await getChat(id);
   if (!chat) notFound();
   return (
-    <AIProvider initialAIState={{ chatId: chat.id, messages: chat.messages }}>
-      <div className="w-full ">
-        <Chat chatId={chat.id} initialMessages={chat.messages} />
-      </div>
-    </AIProvider>
+    <Suspense fallback={null}>
+      <AIProvider initialAIState={{ chatId: chat.id, messages: chat.messages }}>
+        <div className="w-full ">
+          <Chat chatId={chat.id} initialMessages={chat.messages} />
+        </div>
+      </AIProvider>
+    </Suspense>
   );
 }

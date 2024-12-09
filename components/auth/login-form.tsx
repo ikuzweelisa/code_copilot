@@ -12,7 +12,7 @@ import { IconOpenAI } from "@/components/ui/icons";
 export function LoginForm() {
   return (
     <div className="w-full h-screen flex  justify-center items-center">
-      <Card className="flex flex-col w-full max-w-xl rounded-lg p-4">
+      <Card className="flex flex-col w-full max-w-xl rounded-md  shadow-none p-4">
         <CardHeader className="mb-4">
           <CardTitle className="text-2xl flex justify-center gap-4 items-center">
             <div className="text-primary-foreground bg-primary rounded-md  size-50">

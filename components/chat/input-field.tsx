@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Textarea from "react-textarea-autosize";
-import { MoveUp, Send } from "lucide-react";
+import { MoveUp } from "lucide-react";
 import React, { ChangeEvent, FormEvent, forwardRef, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { LoadingButton } from "../ai/spinner-message";
@@ -15,7 +15,10 @@ interface InputFieldProps {
 }
 
 const InputField = forwardRef<HTMLFormElement, InputFieldProps>(
-  function InputField ({ handleChange, handleSubmit, input, isNew, children, isLoading }, ref) {
+  function InputField(
+    { handleChange, handleSubmit, input, isNew, children, isLoading },
+    ref
+  ) {
     const inputRef = useRef<HTMLTextAreaElement | null>(null);
 
     function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -28,8 +31,7 @@ const InputField = forwardRef<HTMLFormElement, InputFieldProps>(
       <form onSubmit={handleSubmit} ref={ref}>
         <div
           className={cn(
-            "relative flex items-center bg-card  rounded-2xl border  p-0",
-            isNew ? "h-24" : "h-16"
+            "relative flex items-center bg-card rounded-l  border p-0"
           )}
         >
           {children}
@@ -37,7 +39,7 @@ const InputField = forwardRef<HTMLFormElement, InputFieldProps>(
             tabIndex={0}
             onKeyDown={onKeyDown}
             placeholder="Enter a message."
-            className="h-full w-full resize-none bg-transparent px-12  focus-within:outline-none text-base"
+            className="h-full min-h-20 max-h-28 w-full resize-none bg-transparent px-12 py-4  focus-within:outline-none text-base"
             autoFocus
             spellCheck={false}
             ref={inputRef}
@@ -57,8 +59,9 @@ const InputField = forwardRef<HTMLFormElement, InputFieldProps>(
                 disabled={input.trim() === ""}
                 type="submit"
                 size="icon"
+                className="rounded-full"
               >
-                <MoveUp className="h-3 w-4"/>
+                <MoveUp className="h-3 w-4" />
                 <span className="sr-only">Send</span>
               </Button>
             )}

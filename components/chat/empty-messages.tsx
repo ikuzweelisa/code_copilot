@@ -14,13 +14,14 @@ export default function EmptyScreen({ setInput, input }: Props) {
         <div className="w-full grid gap-2 sm:grid-cols-1 lg:grid-cols-2">
           {exampleMessages.map((example, index) => (
             <Card
+            
               key={example.heading}
               onClick={() => {
                 setInput("");
                 setInput((currentInput) => example.message);
               }}
               className={cn(
-                "cursor-pointer rounded-md border p-1.5",
+                "cursor-pointer shadow-none rounded-md border p-1.5",
                 index > 1 && "hidden md:block"
               )}
             >

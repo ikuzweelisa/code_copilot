@@ -17,7 +17,7 @@ export default function Provider({ name }: ProviderProps) {
     undefined
   );
   return (
-    <Card className="flex  gap-2 w-full border rounded-md">
+    <Card className="flex  gap-2 w-full  rounded-md shadow-none">
       <form action={dispatch} className="w-full">
         <input type={"hidden"} name={"provider"} value={name} />
         <Button

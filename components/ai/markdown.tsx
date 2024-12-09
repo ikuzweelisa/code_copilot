@@ -42,7 +42,7 @@ export function Markdown({ children }: { children: string }) {
       ul: ({ children, className, ...props }: any) => (
         <ul
           className={cn(
-            "list-disc list-outside ml-4 space-y-1 my-2",
+        
             className
           )}
           {...props}
@@ -52,7 +52,7 @@ export function Markdown({ children }: { children: string }) {
       ),
       ol: ({ children, className, ...props }: any) => (
         <ol
-          className="list-decimal list-outside ml-4 space-y-1 my-2"
+          className={cn(className)}
           {...props}
         >
           {children}
@@ -103,7 +103,7 @@ export function Markdown({ children }: { children: string }) {
       p: ({ children, className, ...props }: any) => (
         <p
           className={cn(
-            "my-2 leading-7 text-sm md:text-sm lg:text-base",
+         
             className
           )}
           {...props}
@@ -114,7 +114,7 @@ export function Markdown({ children }: { children: string }) {
       h1: ({ children, className, ...props }: any) => (
         <h1
           className={cn(
-            "text-xl md:text-2xl lg:text-3xl font-bold mt-8 mb-2",
+          
             className
           )}
           {...props}
@@ -125,7 +125,6 @@ export function Markdown({ children }: { children: string }) {
       h2: ({ children, className, ...props }: any) => (
         <h2
           className={cn(
-            "text-lg md:text-xl lg:text-2xl font-semibold mt-2 mb-2",
             className
           )}
           {...props}
@@ -136,7 +135,6 @@ export function Markdown({ children }: { children: string }) {
       h3: ({ children, className, ...props }: any) => (
         <h3
           className={cn(
-            "text-base md:text-lg lg:text-xl font-semibold mt-4 mb-2",
             className
           )}
           {...props}

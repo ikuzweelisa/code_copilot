@@ -1,5 +1,5 @@
 "use client";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, Suspense, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import InputField from "@/components/chat/input-field";
 import Messages from "@/components/chat/messages";
@@ -14,8 +14,8 @@ import { useScroll } from "@/lib/hooks";
 import ScrollAnchor from "./scroll-to-bottom";
 import EmptyScreen from "./empty-messages";
 import { generateId } from "ai";
-import {UseLocalStorage} from "@/lib/hooks";
-import { cn, sleep } from "@/lib/utils";
+import { UseLocalStorage } from "@/lib/hooks";
+import { cn } from "@/lib/utils";
 interface ChatProps {
   initialMessages?: Message[];
   chatId: string;
@@ -51,6 +51,9 @@ export default function Chat({ chatId }: ChatProps) {
           display: <MessageText text={input} attachment={attachment} />,
         },
       ]);
+      if (isNew) {
+        history.pushState({}, "", `/chat/${state.chatId}`);
+      }
       setIsLoading(true);
       const response = await submitMessage(input, attachment);
       setMessages((prevMessages) => [...prevMessages, response]);
@@ -61,14 +64,10 @@ export default function Chat({ chatId }: ChatProps) {
     } finally {
       setIsLoading(false);
       if (isNew) {
-        history.pushState({}, "", `/chat/${state.chatId}`);
         setChatId(state.chatId);
-        await sleep(5000);
-        router.refresh();
       }
     }
   }
-
   const {
     isAtBottom,
     scrollToBottom,
@@ -89,7 +88,7 @@ export default function Chat({ chatId }: ChatProps) {
           >
             <div
               ref={visibilityRef}
-              className="min-h-full w-full flex flex-col gap-3 sm:max-w-full lg:max-w-2xl mx-auto p-2"
+              className="min-h-full w-full flex flex-col  lg:max-w-2xl mx-auto p-1  "
             >
               <Messages
                 error={error}
@@ -107,9 +106,9 @@ export default function Chat({ chatId }: ChatProps) {
           </div>
         </>
       )}
-      <div className={cn("w-full", isNew ? "" : "mb-12")}>
+      <div className={cn("w-full", isNew ? "" : "mb-8")}>
         <div className={cn("mx-auto p-2", isNew ? "max-w-2xl" : "max-w-xl")}>
-          <div className="rounded-t-xl">
+          <div className="w-full">
             <InputField
               isLoading={isLoading}
               input={input}
@@ -118,11 +117,14 @@ export default function Chat({ chatId }: ChatProps) {
               ref={formRef}
               isNew={isNew}
             >
+              <Suspense fallback={null}>
               <UploadDialog
                 attachment={attachment}
                 chatId={state.chatId}
                 setAttachment={setAttachment}
               />
+              </Suspense>
+            
             </InputField>
           </div>
         </div>

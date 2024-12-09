@@ -78,29 +78,13 @@ export async function saveFile(formData: FormData): Promise<FileState> {
           fileValidate.error.errors[0]?.message || "File Format not supported",
       };
     }
-    const chatId = formData.get("chatId") as string;
-    // TODO :save file to a storage bucket
-    const file = fileValidate.data;
-    const filePath = "/logo.png";
-    const newFile = await prisma.attachment.create({
-      data: {
-        name: file.name,
-        path: filePath,
-        type: file.type,
-        chatId: chatId,
-      },
-    });
-    return {
-      attachment: {
-        id: newFile.id,
-        name: file.name,
-        path: filePath,
-        type: file.type,
-        chatId: newFile.chatId,
-        createdAt: newFile.createdAt,
-      },
-    };
+   throw new Error("This feature is not implemented yet")
   } catch (error) {
+    if (error instanceof Error) {
+      return{
+        error:error.message
+      }
+    }
     return {
       error: "Error uploading file",
     };

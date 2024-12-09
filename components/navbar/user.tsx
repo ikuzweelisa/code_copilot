@@ -81,7 +81,7 @@ export default function UserButton({ sessionPromise }: Props) {
           <Button
             variant={"ghost"}
             size={"sm"}
-            className="flex items-center gap-1 w-full justify-center"
+            className="flex items-center cursor-pointer gap-1 w-full justify-center"
             onClick={() => signOut()}
           >
             <LogOut className="mr-2 h-4 w-4" />

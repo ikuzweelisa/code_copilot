@@ -7,14 +7,18 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+      },
     ],
   },
   experimental: {
     dynamicIO: true,
     ppr: true,
-    reactCompiler: {
-      compilationMode: "annotation",
-    },
+    reactCompiler:{
+      compilationMode:"annotation"
+    }
   },
 };
 

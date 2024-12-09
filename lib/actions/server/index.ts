@@ -5,9 +5,10 @@ import {
   unstable_cacheLife as cacheLife,
   unstable_cacheTag as cacheTag,
 } from "next/cache";
+import {cache} from "react"
 import { Prisma } from "@prisma/client";
 
-export const getChat = async (cid: string) => {
+export const getChat =cache( async (cid: string) => {
   try {
     const chat = await prisma.chat.findFirst({
       where: {
@@ -19,7 +20,7 @@ export const getChat = async (cid: string) => {
   } catch (e) {
     return null;
   }
-};
+});
 
 export const getChats = async (userId: string | undefined) => {
   "use cache";
@@ -50,22 +51,24 @@ export async function getChatById(id: string | undefined) {
   });
 }
 
-export async function saveChatData(chat: Partial<Chat>) {
-  await prisma.chat.upsert({
-    where: { id: chat.id },
-    update: {
-      messages: chat.messages as Prisma.InputJsonValue[],
-    },
-    create: {
-      id: chat.id as string,
-      title: chat.title as string,
-      messages: chat.messages as Prisma.InputJsonValue[],
-      path: chat.path as string,
-      user: {
-        connect: {
-          id: chat.userId,
-        },
+export async function saveChatData(chat: Chat) {
+  try {
+ const saved=await prisma.chat.upsert({
+      where: { id: chat.id },
+      update: {
+        messages: chat.messages as Prisma.InputJsonValue[],
       },
-    },
-  });
+      create: {
+        id: chat.id,
+        title: chat.title,
+        messages: chat.messages as Prisma.InputJsonValue[],
+        path: chat.path,
+        userId: chat.userId,
+      },
+    });
+    return saved
+  } catch (e) {
+    console.error("Error saving chat data:");
+    return null
+  }
 }
