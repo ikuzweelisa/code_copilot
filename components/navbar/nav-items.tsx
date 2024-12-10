@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar";
 
 export default async function NavItems() {
+  
   const session = await auth();
   if (!session) {
     notFound();

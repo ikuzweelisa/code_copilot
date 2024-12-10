@@ -14,7 +14,6 @@ interface NavItemProps {
 
 export default function NavItem({ chat }: NavItemProps) {
   const pathname = usePathname();
-
   const path = `${chat.path}`;
   const isActive = pathname === path;
   const [newChat, setNewChat] = UseLocalStorage(null, {
