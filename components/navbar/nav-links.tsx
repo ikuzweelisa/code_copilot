@@ -37,13 +37,13 @@ export default function NavLinks() {
               <Link
                 href={link.href}
                 className={cn(
-                  " flex  space-x-1 font-medium",
-                  isActive(link.href) ? "bg-muted" : ""
+                  "flex space-x-1",
+                  isActive(link.href) && "bg-muted"
                 )}
               >
                 <div
                   className={cn(
-                    " flex items-center justify-center border  rounded-md m-0 p-1",
+                    "flex items-center justify-center rounded-md p-1",
                     isActive(link.href)
                       ? "bg-primary text-primary-foreground"
                       : "bg-background"

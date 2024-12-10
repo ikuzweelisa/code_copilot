@@ -3,20 +3,23 @@ import { IconOpenAI } from "@/components/ui/icons";
 import ButtonRow from "@/components/ai/button-row";
 import { cn } from "@/lib/utils";
 import { StreamableValue } from "ai/rsc";
-import useStreamText from "@/lib/hooks/use-stream";
+import {useStreamableText} from "@/lib/hooks";
 import { Markdown } from "./markdown";
 
 export function BotMessage({
   children,
+  className
 }: {
   children: string | StreamableValue<string>;
+  className?: string;
 }) {
-  const stream = useStreamText(children);
+  const stream = useStreamableText(children);
   return (
     <div className="group relative flex items-start  md:-ml-12">
       <div
         className={cn(
-          "flex size-[24px] shrink-0 select-none items-center justify-center rounded-md  bg-primary text-primary-foreground "
+          "flex size-[24px] shrink-0 select-none items-center justify-center rounded-md  bg-primary text-primary-foreground",
+          className
         )}
       >
         <IconOpenAI size={18} />

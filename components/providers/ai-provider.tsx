@@ -1,11 +1,12 @@
 import { createAI, getAIState } from "ai/rsc";
 import { submitMessage } from "@/lib/actions/chat/actions";
 import { Chat, ClientMessage, Message } from "@/lib/types";
-import { saveChatData } from "@/lib/actions/server/actions";
+import { getChatById, saveChatData } from "@/lib/actions/server";
 import { UserMessage } from "@/components/ai/user-message";
 import { BotMessage } from "@/components/ai/bot-message";
 import { auth } from "@/app/auth";
 import { getChatTitle } from "@/lib/actions/chat/helpers";
+import { generateId } from "ai";
 
 export type AIState = {
   chatId: string;
@@ -19,27 +20,27 @@ const AIProvider = createAI<AIState, UIState>({
     submitMessage,
   },
   initialAIState: {
-    chatId: crypto.randomUUID(),
+    chatId: generateId(12),
     messages: [],
   },
   initialUIState: [],
   onSetAIState: async ({ state, done }) => {
     "use server";
-    const session = await auth();
     if (done) {
-      const first = state.messages.length === 2;
-      const title = first
-        ? await getChatTitle(state.messages)
-        : "Untitled chat";
-
+      const existing = await getChatById(state.chatId);
+      const session = auth();
+      const userId = existing ? existing.userId : (await session)?.user?.id;
+      if (!userId) return;
+      const title = existing
+        ? existing.title
+        : await getChatTitle(state.messages);
       const path = `/chat/${state.chatId}`;
-
       const chat: Chat = {
         id: state.chatId,
         messages: state.messages,
         title: title,
         path: path,
-        userId: session?.user?.id as string,
+        userId: userId,
       };
       await saveChatData(chat);
     }
@@ -54,9 +55,9 @@ const AIProvider = createAI<AIState, UIState>({
   },
 });
 
-export default AIProvider;
 
-export async function getUiState(state: Chat): Promise<ClientMessage[]> {
+
+async function getUiState(state: Chat): Promise<ClientMessage[]> {
   return state.messages
     .filter((message) => message.role !== "system")
     .map((msg, index) => ({
@@ -69,3 +70,4 @@ export async function getUiState(state: Chat): Promise<ClientMessage[]> {
         ) : null,
     })) as ClientMessage[];
 }
+export default AIProvider;

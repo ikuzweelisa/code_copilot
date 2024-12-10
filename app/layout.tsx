@@ -2,19 +2,17 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ThemeProvider from "@/components/providers/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
-
+import { Geist } from "next/font/google";
 export const metadata: Metadata = {
   title: "Code Copilot",
   description: "A Programming AI Powered Assistant",
   icons: {
     icon: "/favicon.ico",
   },
-  metadataBase: new URL("https://code-copilot.vercel.app/"),
+  metadataBase: new URL("https://code-copilot.vercel.app"),
   keywords: [
     "Programming assistant",
     "Code analysis",
@@ -22,6 +20,12 @@ export const metadata: Metadata = {
     "Code debugging",
   ],
 };
+
+const geist = Geist({
+  display: "swap",
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export default function RootLayout({
   children,
@@ -31,11 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={cn(
-          "font-sans antialiased",
-          GeistSans.variable,
-          GeistMono.variable
-        )}
+        className={cn("font-sans antialiased", geist.className)}
         suppressContentEditableWarning
       >
         <SessionProvider>

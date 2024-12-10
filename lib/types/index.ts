@@ -13,7 +13,7 @@ export type ClientMessage = {
 
 export type Chat = {
   id: string;
-  title?: string;
+  title: string;
   path: string;
   messages: Message[];
   createdAt?: Date;

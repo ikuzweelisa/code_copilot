@@ -1,13 +1,10 @@
-"use client"
-import { AlertCircle } from "lucide-react";
+"use client";
+import { BotMessage } from "./bot-message";
 
 export default function ErrorMessage() {
   return (
-    <div>
-      <span className=" text-red-500 flex items-center gap-2">
-        {" "}
-        <AlertCircle /> Unable to generate response. Please try again.{" "}
-      </span>{" "}
-    </div>
+    <BotMessage className="text-red-500">
+      Unable to generate response. Please try again
+    </BotMessage>
   );
 }
