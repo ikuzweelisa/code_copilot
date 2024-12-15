@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Chat } from "@/lib/types";
 import { motion } from "motion/react";
-import {UseLocalStorage} from "@/lib/hooks";
+import { useLocalStorage } from "@/lib/hooks";
 
 interface NavItemProps {
   chat: Chat;
@@ -17,13 +17,11 @@ export default function NavItem({ chat }: NavItemProps) {
 
   const path = `${chat.path}`;
   const isActive = pathname === path;
-  const [newChat, setNewChat] = UseLocalStorage(null, {
-    key: "chatId",
-  });
-  const animate = isActive && newChat === chat.id;
-  const typingDuration = 3;
+  const [newChat, setNewChat] = useLocalStorage<string|null>("chatId", null);
+  const animate = chat.id === newChat;
+  const typingDuration = 5;
   const characterDelay = typingDuration / (chat.title.length || 1);
-
+  console.log(newChat);
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -40,7 +38,6 @@ export default function NavItem({ chat }: NavItemProps) {
           }}
           initial={animate ? "initial" : undefined}
           animate={animate ? "animate" : undefined}
-          transition={{ duration: 1, ease: "easeIn" }}
         >
           <Link href={path} className="flex items-center space-x-2 w-full">
             <div

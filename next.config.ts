@@ -16,9 +16,7 @@ const nextConfig: NextConfig = {
   experimental: {
     dynamicIO: true,
     ppr: true,
-    reactCompiler:{
-      compilationMode:"annotation"
-    }
+    reactCompiler: true,
   },
 };
 

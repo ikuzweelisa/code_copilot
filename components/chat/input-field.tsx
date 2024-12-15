@@ -31,7 +31,7 @@ const InputField = forwardRef<HTMLFormElement, InputFieldProps>(
       <form onSubmit={handleSubmit} ref={ref}>
         <div
           className={cn(
-            "relative flex items-center bg-card rounded-l  border p-0"
+            "relative flex items-center bg-card rounded-lg  border dark:border-0 p-0"
           )}
         >
           {children}
@@ -39,7 +39,7 @@ const InputField = forwardRef<HTMLFormElement, InputFieldProps>(
             tabIndex={0}
             onKeyDown={onKeyDown}
             placeholder="Enter a message."
-            className="h-full min-h-20 max-h-28 w-full resize-none bg-transparent px-12 py-4  focus-within:outline-none text-base"
+            className="min-h-10 max-h-28 sm:min-h-10 md:min-h-16 lg:min-h-20  w-full resize-none bg-transparent px-12 py-4  focus-within:outline-none text-base"
             autoFocus
             spellCheck={false}
             ref={inputRef}

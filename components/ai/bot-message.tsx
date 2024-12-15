@@ -3,12 +3,12 @@ import { IconOpenAI } from "@/components/ui/icons";
 import ButtonRow from "@/components/ai/button-row";
 import { cn } from "@/lib/utils";
 import { StreamableValue } from "ai/rsc";
-import {useStreamableText} from "@/lib/hooks";
+import { useStreamableText } from "@/lib/hooks";
 import { Markdown } from "./markdown";
 
 export function BotMessage({
   children,
-  className
+  className,
 }: {
   children: string | StreamableValue<string>;
   className?: string;
@@ -26,7 +26,7 @@ export function BotMessage({
       </div>
       <div className="ml-1 flex-1 flex-col text-sm md:text-sm lg:text-base">
         <Markdown>{stream}</Markdown>
-        <ButtonRow />
+        <ButtonRow content={stream} />
       </div>
     </div>
   );

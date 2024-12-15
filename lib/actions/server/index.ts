@@ -1,14 +1,10 @@
 import "server-only";
 import prisma from "@/lib/db";
 import { Chat } from "@/lib/types";
-import {
-  unstable_cacheLife as cacheLife,
-  unstable_cacheTag as cacheTag,
-} from "next/cache";
-import {cache} from "react"
+import { cache } from "react";
 import { Prisma } from "@prisma/client";
 
-export const getChat =cache( async (cid: string) => {
+export const getChat = cache(async (cid: string) => {
   try {
     const chat = await prisma.chat.findFirst({
       where: {
@@ -23,9 +19,6 @@ export const getChat =cache( async (cid: string) => {
 });
 
 export const getChats = async (userId: string | undefined) => {
-  "use cache";
-  cacheTag("chats");
-  cacheLife("hours");
   if (!userId) return [];
   try {
     const chats = await prisma.chat.findMany({
@@ -53,7 +46,7 @@ export async function getChatById(id: string | undefined) {
 
 export async function saveChatData(chat: Chat) {
   try {
- const saved=await prisma.chat.upsert({
+    const saved = await prisma.chat.upsert({
       where: { id: chat.id },
       update: {
         messages: chat.messages as Prisma.InputJsonValue[],
@@ -66,9 +59,9 @@ export async function saveChatData(chat: Chat) {
         userId: chat.userId,
       },
     });
-    return saved
+    return saved;
   } catch (e) {
     console.error("Error saving chat data:");
-    return null
+    return null;
   }
 }
