@@ -1,4 +1,4 @@
-## Demo Chat Bot
+## Code Copilot
 
->This Is a demo chat bot
+>Code Copilot Chat bot
 

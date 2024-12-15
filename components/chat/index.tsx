@@ -14,8 +14,9 @@ import { useScroll } from "@/lib/hooks";
 import ScrollAnchor from "./scroll-to-bottom";
 import EmptyScreen from "./empty-messages";
 import { generateId } from "ai";
-import { UseLocalStorage } from "@/lib/hooks";
+import { useLocalStorage } from "@/lib/hooks";
 import { cn } from "@/lib/utils";
+import { useSWRConfig } from "swr";
 interface ChatProps {
   initialMessages?: Message[];
   chatId: string;
@@ -24,10 +25,9 @@ export default function Chat({ chatId }: ChatProps) {
   const path = usePathname();
   const [state, _] = useAIState<typeof AIProvider>();
   const [messages, setMessages] = useUIState<typeof AIProvider>();
-  const [newChat, setChatId] = UseLocalStorage(chatId, {
-    key: "chatId",
-  });
+  const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
   const { submitMessage } = useActions();
+  const { mutate } = useSWRConfig();
   const [input, setInput] = useState("");
   const formRef = useRef<HTMLFormElement | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,9 +50,6 @@ export default function Chat({ chatId }: ChatProps) {
           display: <MessageText text={input} attachment={attachment} />,
         },
       ]);
-      if (isNew) {
-        history.pushState({}, "", `/chat/${state.chatId}`);
-      }
       setIsLoading(true);
       const response = await submitMessage(input, attachment);
       setMessages((prevMessages) => [...prevMessages, response]);
@@ -63,6 +60,8 @@ export default function Chat({ chatId }: ChatProps) {
     } finally {
       setIsLoading(false);
       if (isNew) {
+        history.pushState({}, "", `/chat/${state.chatId}`);
+        mutate("/api/chat");
         setChatId(state.chatId);
       }
     }
@@ -97,7 +96,7 @@ export default function Chat({ chatId }: ChatProps) {
               />
             </div>
           </ScrollArea>
-          <div className="mx-auto flex justify-center items-center p-4">
+          <div className="mx-auto flex justify-center items-center pb-2 pt-0 z-10">
             <ScrollAnchor
               isAtBottom={isAtBottom}
               scrollToBottom={scrollToBottom}

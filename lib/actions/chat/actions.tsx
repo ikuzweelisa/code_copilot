@@ -1,5 +1,5 @@
 "use server";
-import { createStreamableValue,getMutableAIState, streamUI } from "ai/rsc";
+import { createStreamableValue, getMutableAIState, streamUI } from "ai/rsc";
 import { google } from "@ai-sdk/google";
 import { BotMessage } from "@/components/ai/bot-message";
 import { SpinnerMessage } from "@/components/ai/spinner-message";
@@ -12,7 +12,7 @@ export async function submitMessage(
   userMessage: string
 ): Promise<ClientMessage> {
   try {
-    const message = `\You are code copilot. a highly capable programming assistant.
+    const message = `\Your name is  code copilot. a highly capable programming assistant.
     If a user ask anything not related to programming , respond saying that you are a Programming assistant you cannot do that.and suggest what you can assist them,
    if a user  impossible tasks such as Running codes and other programming tasks  you are not capable , respond Saying that the This feature is currently unavailable and may added in the future.
    your answers should be well explained.
@@ -75,6 +75,6 @@ export async function submitMessage(
       display: result.value,
     };
   } catch (error) {
-    throw new Error("Failed to Generate Response Try again");
+    throw new Error("Failed to Generate Response please Try again");
   }
 }

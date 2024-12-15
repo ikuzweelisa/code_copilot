@@ -10,6 +10,7 @@ import {
 import { useClipBoard } from "@/lib/hooks";
 import { useTheme } from "next-themes";
 import { Card } from "../ui/card";
+import { getLanguageIcon } from "@/lib/helpers";
 
 interface CodeProps {
   language: string;
@@ -19,11 +20,11 @@ interface CodeProps {
 export default function Code({ codes, language }: CodeProps) {
   const [isCopied, copyText] = useClipBoard();
   const { theme } = useTheme();
-
+  const languageIcon = getLanguageIcon(language);
   return (
     <Card className="relative w-full shadow-none  bg-card rounded-md overflow-hidden border">
       <div className="flex items-center justify-between w-full px-1 bg-muted text-zinc-800 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700">
-        <span className="sm:text-xs lowercase">{language}</span>
+        <span className="sm:text-xs lowercase">{languageIcon}</span>
         <div className="flex items-center space-x-1 ">
           <Button
             variant="ghost"

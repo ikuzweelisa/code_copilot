@@ -3,6 +3,7 @@ import { UserMessage } from "@/components/ai/user-message";
 import { ClientMessage } from "@/lib/types";
 import React, { forwardRef } from "react";
 import { SpinnerMessage } from "../ai/spinner-message";
+import ErrorMessage from "../ai/error-message";
 interface MessageProps {
   messages: ClientMessage[];
   error: string | undefined;
@@ -34,7 +35,9 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
           <SpinnerMessage />
         </div>
       )}
-      {error && <div className="flex flex-col w-full"></div>}
+      {error && <div className="flex flex-col w-full">
+         <ErrorMessage/>
+        </div>}
     </div>
   );
 });

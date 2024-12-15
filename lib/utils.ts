@@ -25,7 +25,7 @@ export const getFileIcon = (type: string): string => {
 };
 
 export async function greet() {
-  const date=new Date();
+  const date = new Date();
   const hour = getHours(date);
   if (hour >= 5 && hour <= 12) {
     return "Good Morning";
@@ -34,4 +34,9 @@ export async function greet() {
   } else {
     return "Good Evening";
   }
+}
+
+export  function fetcher(url: string) {
+  return  fetch(url).then(res=>res.json());
+
 }

@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense } from "react";
-import { IconOpenAI} from "../ui/icons";
+import { IconOpenAI } from "../ui/icons";
 import { ScrollArea } from "../ui/scroll-area";
 import {
   Sidebar,
@@ -8,6 +8,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupAction,
+  SidebarGroupContent,
   SidebarGroupLabel,
   SidebarHeader,
   useSidebar,
@@ -17,13 +18,14 @@ import { History, MessageSquarePlus } from "lucide-react";
 import Link from "next/link";
 import NavLinks from "./nav-links";
 import { Session } from "next-auth";
+import Spinner from "../ai/spinner";
+import NavItems from "./nav-items";
 
 interface Props {
-  children: React.ReactNode;
   sessionPromise: Promise<Session | null>;
 }
 
-export default function NavContent({ children, sessionPromise }: Props) {
+export default function NavContent({ sessionPromise }: Props) {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   return (
@@ -35,10 +37,10 @@ export default function NavContent({ children, sessionPromise }: Props) {
     >
       <SidebarHeader className="p-2 space-y-2 border-b">
         <Link href={"/"} className="flex items-center gap-1">
-        <div className="text-primary-foreground bg-primary rounded-md size p-0.5">
-        <IconOpenAI size={28} />
-        </div>
-       
+          <div className="text-primary-foreground bg-primary rounded-md size p-0.5">
+            <IconOpenAI size={28} />
+          </div>
+
           <span className="font-semibold text-center text-xl group-data-[collapsible=icon]:hidden">
             Code Copilot
           </span>
@@ -58,7 +60,17 @@ export default function NavContent({ children, sessionPromise }: Props) {
                 <span className="sr-only text- ">New chat</span>
               </Link>
             </SidebarGroupAction>
-            {children}
+            <SidebarGroupContent>
+              <Suspense
+                fallback={
+                  <div className={"flex justify-center items-center mt-6"}>
+                    <Spinner />
+                  </div>
+                }
+              >
+                <NavItems />
+              </Suspense>
+            </SidebarGroupContent>
           </SidebarGroup>
         </ScrollArea>
       </SidebarContent>

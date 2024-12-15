@@ -1,4 +1,11 @@
-import { Copy, LucideIcon, Repeat, ThumbsDown, ThumbsUp } from "lucide-react";
+import {
+  Check,
+  Copy,
+  LucideIcon,
+  Repeat,
+  ThumbsDown,
+  ThumbsUp,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -6,17 +13,24 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
+import { useClipBoard } from "@/lib/hooks";
 
-export default function ButtonRow() {
+interface Props {
+  content: string;
+}
+export default function ButtonRow({ content }: Props) {
+  const [isCopied, copyText] = useClipBoard();
   const buttons: Array<{
     icon: LucideIcon;
     tooltip: string;
+    label?:string
     onClick: () => void;
   }> = [
     {
-      icon: Copy,
-      tooltip: "Copy",
+      icon: isCopied ? Check : Copy,
+      tooltip: isCopied ? "Copied!" : "Copy",
       onClick: copy,
+      label: isCopied ? "Copied!" : "Copy",
     },
     {
       icon: Repeat,
@@ -40,17 +54,22 @@ export default function ButtonRow() {
     });
   }
   function copy() {
-    toast("Text copied to clipboard!", {
-      position: "top-center",
-    });
+    copyText(content);
   }
   return (
-    <div className="flex gap-0 mt-2">
-      {buttons.map(({ icon: Icon, onClick, tooltip }, index) => (
+    <div className="flex gap-2 mt-2">
+      {buttons.map(({ icon: Icon, onClick, tooltip ,label}, index) => (
         <Tooltip key={index}>
           <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon" onClick={() => onClick()}>
-              <Icon className="h-3 w-3" />
+            <Button
+              className="w-fit h-fit  flex px-3 py-2 bg-muted rounded-xl gap-1"
+              variant="ghost"
+              size="icon"
+              onClick={() => onClick()}
+            >
+              <Icon className="h-2 w-2" />
+              {label && <span className="text-xs">{label}</span>}
+            
               <span className="sr-only">{tooltip}</span>
             </Button>
           </TooltipTrigger>
