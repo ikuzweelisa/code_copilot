@@ -5,7 +5,7 @@ import InputField from "@/components/chat/input-field";
 import Messages from "@/components/chat/messages";
 import { useActions, useAIState, useUIState } from "ai/rsc";
 import AIProvider from "@/components/providers/ai-provider";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname} from "next/navigation";
 import { Message } from "@/lib/types";
 import { Attachment } from "@prisma/client";
 import UploadDialog from "@/components/chat/upload-dialog";
@@ -29,7 +29,6 @@ export default function Chat({ chatId }: ChatProps) {
   const { submitMessage } = useActions();
   const { mutate } = useSWRConfig();
   const [input, setInput] = useState("");
-  const router = useRouter();
   const formRef = useRef<HTMLFormElement | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [attachment, setAttachment] = useState<Attachment | undefined>(

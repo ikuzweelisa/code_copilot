@@ -16,8 +16,7 @@ export function LoginForm() {
           <CardTitle className="text-2xl flex justify-center gap-4 items-center">
             <div className="text-primary-foreground bg-primary rounded-md  size-50">
             <IconOpenAI size={50}  />
-            </div>
-        
+            </div>    
             Welcome back,
           </CardTitle>
         </CardHeader> 

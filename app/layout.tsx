@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-  metadataBase: new URL("https://code-copilot.vercel.app/"),
+  metadataBase: new URL("https://code-copilot.vercel.app"),
   keywords: [
     "Programming assistant",
     "Code analysis",

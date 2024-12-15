@@ -1,7 +1,7 @@
 "use client";
 import { useTheme } from "next-themes";
 import { Switch } from "../ui/switch";
-import {useState } from "react";
+import { useState } from "react";
 
 export default function ModeToggle() {
   const { setTheme, theme } = useTheme();
