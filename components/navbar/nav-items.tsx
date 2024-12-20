@@ -5,9 +5,9 @@ import { Chat } from "@/lib/types";
 import { fetcher } from "@/lib/utils";
 import Spinner from "../ai/spinner";
 export default function NavItems() {
-  const { data: chats, isLoading } = useSwr<Array<Chat>>("/api/chat", fetcher, {
+  const { data: chats, isLoading } = useSwr<Array<Chat>>("/api/chats", fetcher, {
     suspense: true,
-    fallbackData: [],
+    fallbackData: []
   });
   return (
     <SidebarMenu className=" w-full">

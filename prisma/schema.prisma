@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Chat {
-  id         String       @id @map("_id")
+  id         String       @id  @map("_id") 
   title      String
   path       String
   messages   Json[]

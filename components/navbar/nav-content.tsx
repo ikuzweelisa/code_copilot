@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense } from "react";
-import { IconOpenAI } from "../ui/icons";
+import { AssitantIcon } from "../ui/icons";
 import { ScrollArea } from "../ui/scroll-area";
 import {
   Sidebar,
@@ -38,7 +38,7 @@ export default function NavContent({ sessionPromise }: Props) {
       <SidebarHeader className="p-2 space-y-2 border-b">
         <Link href={"/"} className="flex items-center gap-1">
           <div className="text-primary-foreground bg-primary rounded-md size p-0.5">
-            <IconOpenAI size={28} />
+            <AssitantIcon size={28} />
           </div>
 
           <span className="font-semibold text-center text-xl group-data-[collapsible=icon]:hidden">

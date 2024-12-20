@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Attachment } from "@prisma/client";
 import { ChangeEvent, useRef } from "react";
 import { toast } from "sonner";
-import { saveFile } from "@/lib/actions/server/actions";
+import { saveFile } from "@/lib/actions/actions";
 
 interface UploadDialogProps {
   attachment: Attachment | undefined;

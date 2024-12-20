@@ -1,6 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { getHours } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -24,19 +23,7 @@ export const getFileIcon = (type: string): string => {
   }
 };
 
-export async function greet() {
-  const date = new Date();
-  const hour = getHours(date);
-  if (hour >= 5 && hour <= 12) {
-    return "Good Morning";
-  } else if (hour >= 12 && hour <= 17) {
-    return "Good Afternoon";
-  } else {
-    return "Good Evening";
-  }
+export function fetcher(url: string) {
+  return fetch(url).then((res) => res.json());
 }
 
-export  function fetcher(url: string) {
-  return  fetch(url).then(res=>res.json());
-
-}

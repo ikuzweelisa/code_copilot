@@ -7,7 +7,7 @@ import {
 } from "../ui/sidebar";
 import Link from "next/link";
 
-import { IconOpenAI } from "../ui/icons";
+import { AssitantIcon } from "../ui/icons";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,7 @@ export default function NavLinks() {
     {
       label: "New chat",
       href: "/",
-      icon: <IconOpenAI size={18} />,
+      icon: <AssitantIcon size={18} />,
     },
     {
       label: "History",

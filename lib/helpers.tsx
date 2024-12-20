@@ -6,6 +6,7 @@ import {
   JavaIcon,
   JavaScriptIcon,
   PHPIcon,
+  PrismaIcon,
   PythonIcon,
   ReactIcon,
   TypeScriptIcon,
@@ -36,7 +37,8 @@ function getLanguageIcon(language: string): React.ReactNode {
       return <CssIcon size={20} />;
     case "html":
       return <HtmlIcon size={20} />;
-
+    case "prisma":
+      return <PrismaIcon size={20}/> 
     default:
       return <span className="sm:text-xs lowercase">{language}</span>;
   }

@@ -14,16 +14,20 @@ import {
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { useClipBoard } from "@/lib/hooks";
+import { ChatRequestOptions } from "ai";
 
 interface Props {
   content: string;
+  reload: (
+    chatRequestOptions?: ChatRequestOptions
+  ) => Promise<string | null | undefined>;
 }
-export default function ButtonRow({ content }: Props) {
+export default function ButtonRow({ content, reload }: Props) {
   const [isCopied, copyText] = useClipBoard();
   const buttons: Array<{
     icon: LucideIcon;
     tooltip: string;
-    label?:string
+    label?: string;
     onClick: () => void;
   }> = [
     {
@@ -35,8 +39,8 @@ export default function ButtonRow({ content }: Props) {
     {
       icon: Repeat,
       tooltip: "Regenerate",
-      onClick: () => {
-        return;
+      onClick: async () => {
+        await reload();
       },
     },
     { icon: ThumbsUp, tooltip: "Like", onClick: like },
@@ -58,7 +62,7 @@ export default function ButtonRow({ content }: Props) {
   }
   return (
     <div className="flex gap-2 mt-2">
-      {buttons.map(({ icon: Icon, onClick, tooltip ,label}, index) => (
+      {buttons.map(({ icon: Icon, onClick, tooltip, label }, index) => (
         <Tooltip key={index}>
           <TooltipTrigger asChild>
             <Button
@@ -69,7 +73,7 @@ export default function ButtonRow({ content }: Props) {
             >
               <Icon className="h-2 w-2" />
               {label && <span className="text-xs">{label}</span>}
-            
+
               <span className="sr-only">{tooltip}</span>
             </Button>
           </TooltipTrigger>

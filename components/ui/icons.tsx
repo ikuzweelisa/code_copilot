@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback } from "./avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 
-export const IconOpenAI = ({ size = 16 }: { size?: number }) => (
+export const AssitantIcon = ({ size = 16 }: { size?: number }) => (
   <svg
     height={size}
     strokeLinejoin="round"

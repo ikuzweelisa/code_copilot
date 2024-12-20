@@ -1,6 +1,6 @@
 import Chat from "@/components/chat";
-import AIProvider from "@/components/providers/ai-provider";
-import { getChat } from "@/lib/actions/server";
+import { getChat } from "@/lib/actions";
+import { converToUIMessage } from "@/lib/actions/helpers";
 import { capitalize } from "@/lib/utils";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -25,9 +25,7 @@ export default async function Page({
   const { id } = await params;
   const chat = await getChat(id);
   if (!chat) notFound();
-  return (
-    <AIProvider initialAIState={{ chatId: id, messages: chat.messages }}>
-      <Chat chatId={id} initialMessages={chat.messages} />
-    </AIProvider>
-  );
+
+  const messages = converToUIMessage(chat.messages);
+  return <Chat chatId={id} initialMessages={messages} />;
 }

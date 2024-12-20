@@ -1,17 +1,20 @@
 "use client";
 import { UserMessage } from "@/components/ai/user-message";
-import { ClientMessage } from "@/lib/types";
 import React, { forwardRef } from "react";
 import { SpinnerMessage } from "../ai/spinner-message";
-import ErrorMessage from "../ai/error-message";
+import { ChatRequestOptions, Message } from "ai";
+import { BotMessage } from "../ai/bot-message";
 interface MessageProps {
-  messages: ClientMessage[];
-  error: string | undefined;
+  messages: Message[];
+  error: Error | undefined;
   loading: boolean;
+  reload: (
+    chatRequestOptions?: ChatRequestOptions
+  ) => Promise<string | null | undefined>;
 }
 
 const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
-  { messages, error, loading }: MessageProps,
+  { messages, error, loading, reload }: MessageProps,
   ref
 ) {
   return (
@@ -24,20 +27,24 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
       {messages.map((message) => (
         <div key={message.id} className={"flex flex-col w-full"}>
           {message.role === "user" ? (
-            <UserMessage>{message.display}</UserMessage>
+            <UserMessage>{message.content}</UserMessage>
           ) : (
-            message.display
+            <BotMessage reload={reload}>{message.content}</BotMessage>
           )}
         </div>
       ))}
-      {loading && (
+      {loading && messages[messages.length - 1].role === "user" && (
         <div className="flex flex-col w-full">
           <SpinnerMessage />
         </div>
       )}
-      {error && <div className="flex flex-col w-full">
-         <ErrorMessage/>
-        </div>}
+      {error && (
+        <div className="flex flex-col w-full">
+          <BotMessage className="text-red-500" reload={reload}>
+            Unable to generate response. Please try again
+          </BotMessage>
+        </div>
+      )}
     </div>
   );
 });

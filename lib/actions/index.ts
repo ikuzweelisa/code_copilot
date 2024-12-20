@@ -3,6 +3,9 @@ import prisma from "@/lib/db";
 import { Chat } from "@/lib/types";
 import { cache } from "react";
 import { Prisma } from "@prisma/client";
+import { CoreMessage } from "ai";
+import { auth } from "@/app/auth";
+import { getChatTitle } from "@/lib/actions/helpers";
 
 export const getChat = cache(async (cid: string) => {
   try {
@@ -12,7 +15,7 @@ export const getChat = cache(async (cid: string) => {
       },
     });
     if (!chat) return null;
-    return chat as Chat;
+    return chat as unknown as Chat;
   } catch (e) {
     return null;
   }
@@ -44,22 +47,26 @@ export async function getChatById(id: string | undefined) {
   });
 }
 
-export async function saveChatData(chat: Chat) {
+export async function saveChatData(id: string, messages: CoreMessage[]) {
   try {
-    const saved = await prisma.chat.upsert({
-      where: { id: chat.id },
+    const session = auth();
+    const existing = await getChatById(id);
+    const title = existing ? existing.title : await getChatTitle(messages);
+    const userId = existing ? existing.userId : (await session)?.user?.id;
+    if (!userId) return null;
+    await prisma.chat.upsert({
+      where: { id: id },
       update: {
-        messages: chat.messages as Prisma.InputJsonValue[],
+        messages: messages as unknown as Prisma.InputJsonValue[],
       },
       create: {
-        id: chat.id,
-        title: chat.title,
-        messages: chat.messages as Prisma.InputJsonValue[],
-        path: chat.path,
-        userId: chat.userId,
+        id: id,
+        title: title,
+        messages: messages as unknown as Prisma.InputJsonValue[],
+        path: `/chat/${id}`,
+        userId: userId,
       },
     });
-    return saved;
   } catch (e) {
     console.error("Error saving chat data:");
     return null;

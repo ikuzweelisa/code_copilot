@@ -1,21 +1,11 @@
-import React from "react";
-import { CoreMessage } from "ai";
-
-export type Message = CoreMessage & {
-  id: string;
-};
-type Role = "user" | "assistant";
-export type ClientMessage = {
-  id: string;
-  role: Role;
-  display: React.ReactNode;
-};
+import {   CoreMessage } from "ai";
+import  {Attachment} from "@prisma/client"
 
 export type Chat = {
   id: string;
   title: string;
   path: string;
-  messages: Message[];
+  messages: CoreMessage[];
   createdAt?: Date;
   userId: string;
   updatedAt?: Date;
@@ -35,3 +25,8 @@ export type AuthStatus = {
   message: string;
 };
 
+
+export type FileState = {
+  attachment?: Attachment;
+  error?: string;
+};

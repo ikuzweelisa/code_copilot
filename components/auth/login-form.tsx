@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Providers from "@/components/auth/providers";
-import { IconOpenAI } from "@/components/ui/icons";
+import { AssitantIcon } from "@/components/ui/icons";
 
 export function LoginForm() {
   return (
@@ -15,7 +15,7 @@ export function LoginForm() {
         <CardHeader className="mb-4">
           <CardTitle className="text-2xl flex justify-center gap-4 items-center">
             <div className="text-primary-foreground bg-primary rounded-md  size-50">
-            <IconOpenAI size={50}  />
+            <AssitantIcon size={50}  />
             </div>    
             Welcome back,
           </CardTitle>

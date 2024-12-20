@@ -1,19 +1,19 @@
 "use client";
-import { IconOpenAI } from "@/components/ui/icons";
+import { AssitantIcon } from "@/components/ui/icons";
 import ButtonRow from "@/components/ai/button-row";
 import { cn } from "@/lib/utils";
-import { StreamableValue } from "ai/rsc";
-import { useStreamableText } from "@/lib/hooks";
 import { Markdown } from "./markdown";
+import { ChatRequestOptions } from "ai";
 
 export function BotMessage({
   children,
   className,
+  reload
 }: {
-  children: string | StreamableValue<string>;
+  children: string;
   className?: string;
+  reload: (chatRequestOptions?: ChatRequestOptions) => Promise<string | null|undefined>;
 }) {
-  const stream = useStreamableText(children);
   return (
     <div className="group relative flex items-start  md:-ml-12">
       <div
@@ -22,11 +22,11 @@ export function BotMessage({
           className
         )}
       >
-        <IconOpenAI size={18} />
+        <AssitantIcon size={18} />
       </div>
-      <div className="ml-1 flex-1 flex-col text-sm md:text-sm lg:text-base">
-        <Markdown>{stream}</Markdown>
-        <ButtonRow content={stream} />
+      <div className={cn("ml-1 flex-1 flex-col text-sm md:text-sm lg:text-base ",className)}>
+        <Markdown>{children}</Markdown>
+        <ButtonRow reload={reload} content={children} />
       </div>
     </div>
   );

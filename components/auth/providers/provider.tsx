@@ -1,7 +1,7 @@
 "use client";
 import { useActionState } from "react";
 import { Button } from "@/components/ui/button";
-import signInWithProvider from "@/lib/actions/server/actions";
+import signInWithProvider from "@/lib/actions/actions";
 import { GitHubLogoIcon, ReloadIcon } from "@radix-ui/react-icons";
 import AlertMessage from "@/components/auth/alert";
 import Image from "next/image";

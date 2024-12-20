@@ -1,0 +1,49 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":automergePatch",
+    ":automergeMinor",
+    ":enableVulnerabilityAlerts"
+  ],
+  "schedule": ["every month"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^@radix-ui/"],
+      "groupName": "radix-ui packages",
+      "automerge": true
+    },
+    {
+      "matchPackagePatterns": ["^@auth/", "^next-auth"],
+      "groupName": "auth packages",
+      "automerge": true
+    },
+    {
+      "matchPackagePatterns": ["^@prisma/"],
+      "groupName": "prisma packages",
+      "automerge": true
+    },
+    {
+      "matchPackageNames": [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom"
+      ],
+      "groupName": "react core",
+      "automerge": false
+    },
+    {
+      "matchPackagePatterns": ["^@types/"],
+      "groupName": "type definitions",
+      "automerge": true
+    }
+  ],
+  "rangeStrategy": "pin",
+  "ignoreDeps": ["babel-plugin-react-compiler", "next"],
+  "labels": ["dependencies"],
+  "prConcurrentLimit": 5,
+  "automergeType": "pr",
+  "platformAutomerge": true,
+  "dependencyDashboard": true
+}

@@ -1,12 +1,11 @@
 "use server";
-import { AuthStatus } from "@/lib/types";
+import { AuthStatus, FileState } from "@/lib/types";
 import { AuthError } from "next-auth";
 import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
 import prisma from "@/lib/db";
-import { Attachment } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { fileSchema } from "../types/schema";
 
 export default async function signInWithProvider(
   prevState: AuthStatus | undefined,
@@ -59,15 +58,7 @@ export async function deleteChat(
   }
 }
 
-export type FileState = {
-  attachment?: Attachment;
-  error?: string;
-};
-const fileSchema = z
-  .instanceof(File, { message: "File is Required" })
-  .refine((file) => file.type.startsWith("application/pdf"), {
-    message: "Only PDF files supported.",
-  });
+
 
 export async function saveFile(formData: FormData): Promise<FileState> {
   try {

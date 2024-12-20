@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ShieldAlert, TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { IconOpenAI, LogoIcon } from "@/components/ui/icons";
+import { AssitantIcon } from "@/components/ui/icons";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "ChatBot-Error",
@@ -20,7 +20,7 @@ export default async function Page(props: {
         <CardHeader>
           <CardTitle className="text-2xl flex justify-center">
             <div className="text-primary-foreground bg-primary rounded-md">
-              <IconOpenAI size={50} />
+              <AssitantIcon size={50} />
             </div>
           </CardTitle>
         </CardHeader>
@@ -39,11 +39,14 @@ export default async function Page(props: {
                   </AlertDescription>
                 </Alert>
                 <div className="w-full flex justify-center">
-                <Button asChild variant={"outline"} className="w-full max-w-sm">
-                  <Link href="/auth/login">Login Again</Link>
-                </Button>
+                  <Button
+                    asChild
+                    variant={"outline"}
+                    className="w-full max-w-sm"
+                  >
+                    <Link href="/auth/login">Login Again</Link>
+                  </Button>
                 </div>
-              
               </div>
             </div>
           </form>
