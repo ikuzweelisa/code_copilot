@@ -1,6 +1,6 @@
 import { saveChatData } from "@/lib/actions";
 import { google } from "@ai-sdk/google";
-import { convertToCoreMessages, streamText, smoothStream } from "ai";
+import { convertToCoreMessages,streamText } from "ai";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {
@@ -15,15 +15,10 @@ export async function POST(request: NextRequest) {
     model: google("gemini-1.5-flash-exp-0827"),
     messages: coreMessage,
     system: message,
-    experimental_transform: smoothStream({
-      delayInMs: 30,
-    }),
     experimental_continueSteps: true,
     onFinish: async ({ response }) => {
       await saveChatData(id, [...coreMessage, ...response.messages]);
-      return;
     },
   });
-
   return response.toDataStreamResponse();
 }

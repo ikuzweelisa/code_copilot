@@ -4,16 +4,22 @@ import ButtonRow from "@/components/ai/button-row";
 import { cn } from "@/lib/utils";
 import { Markdown } from "./markdown";
 import { ChatRequestOptions } from "ai";
+import { useAnimatedText } from "@/lib/hooks";
 
 export function BotMessage({
   children,
   className,
-  reload
+  reload,
 }: {
   children: string;
   className?: string;
-  reload: (chatRequestOptions?: ChatRequestOptions) => Promise<string | null|undefined>;
+  reload: (
+    chatRequestOptions?: ChatRequestOptions
+  ) => Promise<string | null | undefined>;
 }) {
+  const [text] = useAnimatedText(children, {
+    duration: 4,
+  });
   return (
     <div className="group relative flex items-start  md:-ml-12">
       <div
@@ -24,9 +30,14 @@ export function BotMessage({
       >
         <AssitantIcon size={18} />
       </div>
-      <div className={cn("ml-1 flex-1 flex-col text-sm md:text-sm lg:text-base ",className)}>
-        <Markdown>{children}</Markdown>
-        <ButtonRow reload={reload} content={children} />
+      <div
+        className={cn(
+          "ml-1 flex-1 flex-col text-sm md:text-sm lg:text-base ",
+          className
+        )}
+      >
+        <Markdown>{text}</Markdown>
+        <ButtonRow reload={reload} content={text} />
       </div>
     </div>
   );

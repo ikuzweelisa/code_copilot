@@ -42,4 +42,4 @@ function useScroll() {
   };
 }
 
-export {useScroll};
+export { useScroll };

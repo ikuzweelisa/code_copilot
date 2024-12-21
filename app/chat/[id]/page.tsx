@@ -5,11 +5,15 @@ import { capitalize } from "@/lib/utils";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-export async function generateMetadata(props: {
+interface PageParams {
   params: Promise<{ id: string }>;
-}): Promise<Metadata> {
-  const params = await props.params;
-  const { id } = params;
+}
+
+export async function generateMetadata({
+  params,
+}: PageParams): Promise<Metadata> {
+  const { id } = await params;
+
   const chat = await getChat(id);
   if (!chat) notFound();
   return {
@@ -17,11 +21,7 @@ export async function generateMetadata(props: {
     description: chat?.title,
   };
 }
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function Page({ params }: PageParams) {
   const { id } = await params;
   const chat = await getChat(id);
   if (!chat) notFound();
