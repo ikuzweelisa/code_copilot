@@ -29,7 +29,7 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
           {message.role === "user" ? (
             <UserMessage>{message.content}</UserMessage>
           ) : (
-            <BotMessage reload={reload}>{message.content}</BotMessage>
+            <BotMessage isLoading={loading} reload={reload}>{message.content}</BotMessage>
           )}
         </div>
       ))}
@@ -40,7 +40,7 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
       )}
       {error && (
         <div className="flex flex-col w-full">
-          <BotMessage className="text-red-500" reload={reload}>
+          <BotMessage isLoading={loading}  className="text-red-500" reload={reload}>
             Unable to generate response. Please try again
           </BotMessage>
         </div>

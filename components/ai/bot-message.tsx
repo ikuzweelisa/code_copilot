@@ -10,15 +10,18 @@ export function BotMessage({
   children,
   className,
   reload,
+  isLoading,
 }: {
   children: string;
   className?: string;
+  isLoading?: boolean;
   reload: (
     chatRequestOptions?: ChatRequestOptions
   ) => Promise<string | null | undefined>;
 }) {
-  const [text] = useAnimatedText(children, {
+  const [text, isAnimating] = useAnimatedText(children, {
     duration: 4,
+    shouldAnimate: isLoading,
   });
   return (
     <div className="group relative flex items-start  md:-ml-12">
@@ -37,7 +40,7 @@ export function BotMessage({
         )}
       >
         <Markdown>{text}</Markdown>
-        <ButtonRow reload={reload} content={text} />
+        {!isAnimating ? <ButtonRow reload={reload} content={text} /> : null}
       </div>
     </div>
   );

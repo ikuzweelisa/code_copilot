@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   const { id, messages } = await request.json();
   const coreMessage = convertToCoreMessages(messages);
   const response = await streamText({
-    model: google("gemini-1.5-flash-exp-0827"),
+    model: google("gemini-1.5-flash-latest"),
     messages: coreMessage,
     system: message,
     experimental_continueSteps: true,
