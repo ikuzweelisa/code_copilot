@@ -5,7 +5,6 @@ function useScroll() {
   const [isAtBottom, setIsAtBottom] = useState(true);
   const messagesRef = useRef<HTMLDivElement>(null);
 
-
   const { ref: visibilityRef, inView: isVisible } = useInView({
     triggerOnce: false,
     delay: 100,

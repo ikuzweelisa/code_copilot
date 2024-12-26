@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import ThemeProvider from "@/components/providers/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,7 +5,8 @@ import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import { Geist } from "next/font/google";
-export const metadata: Metadata = {
+import React from "react";
+export const metadata = {
   title: "Code Copilot",
   description: "A Programming AI Powered Assistant",
   icons: {

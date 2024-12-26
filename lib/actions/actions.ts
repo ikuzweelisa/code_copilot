@@ -58,8 +58,6 @@ export async function deleteChat(
   }
 }
 
-
-
 export async function saveFile(formData: FormData): Promise<FileState> {
   try {
     const fileValidate = fileSchema.safeParse(formData.get("file"));
@@ -69,16 +67,17 @@ export async function saveFile(formData: FormData): Promise<FileState> {
           fileValidate.error.errors[0]?.message || "File Format not supported",
       };
     }
-   throw new Error("This feature is not implemented yet")
+    throw new Error("This feature is not implemented yet");
   } catch (error) {
     if (error instanceof Error) {
-      return{
-        error:error.message
-      }
+      return {
+        error: error.message,
+      };
     }
     return {
       error: "Error uploading file",
     };
   }
 }
+
 

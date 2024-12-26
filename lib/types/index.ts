@@ -6,20 +6,13 @@ export type Chat = {
   title: string;
   path: string;
   messages: CoreMessage[];
-  createdAt?: Date;
+  createdAt: Date;
   userId: string;
-  updatedAt?: Date;
+  updatedAt: Date;
 };
-/**
- * The login Status
- * @property {string} success|error The login status
- */
+
 type Status = "success" | "error";
-/**
- * Login status
- * @property {Status} status login status
- * @property {string} message login message
- */
+
 export type AuthStatus = {
   status: Status;
   message: string;
@@ -30,3 +23,11 @@ export type FileState = {
   attachment?: Attachment;
   error?: string;
 };
+export type GroupedChats={
+  today: Chat[];
+    yesterday: Chat[];
+    lastWeek: Chat[];
+    lastMonth: Chat[];
+    older: Chat[];
+}
+

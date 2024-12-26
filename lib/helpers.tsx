@@ -12,6 +12,7 @@ import {
   TypeScriptIcon,
 } from "@/components/ui/icons";
 import { CpuIcon } from "lucide-react";
+import React from "react";
 
 function getLanguageIcon(language: string): React.ReactNode {
   switch (language) {

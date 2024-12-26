@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
-import Microsoft from "next-auth/providers/microsoft-entra-id";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/db";
 export const { signIn, signOut, handlers, auth } = NextAuth({
@@ -16,12 +15,7 @@ export const { signIn, signOut, handlers, auth } = NextAuth({
       clientSecret: process.env.AUTH_GITHUB_SECRET,
       clientId: process.env.AUTH_GITHUB_ID,
       allowDangerousEmailAccountLinking: true,
-    }),
-    Microsoft({
-      clientId: process.env.AUTH_MICROSOFT_ID,
-      clientSecret: process.env.AUTH_MICROSOFT_SECRET,
-      allowDangerousEmailAccountLinking: true,
-    }),
+    })
   ],
   session: {
     strategy: "jwt",

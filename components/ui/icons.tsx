@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback } from "./avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
+import { cn } from "@/lib/utils";
 
 export const AssitantIcon = ({ size = 16 }: { size?: number }) => (
   <svg
@@ -27,10 +28,11 @@ export const AssitantIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-export function IconUser() {
+export function IconUser({ className }: { className?: string }) {
   const session = useSession();
+
   return (
-    <Avatar className="h-8 w-8">
+    <Avatar className={cn("h-8 w-8", className)}>
       <AvatarImage src={session.data?.user?.image || ""} />
       <AvatarFallback>
         {session.data?.user?.name

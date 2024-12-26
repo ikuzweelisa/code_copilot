@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import React from "react";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="h-0">
