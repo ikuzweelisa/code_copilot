@@ -4,8 +4,9 @@ import { AuthError } from "next-auth";
 import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
 import prisma from "@/lib/db";
+import { editChatSchema, fileSchema } from "../types/schema";
+import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { fileSchema } from "../types/schema";
 
 export default async function signInWithProvider(
   prevState: AuthStatus | undefined,
@@ -36,27 +37,6 @@ export default async function signInWithProvider(
     throw e;
   }
 }
-export async function deleteChat(
-  prevState: AuthStatus | undefined,
-  formData: FormData
-): Promise<AuthStatus> {
-  const id = formData.get("id");
-  try {
-    await prisma.chat.delete({
-      where: { id: id as string },
-    });
-    revalidatePath("/");
-    return {
-      status: "success",
-      message: "chat deleted",
-    };
-  } catch (e) {
-    return {
-      status: "error",
-      message: "Error deleting chat",
-    };
-  }
-}
 
 export async function saveFile(formData: FormData): Promise<FileState> {
   try {
@@ -79,5 +59,75 @@ export async function saveFile(formData: FormData): Promise<FileState> {
     };
   }
 }
+export async function deleteChat(
+  prevState: AuthStatus | undefined,
+  formData: FormData
+): Promise<AuthStatus> {
+  try {
+    const validate = z
+      .object({
+        chatId: z.string().min(10, {
+          message: "Chat not found",
+        }),
+      })
+      .safeParse(Object.fromEntries(formData.entries()));
+    if (!validate.success) {
+      return {
+        status: "error",
+        message: validate.error.message,
+      };
+    }
+    const { chatId } = validate.data;
+    await prisma.chat.delete({
+      where: {
+        id: chatId,
+      },
+    });
+    revalidatePath("/history","page")
+    return {
+      status: "success",
+      message: "Chat Removed ",
+    };
+   
+  } catch (error) {
+    return {
+      status: "error",
+      message: "Chat not removed try again",
+    };
+  }
+}
 
-
+export async function editChat(
+  prevState: AuthStatus | undefined,
+  formData: FormData
+): Promise<AuthStatus> {
+  try {
+    const validate = editChatSchema.safeParse(
+      Object.fromEntries(formData.entries())
+    );
+    if (!validate.success) {
+      return {
+        status: "error",
+        message: validate.error.errors[0].message,
+      };
+    }
+    const { chatId, title } = validate.data;
+    await prisma.chat.update({
+      where: {
+        id: chatId,
+      },
+      data: {
+        title: title,
+      },
+    });
+    return {
+      message: "Title has been updated",
+      status: "success",
+    };
+  } catch (e) {
+    return {
+      status: "error",
+      message: "Chat not Updated try again",
+    };
+  }
+}

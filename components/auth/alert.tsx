@@ -1,6 +1,6 @@
 import { AuthStatus } from "@/lib/types";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CheckCheck, ShieldAlert } from "lucide-react";
+import { CheckCheck, ShieldAlert, TriangleAlert } from "lucide-react";
 
 export default function AlertMessage(status: AuthStatus) {
   return (
@@ -13,7 +13,7 @@ export default function AlertMessage(status: AuthStatus) {
           {status.status === "success" ? (
             <CheckCheck size={15} />
           ) : (
-            <ShieldAlert size={15} />
+            <TriangleAlert size={15} />
           )}
           {status.message}
         </span>

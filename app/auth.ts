@@ -2,8 +2,15 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { cache } from "react";
 import prisma from "@/lib/db";
-export const { signIn, signOut, handlers, auth } = NextAuth({
+
+const {
+  signIn,
+  signOut,
+  handlers,
+  auth: isAuth,
+} = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
     Google({
@@ -15,7 +22,7 @@ export const { signIn, signOut, handlers, auth } = NextAuth({
       clientSecret: process.env.AUTH_GITHUB_SECRET,
       clientId: process.env.AUTH_GITHUB_ID,
       allowDangerousEmailAccountLinking: true,
-    })
+    }),
   ],
   session: {
     strategy: "jwt",
@@ -37,3 +44,6 @@ export const { signIn, signOut, handlers, auth } = NextAuth({
     },
   },
 });
+const auth = cache(isAuth);
+
+export { signIn, signOut, handlers, auth };

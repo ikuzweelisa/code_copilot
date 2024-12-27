@@ -23,8 +23,10 @@ export default function Code({ codes, language }: CodeProps) {
   const languageIcon = getLanguageIcon(language);
   return (
     <Card className="relative w-full shadow-none  bg-card rounded-md overflow-hidden border">
-      <div className="flex items-center justify-between w-full px-1 bg-muted text-zinc-800 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700">
-        <span className="sm:text-xs lowercase">{languageIcon}</span>
+      <div className="flex items-center justify-between w-full px-1 bg-muted/50 text-zinc-800 dark:text-zinc-100 border-b border-zinc-200 dark:border-zinc-700">
+        <span className="sm:text-xs lowercase flex items-center gap-1">
+          {languageIcon}
+        </span>
         <div className="flex items-center space-x-1 ">
           <Button
             variant="ghost"
@@ -49,7 +51,7 @@ export default function Code({ codes, language }: CodeProps) {
         </div>
       </div>
 
-      <div className="relative w-full max-w-full overflow-x-auto  bg-zinc-950">
+      <div className="relative w-full max-w-full overflow-x-auto  bg-card">
         <SyntaxHighlighter
           language={language.toLowerCase()}
           style={theme === "dark" ? materialDark : materialLight}

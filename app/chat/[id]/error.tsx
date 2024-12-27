@@ -1,7 +1,7 @@
 "use client";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, ShieldAlert } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 
 export default function Error({
   error,

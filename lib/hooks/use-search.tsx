@@ -15,9 +15,8 @@ import { useDebouncedCallback } from "use-debounce";
  */
 function useSearch<T>(
   items: T[],
-  predicate: (item: T, query: string) => boolean,
-  options?: { debounce?: number; searchParams?: string }
-): [string, React.Dispatch<React.SetStateAction<string>>, T[]] {
+  options: {  predicate: (item: T, query: string) => boolean,  debounce?: number; searchParams?: string }
+) {
   const params = useSearchParams();
   const [filtered, setFiltered] = useState(items);
   const [query, setQuery] = useState(() => {
@@ -35,7 +34,7 @@ function useSearch<T>(
     }
     const newItems: T[] = [];
     for (const item of items) {
-      if (predicate(item, query.toLocaleLowerCase())) {
+      if (options.predicate(item, query.toLocaleLowerCase())) {
         newItems.push(item);
       }
     }
@@ -48,7 +47,7 @@ function useSearch<T>(
     search();
   }, [query, search]);
 
-  return [query, setQuery, filtered];
+  return [query, setQuery, filtered] as const;
 }
 
 export default useSearch;

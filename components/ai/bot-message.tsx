@@ -20,7 +20,7 @@ export function BotMessage({
   ) => Promise<string | null | undefined>;
 }) {
   const [text, isAnimating] = useAnimatedText(children, {
-    duration: 4,
+    duration: 3,
     shouldAnimate: isLoading,
   });
   return (

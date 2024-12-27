@@ -53,7 +53,7 @@ export default function UserButton({ sessionPromise }: Props) {
           </div>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-60 space-y-1 ">
+      <DropdownMenuContent align="center" className="w-60 space-y-1 mb-2  pb-2 px-2 pt-0 mx-2 rounded-md bg-muted/50">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
@@ -66,22 +66,23 @@ export default function UserButton({ sessionPromise }: Props) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/admin/profile" className="flex w-full items-center">
+          <Link href="#" className="flex cursor-pointer w-full items-center">
             <Settings className="mr-2 h-4 w-4" />
             Settings
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuLabel>Preferences</DropdownMenuLabel>
-        <DropdownMenuItem className="flex justify-between">
+        <DropdownMenuItem className="flex cursor-pointer justify-between">
           Toggle theme
           <ModeToggle />
         </DropdownMenuItem>
+        <DropdownMenuSeparator/>
         <DropdownMenuItem asChild>
           <Button
-            variant={"ghost"}
+            variant={"default"}
             size={"sm"}
-            className="flex items-center cursor-pointer gap-1 w-full justify-center"
+            className="flex items-center w-full justify-start cursor-pointer gap-1"
             onClick={() => signOut()}
           >
             <LogOut className="mr-2 h-4 w-4" />

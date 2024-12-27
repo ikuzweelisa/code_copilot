@@ -14,6 +14,7 @@ Code Copilot Chat bot
 - [x] Save Chat into database
 - [x] Retrieve Chat from database
 - [ ] Upload Attachments
+- [ ] Edit Message prompt
 - [ ] Delete Chat from database
 - [ ] Update Chat from database
 - [ ] Show Chat History

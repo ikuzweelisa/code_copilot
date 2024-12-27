@@ -21,7 +21,7 @@ export const getChat = cache(async (cid: string) => {
   }
 });
 
-export const getChats = async (userId: string | undefined) => {
+export const getChats = cache(async (userId: string | undefined) => {
   if (!userId) return [];
   try {
     const chats = await prisma.chat.findMany({
@@ -36,16 +36,16 @@ export const getChats = async (userId: string | undefined) => {
   } catch (e) {
     return [];
   }
-};
+});
 
-export async function getChatById(id: string | undefined) {
+const getChatById = cache(async (id: string | undefined) => {
   if (!id) return null;
   return prisma.chat.findUnique({
     where: {
       id: id,
     },
   });
-}
+});
 
 export async function saveChatData(id: string, messages: CoreMessage[]) {
   try {
@@ -72,3 +72,20 @@ export async function saveChatData(id: string, messages: CoreMessage[]) {
     return null;
   }
 }
+
+export const getUserChats = cache(async () => {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    return [];
+  }
+  const chats = await prisma.chat.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      user: true,
+    },
+  });
+  return chats;
+});

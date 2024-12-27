@@ -40,7 +40,7 @@ export default function NavContent({ sessionPromise }: Props) {
           </span>
         </Link>
       </SidebarHeader>
-      <SidebarContent className="mt-4">
+      <SidebarContent className="mt-2">
         <ScrollArea className="flex-grow">
           <NavLinks />
         <NavItems/>

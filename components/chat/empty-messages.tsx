@@ -27,7 +27,7 @@ export default function EmptyScreen({ append }: Props) {
                 index > 1 && "hidden md:block"
               )}
             >
-              <CardContent className="text-sm flex gap-3 font-semibold  p-2">
+              <CardContent className="text-sm flex gap-3 font-semibold  p-1.5">
                 {Icon} {heading}
               </CardContent>
             </Card>

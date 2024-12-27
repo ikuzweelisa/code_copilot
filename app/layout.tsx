@@ -7,8 +7,11 @@ import { cn } from "@/lib/utils";
 import { Geist } from "next/font/google";
 import React from "react";
 export const metadata = {
-  title: "Code Copilot",
-  description: "A Programming AI Powered Assistant",
+  title: {
+    default: "Code Copilot",
+    template: "%s | Code Copilot",
+  },
+  description: "A Programming AI Assistant",
   icons: {
     icon: "/favicon.ico",
   },

@@ -5,4 +5,18 @@ const fileSchema = z
     message: "Only PDF files supported.",
   });
 
-export { fileSchema };
+const editChatSchema = z.object({
+  chatId: z.string().min(10, {
+    message: "Chat does not exist",
+  }),
+  title: z
+    .string()
+    .min(3, {
+      message: "Chat title too small",
+    })
+    .max(40, {
+      message: "Please use ashort title",
+    }),
+});
+
+export { fileSchema, editChatSchema };
