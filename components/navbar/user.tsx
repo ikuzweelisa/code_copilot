@@ -41,7 +41,7 @@ export default function UserButton({ sessionPromise }: Props) {
 
           <div className="flex items-center gap-0 w-full  ">
             <div className="w-full flex flex-col group-data-[collapsible=icon]:hidden">
-              <span className="font-semibold text-base">
+              <span className="font-medium text-base">
                 {session?.user?.name}
               </span>
               <span className="text-sm text-muted-foreground">

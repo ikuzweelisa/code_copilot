@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 function useClipBoard() {
   const [isCopied, setIsCopied] = useState<boolean>(false);
   function copyText(text: string|undefined) {
@@ -14,5 +13,4 @@ function useClipBoard() {
 
   return [isCopied, copyText] as const;
 }
-
 export { useClipBoard};

@@ -10,12 +10,11 @@ export default auth((request) => {
       return NextResponse.redirect(new URL("/", nextUrl));
     }
     return NextResponse.next();
-  } else {
-    if (!isLoggedIn) {
-      return NextResponse.redirect(new URL("/auth/login", nextUrl));
-    }
-    return NextResponse.next();
   }
+  if (!isLoggedIn) {
+    return NextResponse.redirect(new URL("/auth/login", nextUrl));
+  }
+  return NextResponse.next();
 });
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],

@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Textarea from "react-textarea-autosize";
 import { MoveUp } from "lucide-react";
-import React, { ChangeEvent, FormEvent,useRef } from "react";
+import React, { ChangeEvent, FormEvent, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { LoadingButton } from "../ai/spinner-message";
 
@@ -41,7 +41,7 @@ function InputField({
           tabIndex={0}
           onKeyDown={onKeyDown}
           placeholder="Enter a message."
-          className="min-h-10 max-h-28 sm:min-h-10 md:min-h-16 lg:min-h-20  w-full resize-none bg-transparent px-12 py-4  focus-within:outline-none text-base"
+          className="min-h-10 max-h-28 sm:min-h-12 md:min-h-16 lg:min-h-20  w-full resize-none bg-transparent px-12 py-4  focus-within:outline-none text-base"
           autoFocus
           spellCheck={false}
           ref={inputRef}
@@ -52,7 +52,7 @@ function InputField({
           onChange={handleChange}
           value={input}
         />
-        <div className="absolute right-0 top-[13px] sm:right-4 px-1">
+        <div className="absolute right-0 top-[13px] sm:right-4 px-2">
           {isLoading ? (
             <LoadingButton stop={stop} />
           ) : (

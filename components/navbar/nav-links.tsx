@@ -30,7 +30,7 @@ export default function NavLinks() {
   };
   return (
     <SidebarGroup>
-      <SidebarContent>
+      <SidebarContent className="list-none">
         <SidebarMenuItem>
           {links.map((link) => (
             <SidebarMenuButton key={link.label} asChild>

@@ -27,7 +27,7 @@ function useScroll() {
       if (isAtBottom && !isVisible) {
         messagesRef.current.scrollIntoView({
           block: "end",
-          behavior: "smooth",
+          behavior: "instant",
         });
       }
     }

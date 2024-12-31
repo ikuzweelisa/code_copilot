@@ -8,7 +8,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Navbar />
         <main className=" w-full h-screen overflow-hidden bg-muted/50">
           <SidebarTrigger />
-
           {children}
         </main>
       </SidebarProvider>

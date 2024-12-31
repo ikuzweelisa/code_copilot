@@ -61,12 +61,12 @@ export default function ButtonRow({ content, reload }: Props) {
     copyText(content);
   }
   return (
-    <div className="flex gap-2 mt-2">
+    <div className="flex gap-2 mt-2 justify-end">
       {buttons.map(({ icon: Icon, onClick, tooltip, label }, index) => (
         <Tooltip key={index}>
           <TooltipTrigger asChild>
             <Button
-              className="w-fit h-fit  flex px-3 py-2 bg-muted rounded-xl gap-1"
+              className="w-fit h-fit  flex px-3 py-2 bg-card rounded-xl gap-1"
               variant="ghost"
               size="icon"
               onClick={() => onClick()}

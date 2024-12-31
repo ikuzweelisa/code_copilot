@@ -68,7 +68,7 @@ export function formatTime(chatDate: Date): string {
       return `${minutes} minutes ago`;
     }
     const hours = subHours(new Date(), date.getHours()).getHours();
-    return `${hours} hour${hours >1 && "s"}  ago`;
+    return `${hours} hour${hours >1 ?"s" : ""}   ago`;
   }
   if (isYesterday(date)) {
     return "Yesterday";

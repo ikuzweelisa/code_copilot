@@ -25,12 +25,12 @@ export default function ChatItem({ chat }: Props) {
   const content = typeof firstMessage === "string" ? firstMessage : chat.title;
   const router = useRouter();
   return (
-    <Card
-      onClick={() => router.push(`chat/${chat.id}`)}
-      className="rounded-md w-full cursor-pointer"
-    >
+    <Card className="rounded-md w-full">
       <CardTitle className="text-base py-1.5 px-2">{chat.title}</CardTitle>
-      <CardContent className="p-2">
+      <CardContent
+        className="p-2 cursor-pointer "
+        onClick={() => router.push(`chat/${chat.id}`)}
+      >
         <span className="text-muted-foreground text-sm">{content}</span>
       </CardContent>
       <Separator />

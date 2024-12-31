@@ -7,6 +7,7 @@ import AlertMessage from "@/components/auth/alert";
 import Image from "next/image";
 import { BuiltInProviderType } from "@auth/core/providers";
 import { Card } from "@/components/ui/card";
+import { Github } from "lucide-react";
 
 type ProviderProps = {
   name: BuiltInProviderType;
@@ -31,7 +32,7 @@ export default function Provider({ name }: ProviderProps) {
           {name === "google" ? (
             <Image src={"/Google.png"} width={35} alt={"google"} height={35} />
           ) : (
-            <GitHubLogoIcon className="h-14 w-14" />
+            <Github className="size-14" />
           )}
           Continue with {name}
         </Button>

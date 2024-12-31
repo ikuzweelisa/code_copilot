@@ -1,21 +1,14 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-/**
- * useSearch is a custom hook that will filter the items based on a search query
- * and save the query in the URL.
- *
- * @param items the items to be filtered
- * @param predicate a function that takes the item and the search query and
- * @param options an object containing options for the debounce and searchParams
- * returns a boolean indicating whether the item should be filtered or not
- * @returns an array containing the current search query, a function to update
- * the search query, and the filtered items
- */
 function useSearch<T>(
   items: T[],
-  options: {  predicate: (item: T, query: string) => boolean,  debounce?: number; searchParams?: string }
+  options: {
+    predicate: (item: T, query: string) => boolean;
+    debounce?: number;
+    searchParams?: string;
+  }
 ) {
   const params = useSearchParams();
   const [filtered, setFiltered] = useState(items);

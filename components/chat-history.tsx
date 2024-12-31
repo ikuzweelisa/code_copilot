@@ -16,7 +16,7 @@ export default function ChatHistory({ chatsPromise }: Props) {
 
   const [searchText, setSearchText, chats] = useSearch(initialChats, {
     predicate: (item, query) => {
-      return item.title.toLocaleLowerCase().startsWith(query);
+      return item.title.toLocaleLowerCase().includes(query);
     },
     debounce: 400,
     searchParams: "chat",

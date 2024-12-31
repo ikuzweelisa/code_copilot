@@ -27,5 +27,5 @@ export default async function Page({ params }: PageParams) {
   if (!chat) notFound();
 
   const messages = converToUIMessage(chat.messages);
-  return <Chat chatId={id} initialMessages={messages} />;
+  return <Chat chatId={id} initialMessages={messages} chatTitle={chat.title} />;
 }

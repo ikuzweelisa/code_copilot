@@ -14,6 +14,7 @@ export function ChatsSkeleton() {
 import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Separator } from "@/components/ui/separator";
+import SearchInput from "./search";
 
 function ChatItemSkeleton() {
   return (
@@ -42,10 +43,23 @@ function ChatItemSkeleton() {
 
 export function ChatHistorySkeleton() {
   return (
-    <Fragment>
-      {Array.from({ length: 6 }).map((_, index) => (
+    <div className="w-full flex flex-col gap-3  p-4 h-full overflow-auto">
+      <div className="w-full flex justify-center items-center">
+        <div className="w-full max-w-sm">
+          <SearchInput
+            searchTerm={""}
+            setSearchTerm={() => {
+              return;
+            }}
+            placeholder="Search Chat..."
+            searchParams="chat"
+            className="w-full"
+          />
+        </div>
+      </div>
+      {Array.from({ length: 4 }).map((_, index) => (
         <ChatItemSkeleton key={index} />
       ))}
-    </Fragment>
+    </div>
   );
 }

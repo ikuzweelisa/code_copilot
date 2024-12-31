@@ -31,7 +31,7 @@ export default function NavItems() {
           <SidebarGroupLabel className="flex justify-center items-center gap-2">
             <Spinner /> Loading chats
           </SidebarGroupLabel>
-          <SidebarGroupContent>
+          <SidebarGroupContent className="list-none">
             <ChatsSkeleton />
           </SidebarGroupContent>
         </SidebarGroup>
@@ -40,7 +40,7 @@ export default function NavItems() {
           {groupedChats.today.length > 0 && (
             <SidebarGroup className="group-data-[collapsible=icon]:hidden">
               <SidebarGroupLabel>Today</SidebarGroupLabel>
-              <SidebarGroupContent>
+              <SidebarGroupContent className="list-none">
                 {groupedChats.today.map((chat) => (
                   <NavItem key={chat.id} chat={chat} />
                 ))}
@@ -50,7 +50,7 @@ export default function NavItems() {
           {groupedChats.yesterday.length > 0 && (
             <SidebarGroup className="group-data-[collapsible=icon]:hidden">
               <SidebarGroupLabel>Yesterday</SidebarGroupLabel>
-              <SidebarGroupContent>
+              <SidebarGroupContent className="list-none">
                 {groupedChats.yesterday.map((chat) => (
                   <NavItem key={chat.id} chat={chat} />
                 ))}
@@ -60,7 +60,7 @@ export default function NavItems() {
           {groupedChats.lastWeek.length > 0 && (
             <SidebarGroup className="group-data-[collapsible=icon]:hidden">
               <SidebarGroupLabel>Previous 7 Days</SidebarGroupLabel>
-              <SidebarGroupContent>
+              <SidebarGroupContent  className="list-none">
                 {groupedChats.lastWeek.map((chat) => (
                   <NavItem key={chat.id} chat={chat} />
                 ))}
@@ -70,7 +70,7 @@ export default function NavItems() {
           {groupedChats.lastMonth.length > 0 && (
             <SidebarGroup className="group-data-[collapsible=icon]:hidden">
               <SidebarGroupLabel>Last Month</SidebarGroupLabel>
-              <SidebarGroupContent>
+              <SidebarGroupContent  className="list-none">
                 {groupedChats.lastMonth.map((chat) => (
                   <NavItem key={chat.id} chat={chat} />
                 ))}
@@ -80,7 +80,7 @@ export default function NavItems() {
           {groupedChats.older.length > 0 && (
             <SidebarGroup className="group-data-[collapsible=icon]:hidden">
               <SidebarGroupLabel>Older Chats</SidebarGroupLabel>
-              <SidebarGroupContent>
+              <SidebarGroupContent  className="list-none">
                 {groupedChats.older.map((chat) => (
                   <NavItem key={chat.id} chat={chat} />
                 ))}
@@ -90,9 +90,9 @@ export default function NavItems() {
         </>
       ) : (
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-          <SidebarGroupContent>
+          <SidebarGroupContent  className="list-none">
             <SidebarMenuItem>
-              <SidebarMenuButton>
+              <SidebarMenuButton >
                 <MessageSquarePlus size={20} />
                 <span className="ml-2">No recent chats</span>
               </SidebarMenuButton>

@@ -5,8 +5,7 @@ import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Chat } from "@/lib/types";
-import { motion } from "motion/react";
-import { useLocalStorage } from "@/lib/hooks";
+import { useAnimatedText, useLocalStorage } from "@/lib/hooks";
 
 interface NavItemProps {
   chat: Chat;
@@ -16,11 +15,16 @@ export default function NavItem({ chat }: NavItemProps) {
   const pathname = usePathname();
   const path = `${chat.path}`;
   const isActive = pathname === path;
-  const [newChat, setNewChat] = useLocalStorage<string|null>("chatId", null);
+  const [newChat, setNewChat] = useLocalStorage<string | null>("chatId", null);
   const animate = chat.id === newChat;
-  const typingDuration = 5;
-  const characterDelay = typingDuration / (chat.title.length || 1);
-  console.log(newChat);
+
+  const [text] = useAnimatedText(chat.title, {
+    shouldAnimate: animate,
+    duration: 2,
+    onComplete() {
+      setNewChat(null);
+    },
+  });
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -30,51 +34,17 @@ export default function NavItem({ chat }: NavItemProps) {
           isActive && "bg-muted"
         )}
       >
-        <motion.div
-          variants={{
-            initial: { opacity: 0, height: 0 },
-            animate: { opacity: 1, height: "auto" },
-          }}
-          initial={animate ? "initial" : undefined}
-          animate={animate ? "animate" : undefined}
-        >
-          <Link href={path} className="flex items-center space-x-2 w-full">
-            <div
-              className={cn(
-                "flex h-8 w-8 items-center justify-center rounded-md",
-                isActive && "text-primary-foreground bg-primary"
-              )}
-            >
-              <MessageSquareText className="h-4 w-4" />
-            </div>
-            <span className="flex-1 truncate">
-              {animate
-                ? chat.title.split("").map((char, index) => (
-                    <motion.span
-                      key={index}
-                      variants={{
-                        initial: { opacity: 0, x: -10 },
-                        animate: { opacity: 1, x: 0 },
-                      }}
-                      initial="initial"
-                      animate="animate"
-                      transition={{
-                        duration: 0.5,
-                        delay: index * characterDelay,
-                      }}
-                      onAnimationComplete={() => {
-                        if (index === chat.title.length - 1) {
-                          setNewChat(null);
-                        }
-                      }}
-                    >
-                      {char}
-                    </motion.span>
-                  ))
-                : chat?.title}
-            </span>
-          </Link>
-        </motion.div>
+        <Link href={path} className="flex items-center space-x-2 w-full">
+          <div
+            className={cn(
+              "flex h-8 w-8 items-center justify-center rounded-md",
+              isActive && "text-primary-foreground bg-primary"
+            )}
+          >
+            <MessageSquareText className="h-4 w-4" />
+          </div>
+          <span className="flex-1 truncate">{text}</span>
+        </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );
