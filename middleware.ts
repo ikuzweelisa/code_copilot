@@ -11,9 +11,7 @@ export default auth((request) => {
     }
     return NextResponse.next();
   }
-  if (!isLoggedIn) {
-    return NextResponse.redirect(new URL("/auth/login", nextUrl));
-  }
+
   return NextResponse.next();
 });
 export const config = {

@@ -1,6 +1,6 @@
 import { saveChatData } from "@/lib/actions";
 import { google } from "@ai-sdk/google";
-import { convertToCoreMessages,streamText } from "ai";
+import { convertToCoreMessages, streamText } from "ai";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest) {

@@ -35,7 +35,7 @@ export function IconUser({ className }: { className?: string }) {
           ?.split(" ")
           .map((n) => n[0])
           .join("")
-          .toUpperCase()}
+          .toUpperCase()|| "AU"}
       </AvatarFallback>
     </Avatar>
   );

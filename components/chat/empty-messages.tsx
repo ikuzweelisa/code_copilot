@@ -12,10 +12,13 @@ interface Props {
 export default function EmptyScreen({ append }: Props) {
   const session = useSession();
   const name = session.data?.user?.name?.split(" ")[0];
-  const [text] = useAnimatedText(`${name ? name : ""} ! How can I Assist you?`, {
-    duration: 4,
-    shouldAnimate: true,
-  });
+  const [text] = useAnimatedText(
+    `${name ? name + " !" : ""}  How can I Assist you ?`,
+    {
+      duration: 4,
+      shouldAnimate: true,
+    }
+  );
   return (
     <div className="h-1/2  flex flex-col items-center gap-5 justify-center p-3 w-full">
       <span className="text-3xl sm:text-xl md:text-2xl lg:text-3xl ">
@@ -38,7 +41,7 @@ export default function EmptyScreen({ append }: Props) {
                 index > 1 && "hidden md:block"
               )}
             >
-              <CardContent className="text-sm flex gap-3 font-semibold  p-1.5">
+              <CardContent className="text-sm flex gap-3 font-medium  p-1.5">
                 {Icon} {heading}
               </CardContent>
             </Card>
