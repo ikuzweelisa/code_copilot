@@ -1,12 +1,12 @@
 "use client";
 import ChatItem from "@/components/chat-item";
 import SearchInput from "./search";
-import { Chat } from "@/lib/types";
 import useSearch from "@/lib/hooks/use-search";
 import { MoveRight, Search } from "lucide-react";
+import {Chat,User} from "@/lib/drizzle"
 import { Button } from "./ui/button";
 import Link from "next/link";
-import { User } from "@prisma/client";
+
 import { use } from "react";
 interface Props {
   chatsPromise: Promise<Array<Chat & { user: User }>>;

@@ -8,19 +8,18 @@ Code Copilot Chat bot
 
 ## Features
 
--[x] Generate Response
+- [x] Generate Response
 - [x] Copy messages Response
 - [x] Regenerate message
 - [x] Save Chat into database
 - [x] Retrieve Chat from database
 - [ ] Upload Attachments
 - [ ] Edit Message prompt
-- [ ] Delete Chat from database
-- [ ] Update Chat from database
-- [ ] Show Chat History
+- [x] Delete Chat from database
+- [x] Update Chat from database
+- [x] Show Chat History
 - [ ] Write code using canvas
 - [ ] Run code using web container
-
 
 ## Technologies
 
@@ -30,19 +29,19 @@ Code Copilot Chat bot
 - [ai](https://sdk.vercel.ai) - A Library for AI building Applications
 - [Auth js](https://authjs.dev/) - Authentication Library
 
-
 ## Installation
 
 ```bash
 pnpm  install
 ```
+
 ```bash
 pnpm run dev
 ```
+
 ## License
 
 MIT License
-
 
 ## Contributing
 

@@ -7,7 +7,7 @@ import {
   SidebarMenuItem,
 } from "../ui/sidebar";
 import useSwr from "swr";
-import { Chat } from "@/lib/types";
+import { Chat } from "@/lib/drizzle";
 import { fetcher, groupChats } from "@/lib/utils";
 import Spinner from "../ai/spinner";
 
@@ -20,7 +20,7 @@ export default function NavItems() {
     {
       suspense: true,
       fallbackData: [],
-    },
+    }
   );
   const groupedChats = groupChats(chats || []);
 
@@ -60,7 +60,7 @@ export default function NavItems() {
           {groupedChats.lastWeek.length > 0 && (
             <SidebarGroup className="group-data-[collapsible=icon]:hidden">
               <SidebarGroupLabel>Previous 7 Days</SidebarGroupLabel>
-              <SidebarGroupContent  className="list-none">
+              <SidebarGroupContent className="list-none">
                 {groupedChats.lastWeek.map((chat) => (
                   <NavItem key={chat.id} chat={chat} />
                 ))}
@@ -70,7 +70,7 @@ export default function NavItems() {
           {groupedChats.lastMonth.length > 0 && (
             <SidebarGroup className="group-data-[collapsible=icon]:hidden">
               <SidebarGroupLabel>Last Month</SidebarGroupLabel>
-              <SidebarGroupContent  className="list-none">
+              <SidebarGroupContent className="list-none">
                 {groupedChats.lastMonth.map((chat) => (
                   <NavItem key={chat.id} chat={chat} />
                 ))}
@@ -80,7 +80,7 @@ export default function NavItems() {
           {groupedChats.older.length > 0 && (
             <SidebarGroup className="group-data-[collapsible=icon]:hidden">
               <SidebarGroupLabel>Older Chats</SidebarGroupLabel>
-              <SidebarGroupContent  className="list-none">
+              <SidebarGroupContent className="list-none">
                 {groupedChats.older.map((chat) => (
                   <NavItem key={chat.id} chat={chat} />
                 ))}
@@ -90,9 +90,9 @@ export default function NavItems() {
         </>
       ) : (
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-          <SidebarGroupContent  className="list-none">
+          <SidebarGroupContent className="list-none">
             <SidebarMenuItem>
-              <SidebarMenuButton >
+              <SidebarMenuButton>
                 <MessageSquarePlus size={20} />
                 <span className="ml-2">No recent chats</span>
               </SidebarMenuButton>

@@ -10,7 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Chat } from "@/lib/types";
 import { deleteChat, editChat } from "@/lib/actions/actions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -27,6 +26,7 @@ import {
   Trash2,
 } from "lucide-react";
 import AlertMessage from "@/components/auth/alert";
+import { Chat } from "@/lib/drizzle";
 
 interface Props {
   chat: Chat;

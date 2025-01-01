@@ -1,21 +1,18 @@
 import "server-only";
-import prisma from "@/lib/db";
-import { Chat } from "@/lib/types";
+import { db } from "@/lib/drizzle";
 import { cache } from "react";
-import { Prisma } from "@prisma/client";
 import { CoreMessage } from "ai";
 import { auth } from "@/app/auth";
 import { getChatTitle } from "@/lib/actions/helpers";
+import { chats } from "../drizzle/schema";
 
 export const getChat = cache(async (cid: string) => {
   try {
-    const chat = await prisma.chat.findFirst({
-      where: {
-        id: cid,
-      },
+    const chat = await db.query.chats.findFirst({
+      where: (chat, { eq }) => eq(chat.id, cid),
     });
     if (!chat) return null;
-    return chat as unknown as Chat;
+    return chat;
   } catch (e) {
     return null;
   }
@@ -24,15 +21,11 @@ export const getChat = cache(async (cid: string) => {
 export const getChats = cache(async (userId: string | undefined) => {
   if (!userId) return [];
   try {
-    const chats = await prisma.chat.findMany({
-      where: {
-        userId: userId,
-      },
-      orderBy: {
-        updatedAt: "desc",
-      },
+    const chats = await db.query.chats.findMany({
+      where: (chat, { eq }) => eq(chat.userId, userId),
+      orderBy: (chat, { desc }) => desc(chat.updatedAt),
     });
-    return chats as unknown as Chat[];
+    return chats;
   } catch (e) {
     return [];
   }
@@ -40,11 +33,10 @@ export const getChats = cache(async (userId: string | undefined) => {
 
 const getChatById = cache(async (id: string | undefined) => {
   if (!id) return null;
-  return prisma.chat.findUnique({
-    where: {
-      id: id,
-    },
+  const chat = await db.query.chats.findFirst({
+    where: (chat, { eq }) => eq(chat.id, id),
   });
+  return chat;
 });
 
 export async function saveChatData(id: string, messages: CoreMessage[]) {
@@ -54,19 +46,20 @@ export async function saveChatData(id: string, messages: CoreMessage[]) {
     const title = existing ? existing.title : await getChatTitle(messages);
     const userId = existing ? existing.userId : (await session)?.user?.id;
     if (!userId) return null;
-    await prisma.chat.upsert({
-      where: { id: id },
-      update: {
-        messages: messages as unknown as Prisma.InputJsonValue[],
-      },
-      create: {
+    await db
+      .insert(chats)
+      .values({
         id: id,
-        title: title,
-        messages: messages as unknown as Prisma.InputJsonValue[],
-        path: `/chat/${id}`,
         userId: userId,
-      },
-    });
+        title: title,
+        messages: messages,
+      })
+      .onConflictDoUpdate({
+        target: [chats.id],
+        set: {
+          messages: messages,
+        },
+      });
   } catch (e) {
     console.error("Error saving chat data:");
     return null;
@@ -74,18 +67,21 @@ export async function saveChatData(id: string, messages: CoreMessage[]) {
 }
 
 export const getUserChats = cache(async () => {
-  const session = await auth();
-  const userId = session?.user?.id;
-  if (!userId) {
+  try {
+    const session = await auth();
+    const userId = session?.user?.id;
+    if (!userId) {
+      return [];
+    }
+    const chats = await db.query.chats.findMany({
+      where: (chats, { eq }) => eq(chats.userId, userId),
+      orderBy: (chat, { desc }) => desc(chat.updatedAt),
+      with: {
+        user: true,
+      },
+    });
+    return chats;
+  } catch (e) {
     return [];
   }
-  const chats = await prisma.chat.findMany({
-    where: {
-      userId,
-    },
-    include: {
-      user: true,
-    },
-  });
-  return chats;
 });

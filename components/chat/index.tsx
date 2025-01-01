@@ -4,7 +4,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useChat } from "ai/react";
 import InputField from "@/components/chat/input-field";
 import Messages from "@/components/chat/messages";
-import { Attachment } from "@prisma/client";
 import UploadDialog from "@/components/chat/upload-dialog";
 import ScrollAnchor from "./scroll-to-bottom";
 import EmptyScreen from "./empty-messages";
@@ -18,6 +17,7 @@ import Link from "next/link";
 import { useIsMobile } from "@/lib/hooks/use-mobile";
 import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
+import { Attachment } from "@/lib/drizzle";
 
 interface ChatProps {
   initialMessages: Message[];
@@ -153,7 +153,7 @@ export default function Chat({
               target="_blank"
               className="text-sm flex gap-1 items-center text-muted-foreground"
             >
-              <Github className="h-4 w-4 text-primary" /> View Project On Github
+              <Github className="h-3 w-3" /> View Project On Github
             </Link>
           </div>
         </div>

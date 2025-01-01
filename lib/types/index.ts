@@ -1,15 +1,4 @@
-import {   CoreMessage } from "ai";
-import  {Attachment} from "@prisma/client"
-
-export type Chat = {
-  id: string;
-  title: string;
-  path: string;
-  messages: CoreMessage[];
-  createdAt: Date;
-  userId: string;
-  updatedAt: Date;
-};
+import { Attachment, Chat } from "../drizzle";
 
 type Status = "success" | "error";
 
@@ -18,16 +7,14 @@ export type AuthStatus = {
   message: string;
 };
 
-
 export type FileState = {
   attachment?: Attachment;
   error?: string;
 };
-export type GroupedChats={
+export type GroupedChats = {
   today: Chat[];
-    yesterday: Chat[];
-    lastWeek: Chat[];
-    lastMonth: Chat[];
-    older: Chat[];
-}
-
+  yesterday: Chat[];
+  lastWeek: Chat[];
+  lastMonth: Chat[];
+  older: Chat[];
+};

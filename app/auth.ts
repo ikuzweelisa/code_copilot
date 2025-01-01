@@ -1,9 +1,9 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { cache } from "react";
-import prisma from "@/lib/db";
+import { db } from "@/lib/drizzle";
 
 const {
   signIn,
@@ -11,7 +11,7 @@ const {
   handlers,
   auth: isAuth,
 } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: DrizzleAdapter(db),
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,

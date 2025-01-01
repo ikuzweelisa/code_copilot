@@ -11,10 +11,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { Chat } from "@/lib/types";
 import { DeleteDialog, RenameDialog, ShareDialog } from "./dialogs";
 import { useRouter } from "next/navigation";
-import { User } from "@prisma/client";
+import {Chat,User} from "@/lib/drizzle"
 
 interface Props {
   chat: Chat & { user: User };

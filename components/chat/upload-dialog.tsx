@@ -5,10 +5,10 @@ import {
 } from "@/components/ui/popover";
 import { AlertCircle, FileText, Paperclip, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Attachment } from "@prisma/client";
 import { ChangeEvent, useRef } from "react";
 import { toast } from "sonner";
 import { saveFile } from "@/lib/actions/actions";
+import { Attachment } from "@/lib/drizzle";
 
 interface UploadDialogProps {
   attachment: Attachment | undefined;
@@ -56,6 +56,7 @@ export default function UploadDialog({
       type,
       chatId: chatId,
       createdAt: new Date(),
+      updatedAt: new Date(),
     });
     e.target.value = "";
   }
