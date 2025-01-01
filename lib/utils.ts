@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Chat, GroupedChats } from "@/lib/types";
+import { GroupedChats } from "~/lib/types";
+import {Chat} from "~/lib/drizzle"
 import {
   isToday,
   isYesterday,

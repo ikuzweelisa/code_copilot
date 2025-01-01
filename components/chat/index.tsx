@@ -1,21 +1,23 @@
 "use client";
 import React, { Suspense, useState } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useChat } from "ai/react";
-import InputField from "@/components/chat/input-field";
-import Messages from "@/components/chat/messages";
-import { Attachment } from "@prisma/client";
-import UploadDialog from "@/components/chat/upload-dialog";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { Message, useChat } from "ai/react";
+import InputField from "~/components/chat/input-field";
+import Messages from "~/components/chat/messages";
+import UploadDialog from "~/components/chat/upload-dialog";
 import ScrollAnchor from "./scroll-to-bottom";
-import EmptyScreen from "./empty-messages";
-import { Message } from "ai";
-import { useLocalStorage, useScroll } from "@/lib/hooks";
-import { cn } from "@/lib/utils";
+import EmptyScreen from "~/components/chat/empty-messages";
+
+import { useLocalStorage, useScroll } from "~/lib/hooks";
+import { cn } from "~/lib/utils";
 import { useSWRConfig } from "swr";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { useIsMobile } from "@/lib/hooks/use-mobile";
+import { useIsMobile } from "~/lib/hooks/use-mobile";
+import { useSession } from "next-auth/react";
+import { Github } from "lucide-react";
+import { Attachment } from "~/lib/drizzle";
 
 interface ChatProps {
   initialMessages: Message[];
@@ -28,6 +30,8 @@ export default function Chat({
   chatTitle,
 }: ChatProps) {
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
+  const session = useSession();
+  const isLoggedIn = session.status === "authenticated";
   const { mutate } = useSWRConfig();
   const path = usePathname();
   const [attachment, setAttachment] = useState<Attachment | undefined>(
@@ -51,7 +55,7 @@ export default function Chat({
     },
     onFinish: () => {
       const isNew = !path.includes(chatId);
-      if (isNew) {
+      if (isNew && isLoggedIn) {
         history.pushState({}, "", `/chat/${chatId}`);
         setChatId(chatId);
         mutate("/api/chats");
@@ -69,6 +73,16 @@ export default function Chat({
   const isMobile = useIsMobile();
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden">
+      {!isLoggedIn && (
+        <div className="w-fit h-10 flex justify-end mb-3 mt-3 mx-3 gap-2 pl-0 absolute top-1 right-1 z-10">
+          <Button variant="outline" asChild>
+            <Link href="/auth/login">Login</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/auth/login">Register</Link>
+          </Button>
+        </div>
+      )}
       {isMobile && !isEmpty && (
         <div className="w-fit h-10 flex gap-10 justify-start mb-3 mx-0 pl-0 absolute top-1 right-1 z-10">
           <span className="text-sm">
@@ -112,7 +126,7 @@ export default function Chat({
           </div>
         </>
       )}
-      <div className={cn("w-full", isEmpty ? "" : "mb-8")}>
+      <div className={cn("w-full", isEmpty ? "" : "mb-14")}>
         <div className={cn("mx-auto p-2", isEmpty ? "max-w-2xl" : "max-w-xl")}>
           <div className="w-full">
             <InputField
@@ -130,6 +144,17 @@ export default function Chat({
                 />
               </Suspense>
             </InputField>
+          </div>
+        </div>
+        <div className="flex container justify-center items-center  bottom-1 w-fit">
+          <div className=" flex justify-center absolute bottom-1  right-1/3">
+            <Link
+              href={"https://github.com/Ikuzweshema/code_copilot"}
+              target="_blank"
+              className="text-sm flex gap-1 items-center text-muted-foreground"
+            >
+              <Github className="h-3 w-3" /> View Project On Github
+            </Link>
           </div>
         </div>
       </div>

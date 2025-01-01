@@ -1,11 +1,11 @@
 "use client";
 import { MessageSquareText } from "lucide-react";
 import Link from "next/link";
-import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
+import { SidebarMenuButton, SidebarMenuItem } from "~/components/ui/sidebar";
+import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
-import { Chat } from "@/lib/types";
-import { useAnimatedText, useLocalStorage } from "@/lib/hooks";
+import { Chat } from "~/lib/drizzle";
+import { useAnimatedText, useLocalStorage } from "~/lib/hooks";
 
 interface NavItemProps {
   chat: Chat;
@@ -13,7 +13,7 @@ interface NavItemProps {
 
 export default function NavItem({ chat }: NavItemProps) {
   const pathname = usePathname();
-  const path = `${chat.path}`;
+  const path = `/chat/${chat.id}`;
   const isActive = pathname === path;
   const [newChat, setNewChat] = useLocalStorage<string | null>("chatId", null);
   const animate = chat.id === newChat;

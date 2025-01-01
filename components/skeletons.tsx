@@ -1,7 +1,10 @@
 "use client";
 import { Fragment } from "react";
 import { SidebarMenuSkeleton } from "./ui/sidebar";
-
+import { Card, CardContent, CardFooter, CardTitle } from "~/components/ui/card";
+import { Skeleton } from "~/components/ui/skeleton";
+import { Separator } from "~/components/ui/separator";
+import SearchInput from "./search";
 export function ChatsSkeleton() {
   return (
     <Fragment>
@@ -11,11 +14,6 @@ export function ChatsSkeleton() {
     </Fragment>
   );
 }
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Separator } from "@/components/ui/separator";
-import SearchInput from "./search";
-
 function ChatItemSkeleton() {
   return (
     <Card className="rounded-md w-full">

@@ -10,7 +10,7 @@ import {
   PythonIcon,
   ReactIcon,
   TypeScriptIcon,
-} from "@/components/ui/icons";
+} from "~/components/ui/icons";
 import { CpuIcon } from "lucide-react";
 import React from "react";
 

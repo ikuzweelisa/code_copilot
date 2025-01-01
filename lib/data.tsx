@@ -3,7 +3,7 @@ import {
   PrismaIcon,
   ReactIcon,
   TypeScriptIcon,
-} from "@/components/ui/icons";
+} from "~/components/ui/icons";
 import React from "react";
 
 const exampleMessages: Array<{ heading: string; icon: React.ReactNode }> = [

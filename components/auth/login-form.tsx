@@ -4,9 +4,9 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import Providers from "@/components/auth/providers";
-import { AssitantIcon } from "@/components/ui/icons";
+} from "~/components/ui/card";
+import Providers from "~/components/auth/providers";
+import { AssitantIcon } from "~/components/ui/icons";
 
 export function LoginForm() {
   return (

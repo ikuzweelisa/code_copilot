@@ -1,4 +1,4 @@
-import { Attachment } from "@prisma/client";
+import { Attachment } from "~/lib/drizzle";
 import { FileText } from "lucide-react";
 
 interface MessageProps {

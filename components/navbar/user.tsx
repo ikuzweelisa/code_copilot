@@ -9,10 +9,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import ModeToggle from "@/components/navbar/toggle-mode";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+} from "~/components/ui/dropdown-menu";
+import { Button } from "~/components/ui/button";
+import ModeToggle from "~/components/navbar/toggle-mode";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Session } from "next-auth";
 import { use } from "react";
 

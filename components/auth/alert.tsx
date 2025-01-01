@@ -1,5 +1,5 @@
-import { AuthStatus } from "@/lib/types";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AuthStatus } from "~/lib/types";
+import { Alert, AlertDescription } from "~/components/ui/alert";
 import { CheckCheck, ShieldAlert, TriangleAlert } from "lucide-react";
 
 export default function AlertMessage(status: AuthStatus) {

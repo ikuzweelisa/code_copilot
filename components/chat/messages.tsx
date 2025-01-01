@@ -1,9 +1,9 @@
 "use client";
-import { UserMessage } from "@/components/ai/user-message";
+import { UserMessage } from "~/components/ai/user-message";
 import React, { forwardRef } from "react";
-import { SpinnerMessage } from "../ai/spinner-message";
+import { SpinnerMessage } from "~/components/ai/spinner-message";
 import { ChatRequestOptions, Message } from "ai";
-import { BotMessage } from "../ai/bot-message";
+import { BotMessage } from "~/components/ai/bot-message";
 interface MessageProps {
   messages: Message[];
   error: Error | undefined;
