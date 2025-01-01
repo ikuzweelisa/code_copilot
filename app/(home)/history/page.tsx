@@ -1,6 +1,6 @@
-import ChatHistory from "@/components/chat-history";
-import { ChatHistorySkeleton } from "@/components/skeletons";
-import { getUserChats } from "@/lib/actions";
+import ChatHistory from "~/components/chat-history";
+import { ChatHistorySkeleton } from "~/components/skeletons";
+import { getUserChats } from "~/lib/actions";
 import { Suspense } from "react";
 
 export const metadata = {

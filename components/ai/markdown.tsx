@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "../ui/table";
 import Code from "./code";
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 
 export function Markdown({ children }: { children: string }) {
   const components = useMemo(

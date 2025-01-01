@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback } from "./avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 
 export const AssitantIcon = ({ size = 16 ,className}: { size?: number,className?:string }) => (
   <svg

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { MessageSquarePlus } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "~/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,7 +9,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "~/components/ui/card";
 
 export const metadata: Metadata = {
   title: "Page Not Found",

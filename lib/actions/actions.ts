@@ -1,13 +1,13 @@
 "use server";
-import { AuthStatus, FileState } from "@/lib/types";
+import { AuthStatus, FileState } from "~/lib/types";
 import { AuthError } from "next-auth";
 import { BuiltInProviderType } from "@auth/core/providers";
-import { signIn } from "@/app/auth";
-import { db } from "@/lib/drizzle";
-import { editChatSchema, fileSchema } from "../types/schema";
+import { signIn } from "~/app/auth";
+import { db } from "~/lib/drizzle";
+import { editChatSchema, fileSchema } from "~/lib/types/schema";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
-import { chats } from "../drizzle/schema";
+import { chats } from "~/lib/drizzle/schema";
 import { eq } from "drizzle-orm";
 
 export default async function signInWithProvider(

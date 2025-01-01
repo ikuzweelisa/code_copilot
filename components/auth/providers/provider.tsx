@@ -1,12 +1,12 @@
 "use client";
 import { useActionState } from "react";
-import { Button } from "@/components/ui/button";
-import signInWithProvider from "@/lib/actions/actions";
+import { Button } from "~/components/ui/button";
+import signInWithProvider from "~/lib/actions/actions";
 import { GitHubLogoIcon, ReloadIcon } from "@radix-ui/react-icons";
-import AlertMessage from "@/components/auth/alert";
+import AlertMessage from "~/components/auth/alert";
 import Image from "next/image";
 import { BuiltInProviderType } from "@auth/core/providers";
-import { Card } from "@/components/ui/card";
+import { Card } from "~/components/ui/card";
 import { Github } from "lucide-react";
 
 type ProviderProps = {

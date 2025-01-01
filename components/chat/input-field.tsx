@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "~/components/ui/button";
 import Textarea from "react-textarea-autosize";
 import { MoveUp } from "lucide-react";
 import React, { ChangeEvent, FormEvent, useRef } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 import { LoadingButton } from "../ai/spinner-message";
 
 interface InputFieldProps {

@@ -6,14 +6,14 @@ import {
   ThumbsDown,
   ThumbsUp,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "~/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "~/components/ui/tooltip";
 import { toast } from "sonner";
-import { useClipBoard } from "@/lib/hooks";
+import { useClipBoard } from "~/lib/hooks";
 import { ChatRequestOptions } from "ai";
 
 interface Props {

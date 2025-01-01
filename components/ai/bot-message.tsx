@@ -1,10 +1,10 @@
 "use client";
-import { AssitantIcon } from "@/components/ui/icons";
-import ButtonRow from "@/components/ai/button-row";
-import { cn } from "@/lib/utils";
+import { AssitantIcon } from "~/components/ui/icons";
+import ButtonRow from "~/components/ai/button-row";
+import { cn } from "~/lib/utils";
 import { Markdown } from "./markdown";
 import { ChatRequestOptions } from "ai";
-import { useAnimatedText } from "@/lib/hooks";
+import { useAnimatedText } from "~/lib/hooks";
 
 export function BotMessage({
   children,

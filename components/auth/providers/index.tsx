@@ -1,4 +1,4 @@
-import Provider from "@/components/auth/providers/provider";
+import Provider from "~/components/auth/providers/provider";
 
 export default function Providers() {
   return (

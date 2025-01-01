@@ -1,8 +1,8 @@
 "use client";
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardTitle } from "~/components/ui/card";
 import { IconUser } from "./ui/icons";
 import { Separator } from "./ui/separator";
-import { formatTime } from "@/lib/utils";
+import { formatTime } from "~/lib/utils";
 import { Button } from "./ui/button";
 import { Ellipsis } from "lucide-react";
 import {
@@ -13,7 +13,7 @@ import {
 } from "./ui/dropdown-menu";
 import { DeleteDialog, RenameDialog, ShareDialog } from "./dialogs";
 import { useRouter } from "next/navigation";
-import {Chat,User} from "@/lib/drizzle"
+import {Chat,User} from "~/lib/drizzle"
 
 interface Props {
   chat: Chat & { user: User };

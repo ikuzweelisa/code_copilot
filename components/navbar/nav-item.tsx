@@ -1,11 +1,11 @@
 "use client";
 import { MessageSquareText } from "lucide-react";
 import Link from "next/link";
-import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { cn } from "@/lib/utils";
+import { SidebarMenuButton, SidebarMenuItem } from "~/components/ui/sidebar";
+import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
-import { Chat } from "@/lib/drizzle";
-import { useAnimatedText, useLocalStorage } from "@/lib/hooks";
+import { Chat } from "~/lib/drizzle";
+import { useAnimatedText, useLocalStorage } from "~/lib/hooks";
 
 interface NavItemProps {
   chat: Chat;

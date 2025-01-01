@@ -1,8 +1,8 @@
 import { Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Input } from "~/components/ui/input";
 import React from "react";
 import Form from "next/form";
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 
 interface SearchProps {
   searchTerm: string;

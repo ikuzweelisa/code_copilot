@@ -1,9 +1,9 @@
 import "./globals.css";
-import ThemeProvider from "@/components/providers/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import ThemeProvider from "~/components/providers/theme-provider";
+import { TooltipProvider } from "~/components/ui/tooltip";
 import { SessionProvider } from "next-auth/react";
-import { Toaster } from "@/components/ui/sonner";
-import { cn } from "@/lib/utils";
+import { Toaster } from "~/components/ui/sonner";
+import { cn } from "~/lib/utils";
 import { Geist } from "next/font/google";
 import React from "react";
 export const metadata = {

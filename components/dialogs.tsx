@@ -9,11 +9,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { deleteChat, editChat } from "@/lib/actions/actions";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useClipBoard } from "@/lib/hooks";
+} from "~/components/ui/dialog";
+import { deleteChat, editChat } from "~/lib/actions/actions";
+import { Input } from "~/components/ui/input";
+import { Button } from "~/components/ui/button";
+import { useClipBoard } from "~/lib/hooks";
 import {
   AlertCircle,
   Check,
@@ -25,8 +25,8 @@ import {
   Share2,
   Trash2,
 } from "lucide-react";
-import AlertMessage from "@/components/auth/alert";
-import { Chat } from "@/lib/drizzle";
+import AlertMessage from "~/components/auth/alert";
+import { Chat } from "~/lib/drizzle";
 
 interface Props {
   chat: Chat;

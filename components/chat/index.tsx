@@ -1,23 +1,23 @@
 "use client";
 import React, { Suspense, useState } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { useChat } from "ai/react";
-import InputField from "@/components/chat/input-field";
-import Messages from "@/components/chat/messages";
-import UploadDialog from "@/components/chat/upload-dialog";
+import { ScrollArea } from "~/components/ui/scroll-area";
+import { Message, useChat } from "ai/react";
+import InputField from "~/components/chat/input-field";
+import Messages from "~/components/chat/messages";
+import UploadDialog from "~/components/chat/upload-dialog";
 import ScrollAnchor from "./scroll-to-bottom";
-import EmptyScreen from "./empty-messages";
-import { Message } from "ai";
-import { useLocalStorage, useScroll } from "@/lib/hooks";
-import { cn } from "@/lib/utils";
+import EmptyScreen from "~/components/chat/empty-messages";
+
+import { useLocalStorage, useScroll } from "~/lib/hooks";
+import { cn } from "~/lib/utils";
 import { useSWRConfig } from "swr";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { useIsMobile } from "@/lib/hooks/use-mobile";
+import { useIsMobile } from "~/lib/hooks/use-mobile";
 import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
-import { Attachment } from "@/lib/drizzle";
+import { Attachment } from "~/lib/drizzle";
 
 interface ChatProps {
   initialMessages: Message[];

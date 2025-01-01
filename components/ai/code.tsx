@@ -1,16 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "~/components/ui/button";
 import { CheckIcon, CopyIcon } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import {
   materialDark,
   materialLight,
 } from "react-syntax-highlighter/dist/cjs/styles/prism";
-import { useClipBoard } from "@/lib/hooks";
+import { useClipBoard } from "~/lib/hooks";
 import { useTheme } from "next-themes";
 import { Card } from "../ui/card";
-import { getLanguageIcon } from "@/lib/helpers";
+import { getLanguageIcon } from "~/lib/helpers";
 
 interface CodeProps {
   language: string;

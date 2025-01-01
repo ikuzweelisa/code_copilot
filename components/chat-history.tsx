@@ -1,9 +1,9 @@
 "use client";
-import ChatItem from "@/components/chat-item";
+import ChatItem from "~/components/chat-item";
 import SearchInput from "./search";
-import useSearch from "@/lib/hooks/use-search";
+import useSearch from "~/lib/hooks/use-search";
 import { MoveRight, Search } from "lucide-react";
-import {Chat,User} from "@/lib/drizzle"
+import {Chat,User} from "~/lib/drizzle"
 import { Button } from "./ui/button";
 import Link from "next/link";
 

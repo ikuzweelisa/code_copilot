@@ -1,9 +1,9 @@
 import "server-only";
-import { db } from "@/lib/drizzle";
+import { db } from "~/lib/drizzle";
 import { cache } from "react";
 import { CoreMessage } from "ai";
-import { auth } from "@/app/auth";
-import { getChatTitle } from "@/lib/actions/helpers";
+import { auth } from "~/app/auth";
+import { getChatTitle } from "~/lib/actions/helpers";
 import { chats } from "../drizzle/schema";
 
 export const getChat = cache(async (cid: string) => {

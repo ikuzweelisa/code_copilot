@@ -1,7 +1,7 @@
-import Chat from "@/components/chat";
-import { getChat } from "@/lib/actions";
-import { converToUIMessage } from "@/lib/actions/helpers";
-import { capitalize } from "@/lib/utils";
+import Chat from "~/components/chat";
+import { getChat } from "~/lib/actions";
+import { converToUIMessage } from "~/lib/actions/helpers";
+import { capitalize } from "~/lib/utils";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 

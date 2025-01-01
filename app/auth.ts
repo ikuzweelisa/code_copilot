@@ -3,7 +3,7 @@ import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { cache } from "react";
-import { db } from "@/lib/drizzle";
+import { db } from "~/lib/drizzle";
 
 const {
   signIn,

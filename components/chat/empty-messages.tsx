@@ -1,8 +1,8 @@
-import { exampleMessages } from "@/lib/data";
+import { exampleMessages } from "~/lib/data";
 import { Card, CardContent } from "../ui/card";
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 import { generateId, Message } from "ai";
-import { useAnimatedText } from "@/lib/hooks";
+import { useAnimatedText } from "~/lib/hooks";
 import { useSession } from "next-auth/react";
 
 interface Props {

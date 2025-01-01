@@ -1,4 +1,4 @@
-import NavItem from "@/components/navbar/nav-item";
+import NavItem from "~/components/navbar/nav-item";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -7,8 +7,8 @@ import {
   SidebarMenuItem,
 } from "../ui/sidebar";
 import useSwr from "swr";
-import { Chat } from "@/lib/drizzle";
-import { fetcher, groupChats } from "@/lib/utils";
+import { Chat } from "~/lib/drizzle";
+import { fetcher, groupChats } from "~/lib/utils";
 import Spinner from "../ai/spinner";
 
 import { MessageSquarePlus } from "lucide-react";

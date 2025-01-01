@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
 import { TriangleAlert } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "~/components/ui/button";
 import Link from "next/link";
-import { AssitantIcon } from "@/components/ui/icons";
+import { AssitantIcon } from "~/components/ui/icons";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "ChatBot-Error",

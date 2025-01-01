@@ -1,4 +1,4 @@
-import { AssitantIcon } from "@/components/ui/icons";
+import { AssitantIcon } from "~/components/ui/icons";
 import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 export function SpinnerMessage() {

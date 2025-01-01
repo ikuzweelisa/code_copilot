@@ -1,4 +1,4 @@
-import { saveChatData } from "@/lib/actions";
+import { saveChatData } from "~/lib/actions";
 import { google } from "@ai-sdk/google";
 import { convertToCoreMessages, streamText } from "ai";
 import { NextRequest } from "next/server";
