@@ -111,7 +111,7 @@ importers:
         specifier: 9.13.1
         version: 9.13.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react-markdown:
-        specifier: ^9.0.1
+        specifier: 9.0.1
         version: 9.0.1(@types/react@19.0.1)(react@19.0.0)
       react-syntax-highlighter:
         specifier: 15.6.1
@@ -120,7 +120,7 @@ importers:
         specifier: 8.5.4
         version: 8.5.4(@types/react@19.0.1)(react@19.0.0)
       remark-gfm:
-        specifier: ^4.0.0
+        specifier: 4.0.0
         version: 4.0.0
       server-only:
         specifier: 0.0.1
