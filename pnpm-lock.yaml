@@ -18,10 +18,10 @@ importers:
         specifier: 1.0.5
         version: 1.0.5(zod@3.24.1)
       '@auth/core':
-        specifier: ^0.35.3
+        specifier: 0.35.3
         version: 0.35.3
       '@auth/drizzle-adapter':
-        specifier: ^1.7.4
+        specifier: 1.7.4
         version: 1.7.4
       '@neondatabase/serverless':
         specifier: 0.10.4
