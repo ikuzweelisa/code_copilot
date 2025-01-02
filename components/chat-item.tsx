@@ -1,9 +1,9 @@
 "use client";
 import { Card, CardContent, CardFooter, CardTitle } from "~/components/ui/card";
-import { IconUser } from "./ui/icons";
-import { Separator } from "./ui/separator";
+import { IconUser } from "~/components/ui/icons";
+import { Separator } from "~/components/ui/separator";
 import { formatTime } from "~/lib/utils";
-import { Button } from "./ui/button";
+import { Button } from "~/components/ui/button";
 import { Ellipsis } from "lucide-react";
 import {
   DropdownMenu,

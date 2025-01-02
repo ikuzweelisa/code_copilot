@@ -2,6 +2,7 @@ import { AdapterAccountType } from "@auth/core/adapters";
 import { CoreMessage } from "ai";
 import { relations } from "drizzle-orm";
 import {
+  index,
   integer,
   json,
   pgTable,
@@ -14,33 +15,38 @@ import {
 
 const timestamps = {
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt", { mode: "date" })
-    .notNull()
+  updatedAt: timestamp("updatedAt", { mode: "date" }).notNull()
     .defaultNow()
     .$onUpdate(() => new Date()),
 };
 
 export const users = pgTable("users", {
-  id: uuid("users_id").defaultRandom().primaryKey(),
+  id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name"),
-  email: varchar("email"),
+  email: varchar("email").unique(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
-  image: varchar("image"),
+  image: text("image"),
   ...timestamps,
 });
 
-export const chats = pgTable("chats", {
-  id: uuid("id").primaryKey(),
-  title: varchar("title").notNull(),
-  messages: json("messages").$type<CoreMessage[]>().notNull().default([]),
-  userId: uuid("userId")
-    .notNull()
-    .references(() => users.id),
-  ...timestamps,
-});
+export const chats = pgTable(
+  "chats",
+  {
+    id: varchar("id").primaryKey(),
+    title: varchar("title").notNull(),
+    messages: json("messages").$type<CoreMessage[]>().notNull().default([]),
+    userId: uuid("userId")
+      .notNull()
+      .references(() => users.id),
+    ...timestamps,
+  },
+  (chats) => ({
+    userIndex: index("user_index").on(chats.userId),
+  })
+);
 
 export const accounts = pgTable(
-  "account",
+  "accounts",
   {
     userId: uuid("user_id")
       .notNull()
@@ -55,7 +61,6 @@ export const accounts = pgTable(
     scope: text("scope"),
     id_token: text("id_token"),
     session_state: text("session_state"),
-    ...timestamps,
   },
   (account) => ({
     compoundKey: primaryKey({
@@ -67,10 +72,13 @@ export const accounts = pgTable(
 export const attachments = pgTable("attachments", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: varchar("name").notNull(),
-  chatId: uuid("chatId")
+  chatId: varchar("chatId")
     .notNull()
-    .references(() => chats.id),
-  path: varchar("url").notNull(),
+    .references(() => chats.id, {
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    }),
+  path: varchar("path").notNull(),
   type: varchar("type").notNull(),
   ...timestamps,
 });

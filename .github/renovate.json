@@ -6,6 +6,7 @@
     ":automergeMinor",
     ":enableVulnerabilityAlerts"
   ],
+  "schedule": ["on the first day of the month at 6:00am"],
   "packageRules": [
     {
       "matchPackagePatterns": ["^@radix-ui/"],

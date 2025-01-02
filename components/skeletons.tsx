@@ -55,7 +55,7 @@ export function ChatHistorySkeleton() {
           />
         </div>
       </div>
-      {Array.from({ length: 4 }).map((_, index) => (
+      {Array.from({ length: 3 }).map((_, index) => (
         <ChatItemSkeleton key={index} />
       ))}
     </div>

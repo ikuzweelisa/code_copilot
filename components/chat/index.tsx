@@ -31,7 +31,7 @@ export default function Chat({
 }: ChatProps) {
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
   const session = useSession();
-  const isLoggedIn = session.status === "authenticated";
+  const isLoggedIn =session.status==="loading" ? true : !!session.data?.user; 
   const { mutate } = useSWRConfig();
   const path = usePathname();
   const [attachment, setAttachment] = useState<Attachment | undefined>(
@@ -153,7 +153,7 @@ export default function Chat({
               target="_blank"
               className="text-sm flex gap-1 items-center text-muted-foreground"
             >
-              <Github className="h-3 w-3" /> View Project On Github
+              <Github className="h-4 w-4" /> view Project On Github
             </Link>
           </div>
         </div>

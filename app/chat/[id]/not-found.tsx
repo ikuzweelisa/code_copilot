@@ -31,7 +31,7 @@ export default function NotFound() {
         <CardContent className="flex flex-col items-center space-y-4">
           <p className="text-center text-muted-foreground">
             Oops! The chat you&apos;re looking for doesn&apos;t exist or has
-            been moved.
+            been removed.
           </p>
         </CardContent>
         <CardFooter className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4">

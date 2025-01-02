@@ -1,5 +1,5 @@
 import Chat from "~/components/chat";
-import { getChat } from "~/lib/actions";
+import { getChatById } from "~/lib/actions";
 import { converToUIMessage } from "~/lib/actions/helpers";
 import { capitalize } from "~/lib/utils";
 import { Metadata } from "next";
@@ -14,7 +14,7 @@ export async function generateMetadata({
 }: PageParams): Promise<Metadata> {
   const { id } = await params;
 
-  const chat = await getChat(id);
+  const chat = await getChatById(id);
   if (!chat) notFound();
   return {
     title: capitalize(chat?.title || "Untitled"),
@@ -23,7 +23,7 @@ export async function generateMetadata({
 }
 export default async function Page({ params }: PageParams) {
   const { id } = await params;
-  const chat = await getChat(id);
+  const chat = await getChatById(id);
   if (!chat) notFound();
 
   const messages = converToUIMessage(chat.messages);

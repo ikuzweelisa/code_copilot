@@ -2,16 +2,19 @@ import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { cache } from "react";
 import { db } from "~/lib/drizzle";
+import { accounts,users } from "~/lib/drizzle/schema";
 
 const {
   signIn,
   signOut,
   handlers,
-  auth: isAuth,
+  auth,
 } = NextAuth({
-  adapter: DrizzleAdapter(db),
+  adapter: DrizzleAdapter(db,{
+    usersTable:users,
+    accountsTable:accounts
+  }),
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -44,6 +47,6 @@ const {
     },
   },
 });
-const auth = cache(isAuth);
+
 
 export { signIn, signOut, handlers, auth };

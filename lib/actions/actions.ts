@@ -9,6 +9,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { chats } from "~/lib/drizzle/schema";
 import { eq } from "drizzle-orm";
+import { redirect } from "next/navigation";
 
 export default async function signInWithProvider(
   prevState: AuthStatus | undefined,
@@ -65,60 +66,45 @@ export async function deleteChat(
   prevState: AuthStatus | undefined,
   formData: FormData
 ): Promise<AuthStatus> {
-  try {
-    const validate = z
-      .object({
-        chatId: z.string().min(10, {
-          message: "Chat not found",
-        }),
-      })
-      .safeParse(Object.fromEntries(formData.entries()));
-    if (!validate.success) {
-      return {
-        status: "error",
-        message: validate.error.message,
-      };
-    }
-    const { chatId } = validate.data;
-    await db.delete(chats).where(eq(chats.id, chatId));
-
-    revalidatePath("/history", "page");
-    return {
-      status: "success",
-      message: "Chat Removed ",
-    };
-  } catch (error) {
+  const validate = z
+    .object({
+      chatId: z.string().min(10, {
+        message: "Chat not found",
+      }),
+    })
+    .safeParse(Object.fromEntries(formData.entries()));
+  if (!validate.success) {
     return {
       status: "error",
-      message: "Chat not removed try again",
+      message: validate.error.message,
     };
   }
+  const { chatId } = validate.data;
+  await db.delete(chats).where(eq(chats.id, chatId));
+
+  revalidatePath("/history", "page");
+  redirect("/history");
+  return {
+    status: "success",
+    message: "Chat Removed ",
+  };
 }
 
 export async function editChat(
   prevState: AuthStatus | undefined,
   formData: FormData
 ): Promise<AuthStatus> {
-  try {
-    const validate = editChatSchema.safeParse(
-      Object.fromEntries(formData.entries())
-    );
-    if (!validate.success) {
-      return {
-        status: "error",
-        message: validate.error.errors[0].message,
-      };
-    }
-    const { chatId, title } = validate.data;
-    await db.update(chats).set({ title: title }).where(eq(chats.id, chatId));
-    return {
-      message: "Title has been updated",
-      status: "success",
-    };
-  } catch (e) {
+  const validate = editChatSchema.safeParse(
+    Object.fromEntries(formData.entries())
+  );
+  if (!validate.success) {
     return {
       status: "error",
-      message: "Chat not Updated try again",
+      message: validate.error.errors[0].message,
     };
   }
+  const { chatId, title } = validate.data;
+  await db.update(chats).set({ title: title }).where(eq(chats.id, chatId));
+  revalidatePath("/history", "page");
+  redirect("/history");
 }

@@ -4,19 +4,7 @@ import { cache } from "react";
 import { CoreMessage } from "ai";
 import { auth } from "~/app/auth";
 import { getChatTitle } from "~/lib/actions/helpers";
-import { chats } from "../drizzle/schema";
-
-export const getChat = cache(async (cid: string) => {
-  try {
-    const chat = await db.query.chats.findFirst({
-      where: (chat, { eq }) => eq(chat.id, cid),
-    });
-    if (!chat) return null;
-    return chat;
-  } catch (e) {
-    return null;
-  }
-});
+import { chats } from "~/lib/drizzle/schema";
 
 export const getChats = cache(async (userId: string | undefined) => {
   if (!userId) return [];
@@ -31,13 +19,13 @@ export const getChats = cache(async (userId: string | undefined) => {
   }
 });
 
-const getChatById = cache(async (id: string | undefined) => {
+export const getChatById = async (id: string | undefined) => {
   if (!id) return null;
   const chat = await db.query.chats.findFirst({
     where: (chat, { eq }) => eq(chat.id, id),
   });
   return chat;
-});
+};
 
 export async function saveChatData(id: string, messages: CoreMessage[]) {
   try {
@@ -55,7 +43,7 @@ export async function saveChatData(id: string, messages: CoreMessage[]) {
         messages: messages,
       })
       .onConflictDoUpdate({
-        target: [chats.id],
+        target: chats.id,
         set: {
           messages: messages,
         },
@@ -66,7 +54,7 @@ export async function saveChatData(id: string, messages: CoreMessage[]) {
   }
 }
 
-export const getUserChats = cache(async () => {
+export const getUserChats = async () => {
   try {
     const session = await auth();
     const userId = session?.user?.id;
@@ -84,4 +72,4 @@ export const getUserChats = cache(async () => {
   } catch (e) {
     return [];
   }
-});
+};
