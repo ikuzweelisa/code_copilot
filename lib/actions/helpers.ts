@@ -9,6 +9,9 @@ import {
   ToolInvocation,
 } from "ai";
 import { z } from "zod";
+import { UTApi } from "uploadthing/server";
+
+export const utpapi = new UTApi();
 
 async function getChatTitle(messages: CoreMessage[]) {
   const title = await generateObject({

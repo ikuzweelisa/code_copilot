@@ -1,23 +1,21 @@
 "use client";
-import React, { Suspense, useState } from "react";
+import React, { useOptimistic, useState } from "react";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { Message, useChat } from "ai/react";
-import InputField from "~/components/chat/input-field";
+import InputField from "~/components/chat/input";
 import Messages from "~/components/chat/messages";
-import UploadDialog from "~/components/chat/upload-dialog";
-import ScrollAnchor from "./scroll-to-bottom";
+import ScrollAnchor from "~/components/chat/scroll-anchor";
 import EmptyScreen from "~/components/chat/empty-messages";
-
 import { useLocalStorage, useScroll } from "~/lib/hooks";
 import { cn } from "~/lib/utils";
 import { useSWRConfig } from "swr";
 import { usePathname } from "next/navigation";
-import { Button } from "../ui/button";
+import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { useIsMobile } from "~/lib/hooks/use-mobile";
 import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
-import { Attachment } from "~/lib/drizzle";
+import { Attachment } from "ai";
 
 interface ChatProps {
   initialMessages: Message[];
@@ -31,12 +29,14 @@ export default function Chat({
 }: ChatProps) {
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
   const session = useSession();
-  const isLoggedIn =session.status==="loading" ? true : !!session.data?.user; 
+  const isLoggedIn = session.status === "loading" ? true : !!session.data?.user;
   const { mutate } = useSWRConfig();
   const path = usePathname();
-  const [attachment, setAttachment] = useState<Attachment | undefined>(
-    undefined
-  );
+
+  const [attachments, setAttachments] = useState<
+    Array<Attachment>
+  >([]);
+
   const {
     handleSubmit,
     handleInputChange,
@@ -135,15 +135,9 @@ export default function Chat({
               input={input}
               handleSubmit={handleSubmit}
               handleChange={handleInputChange}
-            >
-              <Suspense fallback={null}>
-                <UploadDialog
-                  attachment={attachment}
-                  chatId={chatId}
-                  setAttachment={setAttachment}
-                />
-              </Suspense>
-            </InputField>
+              attachements={attachments}
+              setAttachments={setAttachments}
+            />
           </div>
         </div>
         <div className="flex container justify-center items-center  bottom-1 w-fit">
