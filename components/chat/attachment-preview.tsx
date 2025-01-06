@@ -9,14 +9,14 @@ export default function AttachmentPreview({
   handleRemove,
 }: {
   attachment: Attachment;
-  isUploading?: boolean;
+  isUploading: boolean;
   handleRemove: (name: string | undefined) => void;
 }) {
   return (
     <div className="relative p-1 w-full max-w-[10rem] flex gap-0.5 bg-muted/50 rounded-lg">
-      {isUploading && !attachment.url.includes("utfs.io") ? (
+      {isUploading ? (
         <Loading />
-      ) : attachment.contentType === "image/png" ? (
+      ) : attachment.contentType?.startsWith("image/") ? (
         <Image
           src={attachment.url}
           width={40}

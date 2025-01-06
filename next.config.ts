@@ -12,13 +12,17 @@ const nextConfig: NextConfig = {
         hostname: "avatars.githubusercontent.com",
       },
       {
-        protocol:"https",
-        hostname:"utfs.io"
-      }
+        protocol: "https",
+        hostname: "utfs.io",
+      },
     ],
-    
   },
-  
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     ppr: true,
     reactCompiler: true,

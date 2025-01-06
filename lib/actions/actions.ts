@@ -43,7 +43,7 @@ export default async function signInWithProvider(
 }
 
 export async function deleteAttachment(attachemnt: string) {
-  await utpapi.deleteFiles([attachemnt]);
+  await utpapi.deleteFiles(attachemnt);
 }
 export async function deleteChat(
   prevState: AuthStatus | undefined,

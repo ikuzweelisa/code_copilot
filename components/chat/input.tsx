@@ -88,25 +88,27 @@ function InputField({
   return (
     <form
       onSubmit={(e) => {
+        setAttachments([]);
         handleSubmit(e, {
           experimental_attachments: attachements,
         });
       }}
       className="flex flex-col w-full rounded-lg gap-0"
     >
-      {/* {attachements.length > 0 && ( */}
-      <div className="p-3 bg-black/90 ">
-        <div className="flex items-center gap-2">
-          {attachements.map((a) => (
-            <AttachmentPreview
-              handleRemove={removeAttachement}
-              attachment={a}
-              isUploading={isUploading}
-            />
-          ))}
+      {attachements.length > 0 && (
+        <div className="p-3 bg-black/90 ">
+          <div className="flex items-center gap-2">
+            {attachements.map((a, index) => (
+              <AttachmentPreview
+                key={index}
+                handleRemove={removeAttachement}
+                attachment={a}
+                isUploading={isUploading}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-      {/* )} */}
+      )}
       <div
         className={cn(
           "relative flex items-center bg-card   border dark:border-0 p-0"
