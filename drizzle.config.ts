@@ -8,5 +8,5 @@ export default defineConfig({
   out: "./lib/drizzle/migrations",
   schema: "./lib/drizzle/schema.ts",
   strict: true,
-  verbose: true
+  verbose: true,
 });
