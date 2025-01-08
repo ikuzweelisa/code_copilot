@@ -33,9 +33,9 @@ export default function Chat({
   const { mutate } = useSWRConfig();
   const path = usePathname();
 
-  const [attachments, setAttachments] = useState<
-    Array<Attachment>
-  >([]);
+  const [attachments, setAttachments] = useState<Array<Attachment>>([]);
+  const [optimisticAttachments, setOptimisticAttachments] =
+    useOptimistic<Array<Attachment & { isUploading?: boolean }>>(attachments);
 
   const {
     handleSubmit,
@@ -136,7 +136,9 @@ export default function Chat({
               handleSubmit={handleSubmit}
               handleChange={handleInputChange}
               attachements={attachments}
+              optimisticAttachments={optimisticAttachments}
               setAttachments={setAttachments}
+              setOPtimisticAttachments={setOptimisticAttachments}
             />
           </div>
         </div>

@@ -1,60 +1,83 @@
 import { Attachment } from "ai";
-import { FileIcon, X } from "lucide-react";
-import Image from "next/image";
-import Spinner from "~/components/ai/spinner";
+import { FileIcon, X, Loader2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import { Card, CardContent } from "~/components/ui/card";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "~/components/ui/tooltip";
+
+
 export default function AttachmentPreview({
   attachment,
-  isUploading,
   handleRemove,
 }: {
-  attachment: Attachment;
-  isUploading: boolean;
-  handleRemove: (name: string | undefined) => void;
-}) {
-  return (
-    <div className="relative p-1 w-full max-w-[10rem] flex gap-0.5 bg-muted/50 rounded-lg">
-      {isUploading ? (
-        <Loading />
-      ) : attachment.contentType?.startsWith("image/") ? (
-        <Image
-          src={attachment.url}
-          width={40}
-          height={4}
-          alt={attachment.name ?? "attachment"}
-        />
-      ) : (
-        <FileIcon className="h-8 w-6 text-muted-foreground" />
-      )}
+  attachment: Attachment & { isUploading?: boolean };
 
-      <div className="flex flex-col gap-0.5">
-        <span className="text-xs text-muted-foreground">
-          {attachment.name?.length || 0 > 20
-            ? attachment.name?.slice(0, 20) + "..."
-            : attachment.name}
-        </span>
-        <span className="text-xs text-muted-foreground">
-          {attachment.contentType}
-        </span>
-      </div>
-      <div className="flex absolute top-0 right-0">
-        <Button
-          onClick={() => handleRemove(attachment.name)}
-          variant={"ghost"}
-          size={"icon"}
-          className="p-0  outline-none "
-        >
-          <X className="h-0.5 w-0.5 bg-primary rounded-full  text-primary-foreground" />
-        </Button>
-      </div>
-    </div>
+  handleRemove: (key: string | undefined) => Promise<void>;
+}) {
+  const isImage = attachment.contentType?.startsWith("image/");
+  const isUploading = attachment.isUploading;
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Card className="group rounded-md relative w-full max-w-[12rem] transition-all duration-300 ease-in-out hover:shadow-md">
+            <CardContent className="p-1 flex items-center gap-2">
+              {isUploading ? (
+                <Loading />
+              ) : (
+                <>
+                  {isImage ? (
+                    <div className="relative w-12 h-12 rounded-sm overflow-hidden">
+                      <img
+                        src={attachment.url}
+                        alt={attachment.name ?? "attachment"}
+                        className="object-cover w-full h-full"
+                      />
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center w-12 h-12 bg-muted rounded-md">
+                      <FileIcon className="h-6 w-6 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">
+                      {attachment.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {isImage ? "Image" : attachment.contentType}
+                    </p>
+                  </div>
+                  <Button
+                    onClick={async() =>await handleRemove(attachment.key)}
+                    variant="ghost"
+                    size="icon"
+                    className={`absolute top-1 right-1 h-6 w-6 p-0 transition-opacity duration-300 group-hover:opacity-100  opacity-0`}
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{attachment.name}</p>
+          <p>{attachment.contentType}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
 function Loading() {
   return (
-    <div className="w-12 h-3 pt-0.5 px-0 mx-0 border rounded-lg">
-      <Spinner />
+    <div className="flex items-center justify-center w-full h-12">
+      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
     </div>
   );
 }

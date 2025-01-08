@@ -1,7 +1,7 @@
 import { Button } from "~/components/ui/button";
 import Textarea from "react-textarea-autosize";
 import { MoveUp, Paperclip, TriangleAlert } from "lucide-react";
-import React, { ChangeEvent, useRef } from "react";
+import React, { ChangeEvent, useRef, useTransition } from "react";
 import { cn } from "~/lib/utils";
 import { LoadingButton } from "~/components/ai/spinner-message";
 import AttachmentPreview from "~/components/chat/attachment-preview";
@@ -23,6 +23,8 @@ interface InputFieldProps {
   stop: () => void;
   attachements: Attachment[];
   setAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>;
+  setOPtimisticAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>;
+  optimisticAttachments: Array<Attachment & { isUploading?: boolean }>;
 }
 function InputField({
   handleChange,
@@ -32,9 +34,12 @@ function InputField({
   stop,
   attachements,
   setAttachments,
+  setOPtimisticAttachments,
+  optimisticAttachments,
 }: InputFieldProps) {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const attachementRef = useRef<HTMLInputElement | null>(null);
+  const [isPending, startTransition] = useTransition();
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.currentTarget.form?.requestSubmit();
@@ -42,9 +47,9 @@ function InputField({
     }
   }
 
-  const { startUpload, isUploading } = useUploadThing("imageUploader", {
+  const { startUpload } = useUploadThing("imageUploader", {
     onUploadError: (error) => {
-      toast("Error", {
+      toast.error("Error", {
         description: error.message,
         icon: <TriangleAlert />,
         position: "top-center",
@@ -62,18 +67,24 @@ function InputField({
             url: file.url,
             contentType: file.type,
             name: file.name,
+            key: file.name,
           },
         ]);
       });
     },
   });
-  function removeAttachement(name: string | undefined) {
-    if (!name) return;
-    setAttachments((current) => {
-      const filtered = current.filter((a) => a.name !== name);
+  async function removeAttachement(key: string | undefined) {
+    setOPtimisticAttachments((prev) => {
+      const filtered = prev.filter((a) => a.key !== key);
       return filtered;
     });
-    deleteAttachment(name);
+    if (!key) return;
+    const deleted = await deleteAttachment(key);
+    if (!deleted) return;
+    setAttachments((current) => {
+      const filtered = current.filter((a) => a.key !== key);
+      return filtered;
+    });
   }
   function handleOnClick() {
     if (!attachementRef.current) return;
@@ -82,6 +93,20 @@ function InputField({
   async function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || []);
     if (!files) return;
+    startTransition(() => {
+      files.forEach((file) => {
+        setOPtimisticAttachments((prev) => [
+          ...prev,
+          {
+            name: file.name,
+            contentType: file.type,
+            url: URL.createObjectURL(file),
+            isUploading: true,
+            key: file.name,
+          },
+        ]);
+      });
+    });
 
     await startUpload(files);
   }
@@ -95,15 +120,14 @@ function InputField({
       }}
       className="flex flex-col w-full rounded-lg gap-0"
     >
-      {attachements.length > 0 && (
-        <div className="p-3 bg-black/90 ">
+      {optimisticAttachments.length > 0 && (
+        <div className="p-2 bg-black/90 ">
           <div className="flex items-center gap-2">
-            {attachements.map((a, index) => (
+            {optimisticAttachments.map((a, index) => (
               <AttachmentPreview
                 key={index}
                 handleRemove={removeAttachement}
                 attachment={a}
-                isUploading={isUploading}
               />
             ))}
           </div>
@@ -119,11 +143,10 @@ function InputField({
             ref={attachementRef}
             type={"file"}
             name={"file"}
-            accept="application/pdf"
+            accept="text/*"
             onChange={handleFileChange}
             style={{ display: "none" }}
           />
-
           <Button
             variant="ghost"
             size="icon"
@@ -132,18 +155,13 @@ function InputField({
             className="absolute left-0 top-3 size-8  p-0 sm:left-4"
           >
             <Paperclip size={20} />
-            {attachements.length > 0 && (
-              <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
-                {1}
-              </div>
-            )}
             <span className="sr-only">Attachment</span>
           </Button>
         </div>
         <Textarea
           tabIndex={0}
           onKeyDown={onKeyDown}
-          placeholder="Enter a message."
+          placeholder="Enter a message..."
           className="min-h-10 max-h-28 sm:min-h-12 md:min-h-16 lg:min-h-20  w-full resize-none bg-transparent px-12 py-4  focus-within:outline-none text-base"
           autoFocus
           spellCheck={false}

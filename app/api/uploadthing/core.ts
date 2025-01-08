@@ -1,7 +1,11 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { auth as authUser } from "~/app/auth";
-const f = createUploadthing();
+const f = createUploadthing({
+  errorFormatter: (error) => {
+    throw new UploadThingError(error.message);
+  },
+});
 const auth = (req: Request) => {
   const user = authUser();
   return user;

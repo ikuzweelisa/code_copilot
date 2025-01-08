@@ -15,7 +15,8 @@ import {
 
 const timestamps = {
   createdAt: timestamp("createdAt", { mode: "date" }).notNull().defaultNow(),
-  updatedAt: timestamp("updatedAt", { mode: "date" }).notNull()
+  updatedAt: timestamp("updatedAt", { mode: "date" })
+    .notNull()
     .defaultNow()
     .$onUpdate(() => new Date()),
 };
@@ -69,20 +70,6 @@ export const accounts = pgTable(
   })
 );
 
-export const attachments = pgTable("attachments", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  name: varchar("name").notNull(),
-  chatId: varchar("chatId")
-    .notNull()
-    .references(() => chats.id, {
-      onDelete: "cascade",
-      onUpdate: "cascade",
-    }),
-  path: varchar("path").notNull(),
-  type: varchar("type").notNull(),
-  ...timestamps,
-});
-
 export const userRelations = relations(users, ({ many }) => {
   return {
     accounts: many(accounts),
@@ -96,8 +83,4 @@ export const chatRelations = relations(chats, ({ one }) => ({
 
 export const accountRelations = relations(accounts, ({ one }) => ({
   user: one(users, { fields: [accounts.userId], references: [users.id] }),
-}));
-
-export const attachmentRelations = relations(attachments, ({ one }) => ({
-  chat: one(chats, { fields: [attachments.chatId], references: [chats.id] }),
 }));
