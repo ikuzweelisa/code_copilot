@@ -52,17 +52,15 @@ export default function ViewAttachment({
               View
             </Link>
           </Button>
-          <Button
-            onClick={() => {
-              fetch(`/api/download/${attachment.url}`).then((res) =>
-                res.json()
-              );
-            }}
-            size="sm"
-            variant="outline"
-          >
-            <Download className="h-4 w-4 mr-1" />
-            Download
+          <Button size="sm" variant="outline" asChild>
+            <a
+              download
+              href={`/api/file/download?url=${attachment.url}`}
+              className="flex items-center gap-1"
+            >
+              <Download className="h-4 w-4 mr-1" />
+              Download
+            </a>
           </Button>
         </div>
       </CardFooter>

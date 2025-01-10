@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
         port: "3000",
       },
+      {
+        protocol: "https",
+        hostname: "1f1pkbmpee.ufs.sh",
+      },
     ],
   },
   typescript: {

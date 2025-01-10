@@ -1,5 +1,8 @@
 import "server-only";
 import { google } from "@ai-sdk/google";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+import { fileTypeFromBuffer } from "file-type";
 import {
   Attachment,
   CoreMessage,
@@ -14,6 +17,10 @@ import { UTApi } from "uploadthing/server";
 
 export const utpapi = new UTApi({
   token: process.env.UPLOADTHING_TOKEN,
+});
+export const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.fixedWindow(5, "5h"),
 });
 
 async function getChatTitle(messages: CoreMessage[]) {
@@ -121,4 +128,9 @@ export function converToUIMessage(
 
     return chatMessages;
   }, []);
+}
+
+export async function getFileType(buffer: ArrayBuffer) {
+  const fileType = await fileTypeFromBuffer(buffer);
+  return fileType;
 }

@@ -4,7 +4,9 @@ import { MoveUp, Paperclip, TriangleAlert } from "lucide-react";
 import React, { ChangeEvent, useRef, useTransition } from "react";
 import { cn } from "~/lib/utils";
 import { LoadingButton } from "~/components/ai/spinner-message";
-import AttachmentPreview from "~/components/chat/attachment-preview";
+import AttachmentPreview, {
+  Loading,
+} from "~/components/chat/attachment-preview";
 import { Attachment, ChatRequestOptions } from "ai";
 import { useUploadThing } from "~/lib/uploadthing";
 import { toast } from "sonner";
@@ -50,7 +52,7 @@ function InputField({
   const { startUpload } = useUploadThing("imageUploader", {
     onUploadError: (error) => {
       toast.error("Error", {
-        description: error.message,
+        description: "Attachment upload failed",
         icon: <TriangleAlert />,
         position: "top-center",
         action: {
@@ -58,6 +60,7 @@ function InputField({
           onClick: () => handleOnClick(),
         },
       });
+      console.log(error);
     },
     onClientUploadComplete: (files) => {
       files.forEach((file) => {
@@ -74,16 +77,11 @@ function InputField({
     },
   });
   async function removeAttachement(key: string | undefined) {
-    setOPtimisticAttachments((prev) => {
-      const filtered = prev.filter((a) => a.key !== key);
-      return filtered;
-    });
     if (!key) return;
     const deleted = await deleteAttachment(key);
     if (!deleted) return;
     setAttachments((current) => {
-      const filtered = current.filter((a) => a.key !== key);
-      return filtered;
+      return current.filter((a) => a.key !== key);
     });
   }
   function handleOnClick() {
@@ -93,7 +91,7 @@ function InputField({
   async function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || []);
     if (!files) return;
-    startTransition(() => {
+    startTransition(async () => {
       files.forEach((file) => {
         setOPtimisticAttachments((prev) => [
           ...prev,
@@ -106,9 +104,8 @@ function InputField({
           },
         ]);
       });
+      await startUpload(files);
     });
-
-    await startUpload(files);
   }
   return (
     <form
@@ -124,11 +121,17 @@ function InputField({
         <div className="p-2 bg-black/90 ">
           <div className="flex items-center gap-2">
             {optimisticAttachments.map((a, index) => (
-              <AttachmentPreview
-                key={index}
-                handleRemove={removeAttachement}
-                attachment={a}
-              />
+              <div key={index}>
+                {a.isUploading ? (
+                  <Loading key={index} attachment={a} />
+                ) : (
+                  <AttachmentPreview
+                    attachment={a}
+                    key={index}
+                    handleRemove={removeAttachement}
+                  />
+                )}
+              </div>
             ))}
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { auth as authUser } from "~/app/auth";
+import { ratelimit } from "~/lib/actions/helpers";
 const f = createUploadthing({
   errorFormatter: (error) => {
     throw new UploadThingError(error.message);
@@ -18,14 +19,19 @@ export const ourFileRouter = {
       maxFileCount: 3,
     },
     text: {
-      maxFileSize: "1MB",
+      maxFileSize: "2MB",
       maxFileCount: 3,
     },
   })
     .middleware(async ({ req }) => {
       const user = await auth(req);
-      if (!user)
-        throw new UploadThingError("Please log in to upload attachments.");
+      const userId = user?.user?.id;
+      if (!userId)
+        throw new UploadThingError("Please login to upload attachments.");
+      const { success } = await ratelimit.limit(userId);
+      if (!success) {
+        throw new UploadThingError("rate limited");
+      }
       return { userId: user.user?.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
