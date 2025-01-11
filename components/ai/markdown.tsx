@@ -12,8 +12,13 @@ import {
 } from "../ui/table";
 import Code from "./code";
 import { cn } from "~/lib/utils";
+import { marked } from "marked";
 
-export function Markdown({ children }: { children: string }) {
+function parseMarkdown(markdown: string): string[] {
+  const content = marked.lexer(markdown);
+  return content.map((c) => c.raw);
+}
+function MarkdownComponent({ children }: { children: string }) {
   const components = useMemo(
     () =>
       ({
@@ -115,7 +120,7 @@ export function Markdown({ children }: { children: string }) {
             {children}
           </h3>
         ),
-      } satisfies Components),
+      }) satisfies Components,
     []
   );
 
@@ -132,4 +137,16 @@ export function Markdown({ children }: { children: string }) {
   );
 }
 
-export default memo(Markdown, (prev, next) => prev.children === next.children);
+const MarkdownBlock = memo(
+  MarkdownComponent,
+  (prev, next) => prev.children === next.children
+);
+
+export const Markdown = memo(({ children }: { children: string }) => {
+  const blocks = useMemo(() => parseMarkdown(children), [children]);
+  return blocks.map((block, index) => (
+    <MarkdownBlock key={`block-${index}`}>{block}</MarkdownBlock>
+  ));
+});
+
+Markdown.displayName = "Markdown";

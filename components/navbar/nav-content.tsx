@@ -61,7 +61,6 @@ export default function NavContent({ sessionPromise }: Props) {
         </>
       ) : (
         <>
-      
           <SidebarContent className="group-data-[collapsible=icon]:hidden">
             <SidebarMenu>
               <SidebarMenuItem className="text-center mt-5">

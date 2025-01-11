@@ -5,7 +5,7 @@ export default function robot(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: ["/", "/history", "/auth/login"],
-      disallow: ["/chat"],
+      disallow: ["/chat","/api"],
     },
     sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml`,
   };

@@ -1,6 +1,10 @@
 import "server-only";
 import { google } from "@ai-sdk/google";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+import { fileTypeFromBuffer } from "file-type";
 import {
+  Attachment,
   CoreMessage,
   CoreToolMessage,
   generateId,
@@ -11,7 +15,13 @@ import {
 import { z } from "zod";
 import { UTApi } from "uploadthing/server";
 
-export const utpapi = new UTApi();
+export const utpapi = new UTApi({
+  token: process.env.UPLOADTHING_TOKEN,
+});
+export const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.fixedWindow(5, "5h"),
+});
 
 async function getChatTitle(messages: CoreMessage[]) {
   const title = await generateObject({
@@ -74,6 +84,8 @@ export function converToUIMessage(
     }
 
     let textContent = "";
+    const attachments: Attachment[] = [];
+
     const tools: Array<ToolInvocation> = [];
     if (typeof message.content === "string") {
       textContent = message.content;
@@ -89,6 +101,18 @@ export function converToUIMessage(
             toolName: content.toolName,
             args: content.args,
           });
+        } else if (content.type === "file") {
+          attachments.push({
+            url: content.data.toString(),
+            contentType: content.mimeType,
+            name: content.type,
+          });
+        } else {
+          attachments.push({
+            url: content.image.toString(),
+            contentType: content.mimeType || "image/",
+            name: content.type,
+          });
         }
       }
     }
@@ -99,8 +123,14 @@ export function converToUIMessage(
       role: message.role,
       content: textContent,
       toolInvocations,
+      experimental_attachments: attachments,
     });
 
     return chatMessages;
   }, []);
+}
+
+export async function getFileType(buffer: ArrayBuffer) {
+  const fileType = await fileTypeFromBuffer(buffer);
+  return fileType;
 }

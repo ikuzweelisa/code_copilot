@@ -4,6 +4,7 @@ import React, { forwardRef } from "react";
 import { SpinnerMessage } from "~/components/ai/spinner-message";
 import { ChatRequestOptions, Message } from "ai";
 import { BotMessage } from "~/components/ai/bot-message";
+import ViewAttachment from "./view-attachement";
 interface MessageProps {
   messages: Message[];
   error: Error | undefined;
@@ -27,9 +28,19 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
       {messages.map((message) => (
         <div key={message.id} className={"flex flex-col w-full"}>
           {message.role === "user" ? (
-            <UserMessage>{message.content}</UserMessage>
+            <UserMessage>
+              <div className="ml-1 mt-4 flex-1 flex-col  gap-2 w-full">
+                {message.experimental_attachments &&
+                  message.experimental_attachments.map((attachment, index) => (
+                    <ViewAttachment key={index} attachment={attachment} />
+                  ))}
+                {message.content}
+              </div>
+            </UserMessage>
           ) : (
-            <BotMessage isLoading={loading} reload={reload}>{message.content}</BotMessage>
+            <BotMessage isLoading={loading} reload={reload}>
+              {message.content}
+            </BotMessage>
           )}
         </div>
       ))}
@@ -40,7 +51,11 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
       )}
       {error && (
         <div className="flex flex-col w-full">
-          <BotMessage isLoading={loading}  className="text-red-500" reload={reload}>
+          <BotMessage
+            isLoading={loading}
+            className="text-red-500"
+            reload={reload}
+          >
             Unable to generate response. Please try again
           </BotMessage>
         </div>

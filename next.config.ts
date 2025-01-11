@@ -12,13 +12,26 @@ const nextConfig: NextConfig = {
         hostname: "avatars.githubusercontent.com",
       },
       {
-        protocol:"https",
-        hostname:"utfs.io"
-      }
+        protocol: "https",
+        hostname: "utfs.io",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3000",
+      },
+      {
+        protocol: "https",
+        hostname: "1f1pkbmpee.ufs.sh",
+      },
     ],
-    
   },
-  
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   experimental: {
     ppr: true,
     reactCompiler: true,

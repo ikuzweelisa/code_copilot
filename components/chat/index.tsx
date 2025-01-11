@@ -33,9 +33,9 @@ export default function Chat({
   const { mutate } = useSWRConfig();
   const path = usePathname();
 
-  const [attachments, setAttachments] = useState<
-    Array<Attachment>
-  >([]);
+  const [attachments, setAttachments] = useState<Array<Attachment>>([]);
+  const [optimisticAttachments, setOptimisticAttachments] =
+    useOptimistic<Array<Attachment & { isUploading?: boolean }>>(attachments);
 
   const {
     handleSubmit,
@@ -126,7 +126,7 @@ export default function Chat({
           </div>
         </>
       )}
-      <div className={cn("w-full", isEmpty ? "" : "mb-14")}>
+      <div className={cn("w-full z-10", isEmpty ? "" : "mb-14")}>
         <div className={cn("mx-auto p-2", isEmpty ? "max-w-2xl" : "max-w-xl")}>
           <div className="w-full">
             <InputField
@@ -136,7 +136,9 @@ export default function Chat({
               handleSubmit={handleSubmit}
               handleChange={handleInputChange}
               attachements={attachments}
+              optimisticAttachments={optimisticAttachments}
               setAttachments={setAttachments}
+              setOPtimisticAttachments={setOptimisticAttachments}
             />
           </div>
         </div>
