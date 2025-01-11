@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
   const fileType = await getFileType(fileBuffer);
   const fileSize = fileBuffer.byteLength;
   if (!fileType) {
-    return NextResponse.json({ message: "Invalid file type" }, { status: 404 });
+    return NextResponse.json({ message: "Invalid file type" }, { status: 400 });
   }
   return new NextResponse(fileBuffer, {
     headers: {

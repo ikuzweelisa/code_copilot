@@ -14,15 +14,15 @@ import Spinner from "../ai/spinner";
 import { MessageSquarePlus } from "lucide-react";
 import { ChatsSkeleton } from "../skeletons";
 export default function NavItems() {
-  const { data: chats, isLoading ,isValidating} = useSwr<Array<Chat>>(
-    "/api/chats",
-    fetcher,
-    {
-      suspense: true,
-      fallbackData: [],
-      revalidateOnFocus: false,
-    }
-  );
+  const {
+    data: chats,
+    isLoading,
+    isValidating,
+  } = useSwr<Array<Chat>>("/api/chats", fetcher, {
+    suspense: true,
+    fallbackData: [],
+    revalidateOnFocus: false,
+  });
   const groupedChats = groupChats(chats || []);
 
   return (

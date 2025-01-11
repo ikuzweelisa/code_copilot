@@ -1,4 +1,3 @@
-"use client";
 import { AssitantIcon } from "~/components/ui/icons";
 import ButtonRow from "~/components/ai/button-row";
 import { cn } from "~/lib/utils";
@@ -22,7 +21,6 @@ export function BotMessage({
   const [text, isAnimating] = useAnimatedText(children, {
     duration: 3,
     shouldAnimate: isLoading,
-    
   });
   return (
     <div className="group relative flex items-start  md:-ml-12">

@@ -1,8 +1,8 @@
 import { Button } from "~/components/ui/button";
 import Textarea from "react-textarea-autosize";
-import { MoveUp, Paperclip, TriangleAlert } from "lucide-react";
+import { CloudUpload, MoveUp, Paperclip, TriangleAlert } from "lucide-react";
 import React, { ChangeEvent, useRef, useTransition } from "react";
-import { cn } from "~/lib/utils";
+import { cn, sleep } from "~/lib/utils";
 import { LoadingButton } from "~/components/ai/spinner-message";
 import AttachmentPreview, {
   Loading,
@@ -11,6 +11,7 @@ import { Attachment, ChatRequestOptions } from "ai";
 import { useUploadThing } from "~/lib/uploadthing";
 import { toast } from "sonner";
 import { deleteAttachment } from "~/lib/actions/actions";
+import { Separator } from "../ui/separator";
 
 interface InputFieldProps {
   handleSubmit: (
@@ -60,7 +61,6 @@ function InputField({
           onClick: () => handleOnClick(),
         },
       });
-      console.log(error);
     },
     onClientUploadComplete: (files) => {
       files.forEach((file) => {
@@ -104,8 +104,10 @@ function InputField({
           },
         ]);
       });
+      await sleep(2000);
       await startUpload(files);
     });
+    setAttachments([]);
   }
   return (
     <form
@@ -115,33 +117,33 @@ function InputField({
           experimental_attachments: attachements,
         });
       }}
-      className="flex flex-col w-full rounded-lg gap-0"
+      className="flex flex-col bg-card border w-full rounded-lg gap-0"
     >
       {optimisticAttachments.length > 0 && (
-        <div className="p-2 bg-black/90 ">
-          <div className="flex items-center gap-2">
-            {optimisticAttachments.map((a, index) => (
-              <div key={index}>
-                {a.isUploading ? (
-                  <Loading key={index} attachment={a} />
-                ) : (
-                  <AttachmentPreview
-                    attachment={a}
-                    key={index}
-                    handleRemove={removeAttachement}
-                  />
-                )}
-              </div>
-            ))}
+        <>
+          <div className="p-2 ">
+            <div className="flex items-center gap-2">
+              {optimisticAttachments.map((a, index) => (
+                <div key={index}>
+                  {a.isUploading ? (
+                    <Loading key={index} attachment={a} />
+                  ) : (
+                    <AttachmentPreview
+                      attachment={a}
+                      key={index}
+                      handleRemove={removeAttachement}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+          <Separator />
+        </>
       )}
-      <div
-        className={cn(
-          "relative flex items-center bg-card   border dark:border-0 p-0"
-        )}
-      >
-        <div>
+
+      <div className={cn("relative flex items-center  p-0")}>
+        <div className="px-0">
           <input
             ref={attachementRef}
             type={"file"}
@@ -157,14 +159,14 @@ function InputField({
             onClick={handleOnClick}
             className="absolute left-0 top-3 size-8  p-0 sm:left-4"
           >
-            <Paperclip size={20} />
+            <CloudUpload size={23} />
             <span className="sr-only">Attachment</span>
           </Button>
         </div>
         <Textarea
           tabIndex={0}
           onKeyDown={onKeyDown}
-          placeholder="Enter a message..."
+          placeholder="enter a message..."
           className="min-h-10 max-h-28 sm:min-h-12 md:min-h-16 lg:min-h-20  w-full resize-none bg-transparent px-12 py-4  focus-within:outline-none text-base"
           autoFocus
           spellCheck={false}

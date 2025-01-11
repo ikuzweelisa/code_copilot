@@ -126,7 +126,7 @@ export default function Chat({
           </div>
         </>
       )}
-      <div className={cn("w-full", isEmpty ? "" : "mb-14")}>
+      <div className={cn("w-full z-10", isEmpty ? "" : "mb-14")}>
         <div className={cn("mx-auto p-2", isEmpty ? "max-w-2xl" : "max-w-xl")}>
           <div className="w-full">
             <InputField

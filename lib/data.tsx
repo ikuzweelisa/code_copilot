@@ -2,25 +2,26 @@ import {
   NextJsIcon,
   PrismaIcon,
   ReactIcon,
-  TypeScriptIcon,
+  NodejsIcon,
+  DrizzleORM,
 } from "~/components/ui/icons";
 import React from "react";
 
 const exampleMessages: Array<{ heading: string; icon: React.ReactNode }> = [
   {
-    heading: "What is TypeScript?",
-    icon: <TypeScriptIcon size={23} />,
+    heading: "Create a basic HTTP server using Node.js",
+    icon: <NodejsIcon size={23} />,
   },
   {
-    heading: "Introduction to Prisma ORM",
-    icon: <PrismaIcon size={23} />,
+    heading: "Setup Drizzle ORM",
+    icon: <DrizzleORM size={25} />,
   },
   {
-    heading: "Next.js App Router",
+    heading: "Implement server-side rendering with Next.js App Router?",
     icon: <NextJsIcon size={23} />,
   },
   {
-    heading: "Introduce me to React js",
+    heading: "What are React hooks ?",
     icon: <ReactIcon size={23} />,
   },
 ];
