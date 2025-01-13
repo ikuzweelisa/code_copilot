@@ -8,6 +8,6 @@ const db = drizzle(process.env.DATABASE_URL!, {
 type Chat = typeof schema.chats.$inferSelect;
 type User = typeof schema.users.$inferSelect;
 type Account = typeof schema.accounts.$inferSelect;
-type Attachment = typeof schema.attachments.$inferSelect;
 
-export { db, type Chat, type User, type Account, type Attachment};
+
+export { db, type Chat, type User, type Account};

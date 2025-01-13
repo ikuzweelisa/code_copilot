@@ -1,5 +1,5 @@
 "use server";
-import { AuthStatus, FileState } from "~/lib/types";
+import { AuthStatus } from "~/lib/types";
 import { AuthError } from "next-auth";
 import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "~/app/auth";
@@ -43,8 +43,8 @@ export default async function signInWithProvider(
 }
 
 export async function deleteAttachment(attachemnt: string) {
- const status  =await utpapi.deleteFiles(attachemnt);
- return status.success
+  const status = await utpapi.deleteFiles(attachemnt);
+  return status.success;
 }
 export async function deleteChat(
   prevState: AuthStatus | undefined,

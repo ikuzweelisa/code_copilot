@@ -83,7 +83,7 @@ export default function Chat({
           </Button>
         </div>
       )}
-      {isMobile && !isEmpty && (
+      {isMobile && !isEmpty && !path.includes(chatId) && (
         <div className="w-fit h-10 flex gap-10 justify-start mb-3 mx-0 pl-0 absolute top-1 right-1 z-10">
           <span className="text-sm">
             {chatTitle

@@ -3,17 +3,12 @@ import Google from "next-auth/providers/google";
 import Github from "next-auth/providers/github";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "~/lib/drizzle";
-import { accounts,users } from "~/lib/drizzle/schema";
+import { accounts, users } from "~/lib/drizzle/schema";
 
-const {
-  signIn,
-  signOut,
-  handlers,
-  auth,
-} = NextAuth({
-  adapter: DrizzleAdapter(db,{
-    usersTable:users,
-    accountsTable:accounts
+const { signIn, signOut, handlers, auth } = NextAuth({
+  adapter: DrizzleAdapter(db, {
+    usersTable: users,
+    accountsTable: accounts,
   }),
   providers: [
     Google({
@@ -34,6 +29,7 @@ const {
     error: "/auth/error",
     signIn: "/auth/login",
   },
+  trustHost: true,
   callbacks: {
     jwt: async ({ token, user }) => {
       if (user) {
@@ -47,6 +43,5 @@ const {
     },
   },
 });
-
 
 export { signIn, signOut, handlers, auth };

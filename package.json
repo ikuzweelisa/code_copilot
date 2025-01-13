@@ -16,7 +16,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@ai-sdk/google": "1.0.5",
+    "@ai-sdk/google": "^1.0.15",
     "@auth/core": "0.35.3",
     "@auth/drizzle-adapter": "1.7.4",
     "@neondatabase/serverless": "0.10.4",
@@ -36,7 +36,9 @@
     "@uploadthing/react": "^7.1.5",
     "@upstash/ratelimit": "^2.0.5",
     "@upstash/redis": "^1.34.3",
-    "ai": "4.0.18",
+    "@upstash/ratelimit": "^2.0.5",
+    "@upstash/redis": "^1.34.3",
+    "ai": "^4.0.33",
     "babel-plugin-react-compiler": "19.0.0-beta-201e55d-20241215",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",

@@ -25,7 +25,7 @@ export const ratelimit = new Ratelimit({
 
 async function getChatTitle(messages: CoreMessage[]) {
   const title = await generateObject({
-    model: google("gemini-1.5-flash-latest"),
+    model: google("gemini-2.0-flash-exp"),
     system: `you are a chat title generator assistant  based The main context in chat messages about programming concepts.
     if you are given achat message generate a small title for it`,
     messages: messages,
