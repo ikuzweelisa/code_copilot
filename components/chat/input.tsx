@@ -10,7 +10,7 @@ import AttachmentPreview, {
 import { Attachment, ChatRequestOptions } from "ai";
 import { useUploadThing } from "~/lib/uploadthing";
 import { toast } from "sonner";
-import { deleteAttachment } from "~/lib/actions/actions";
+import { deleteAttachment } from "~/lib/server/actions";
 import { Separator } from "../ui/separator";
 
 interface InputFieldProps {

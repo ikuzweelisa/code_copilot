@@ -1,7 +1,7 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { auth as authUser } from "~/app/auth";
-import { ratelimit } from "~/lib/actions/helpers";
+import { ratelimit } from "~/lib/server/helpers";
 const f = createUploadthing({
   errorFormatter: (error) => {
     throw new UploadThingError(error.message);

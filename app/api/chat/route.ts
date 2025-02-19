@@ -1,9 +1,9 @@
-import { saveChatData } from "~/lib/actions";
+import { saveChatData } from "../../../lib/server";
 import { google } from "@ai-sdk/google";
 import { convertToCoreMessages, streamText } from "ai";
 import { NextRequest } from "next/server";
 
-export const runtime="edge"
+export const runtime = "edge";
 
 export async function POST(request: NextRequest) {
   const message = `

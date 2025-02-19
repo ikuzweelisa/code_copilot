@@ -6,7 +6,7 @@ import InputField from "~/components/chat/input";
 import Messages from "~/components/chat/messages";
 import ScrollAnchor from "~/components/chat/scroll-anchor";
 import EmptyScreen from "~/components/chat/empty-messages";
-import { useLocalStorage, useScroll } from "~/lib/hooks";
+import { useLocalStorage, useScroll, useAutoScroll } from "~/lib/hooks";
 import { cn } from "~/lib/utils";
 import { useSWRConfig } from "swr";
 import { usePathname } from "next/navigation";
@@ -69,8 +69,9 @@ export default function Chat({
     messagesRef,
     visibilityRef,
     handleScroll,
-  } = useScroll();
+  } = useScroll<HTMLDivElement>();
   const isMobile = useIsMobile();
+  const [scrollRef] = useAutoScroll();
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden">
       {!isLoggedIn && (
@@ -102,6 +103,7 @@ export default function Chat({
       ) : (
         <>
           <ScrollArea
+            ref={scrollRef}
             onScrollCapture={handleScroll}
             className="flex-grow w-full overflow-y-auto mt-3"
           >

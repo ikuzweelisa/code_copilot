@@ -5,6 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { Toaster } from "~/components/ui/sonner";
 import { cn } from "~/lib/utils";
 import { Geist } from "next/font/google";
+
 import React from "react";
 export const metadata = {
   title: {

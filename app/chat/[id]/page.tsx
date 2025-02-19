@@ -1,6 +1,6 @@
 import Chat from "~/components/chat";
-import { getChatById } from "~/lib/actions";
-import { converToUIMessage } from "~/lib/actions/helpers";
+import { getChatById } from "../../../lib/server";
+import { converToUIMessage } from "~/lib/server/helpers";
 import { capitalize } from "~/lib/utils";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";

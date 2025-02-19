@@ -33,7 +33,6 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
-    ppr: true,
     reactCompiler: true,
   },
 };

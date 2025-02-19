@@ -3,7 +3,7 @@ import { db } from "~/lib/drizzle";
 import { cache } from "react";
 import { CoreMessage } from "ai";
 import { auth } from "~/app/auth";
-import { getChatTitle } from "~/lib/actions/helpers";
+import { getChatTitle } from "~/lib/server/helpers";
 import { chats } from "~/lib/drizzle/schema";
 
 export const getChats = cache(async (userId: string | undefined) => {

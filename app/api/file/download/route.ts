@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
-import { getFileType } from "~/lib/actions/helpers";
+import { getFileType } from "~/lib/server/helpers";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
