@@ -113,9 +113,6 @@ importers:
       next-themes:
         specifier: 0.3.0
         version: 0.3.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      postgres:
-        specifier: ^3.4.5
-        version: 3.4.5
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -6778,7 +6775,8 @@ snapshots:
 
   postgres-range@1.1.4: {}
 
-  postgres@3.4.5: {}
+  postgres@3.4.5:
+    optional: true
 
   preact-render-to-string@5.2.3(preact@10.11.3):
     dependencies:
