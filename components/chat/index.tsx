@@ -6,7 +6,7 @@ import InputField from "~/components/chat/input";
 import Messages from "~/components/chat/messages";
 import ScrollAnchor from "~/components/chat/scroll-anchor";
 import EmptyScreen from "~/components/chat/empty-messages";
-import { useLocalStorage, useScroll, useAutoScroll } from "~/lib/hooks";
+import { useLocalStorage, useScroll } from "~/lib/hooks";
 import { cn } from "~/lib/utils";
 import { useSWRConfig } from "swr";
 import { usePathname } from "next/navigation";
@@ -72,7 +72,7 @@ export default function Chat({
     handleScroll,
   } = useScroll<HTMLDivElement>();
   const isMobile = useIsMobile();
- 
+
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden">
       {!isLoggedIn ? (
@@ -84,20 +84,23 @@ export default function Chat({
             <Link href="/auth/login">Register</Link>
           </Button>
         </div>
-      ):
-      isMobile && !isEmpty && !path.includes(chatId) && (
-        <div className="w-fit h-10 flex gap-10 justify-start mb-3 mx-0 pl-0 absolute top-1 right-1 z-10">
-          <span className="text-sm">
-            {chatTitle
-              ? chatTitle?.length > 35
-                ? chatTitle?.slice(0, 30) + "..."
-                : chatTitle
-              : "Unititled Chat"}
-          </span>
-          <Button asChild size="sm">
-            <Link href="/">New Chat</Link>
-          </Button>
-        </div>
+      ) : (
+        isMobile &&
+        !isEmpty &&
+        !path.includes(chatId) && (
+          <div className="w-fit h-10 flex gap-10 justify-start mb-3 mx-0 pl-0 absolute top-1 right-1 z-10">
+            <span className="text-sm">
+              {chatTitle
+                ? chatTitle?.length > 35
+                  ? chatTitle?.slice(0, 30) + "..."
+                  : chatTitle
+                : "Unititled Chat"}
+            </span>
+            <Button asChild size="sm">
+              <Link href="/">New Chat</Link>
+            </Button>
+          </div>
+        )
       )}
       {isEmpty ? (
         <EmptyScreen append={append} />
