@@ -1,22 +1,13 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { GroupedChats } from "~/lib/types";
-import {Chat} from "~/lib/drizzle"
+import { Chat } from "~/lib/drizzle";
 import {
   isToday,
   isYesterday,
   subMonths,
   subWeeks,
-  subMinutes,
-  isThisHour,
-  subDays,
-  subHours,
-  isThisWeek,
-  isThisMonth,
-  isThisYear,
-  formatDate,
-  formatRelative,
-  subYears,
+  formatDistanceToNow,
 } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
@@ -57,37 +48,13 @@ export function groupChats(chats: Chat[]): GroupedChats {
       lastWeek: [],
       lastMonth: [],
       older: [],
-    } as GroupedChats,
+    } as GroupedChats
   );
 }
 
 export function formatTime(chatDate: Date): string {
   const date = new Date(chatDate);
-  if (isToday(date)) {
-    if (isThisHour(date)) {
-      const minutes = subMinutes(new Date(), date.getMinutes()).getMinutes();
-      return `${minutes} minutes ago`;
-    }
-    const hours = subHours(new Date(), date.getHours()).getHours();
-    return `${hours} hour${hours >1 ?"s" : ""}   ago`;
-  }
-  if (isYesterday(date)) {
-    return "Yesterday";
-  }
-  if (isThisWeek(date)) {
-    const days = subDays(new Date(), date.getDate()).getDate();
-    return `${days} days ago`;
-  }
 
-  if (isThisMonth(date)) {
-    const weeks = subWeeks(new Date(), date.getDate()).getDate();
-    return `${weeks} weeks ago`;
-  }
-  if (isThisYear(date)) {
-    const moths = subMonths(new Date(), date.getMonth()).getDate();
-    return `${moths} months ago`;
-  
-  }
-  const formated=formatRelative(date,subYears(date.getFullYear(),1))
-  return formated
+  const formated = formatDistanceToNow(date);
+  return `${formated} ago`;
 }

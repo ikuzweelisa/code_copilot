@@ -16,6 +16,7 @@ import { useIsMobile } from "~/lib/hooks/use-mobile";
 import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
 import { Attachment } from "ai";
+import { AutoScroller } from "./auto-scoller";
 
 interface ChatProps {
   initialMessages: Message[];
@@ -71,10 +72,10 @@ export default function Chat({
     handleScroll,
   } = useScroll<HTMLDivElement>();
   const isMobile = useIsMobile();
-  const [scrollRef] = useAutoScroll();
+ 
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden">
-      {!isLoggedIn && (
+      {!isLoggedIn ? (
         <div className="w-fit h-10 flex justify-end mb-3 mt-3 mx-3 gap-2 pl-0 absolute top-1 right-1 z-10">
           <Button variant="outline" asChild>
             <Link href="/auth/login">Login</Link>
@@ -83,8 +84,8 @@ export default function Chat({
             <Link href="/auth/login">Register</Link>
           </Button>
         </div>
-      )}
-      {isMobile && !isEmpty && !path.includes(chatId) && (
+      ):
+      isMobile && !isEmpty && !path.includes(chatId) && (
         <div className="w-fit h-10 flex gap-10 justify-start mb-3 mx-0 pl-0 absolute top-1 right-1 z-10">
           <span className="text-sm">
             {chatTitle
@@ -103,11 +104,10 @@ export default function Chat({
       ) : (
         <>
           <ScrollArea
-            ref={scrollRef}
             onScrollCapture={handleScroll}
             className="flex-grow w-full overflow-y-auto mt-3"
           >
-            <div
+            <AutoScroller
               ref={visibilityRef}
               className="min-h-full w-full flex flex-col  lg:max-w-2xl mx-auto p-1  "
             >
@@ -118,7 +118,7 @@ export default function Chat({
                 messages={messages}
                 reload={reload}
               />
-            </div>
+            </AutoScroller>
           </ScrollArea>
           <div className="mx-auto flex justify-center items-center pb-2 pt-0 z-10">
             <ScrollAnchor
