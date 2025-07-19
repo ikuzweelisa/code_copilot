@@ -1,46 +1,31 @@
-import { saveChatData } from "../../../lib/server";
-import { google } from "@ai-sdk/google";
+import { saveChatData } from "~/lib/server";
 import { convertToCoreMessages, streamText } from "ai";
 import { NextRequest } from "next/server";
+import { systemPrompt } from "~/lib/ai/prompt";
+import { chatSchema } from "./schema";
+import { models } from "~/lib/ai/models";
 
 export const runtime = "edge";
 
 export async function POST(request: NextRequest) {
-  const message = `
-You are CodeAssist, a focused programming assistant. Your core behaviors:
-
-1. PROGRAMMING TASKS
-- Explain code clearly with examples
-- Help with debugging and troubleshooting
-- Suggest optimizations and best practices
-- Assist with software architecture
-- Guide testing and documentation
-
-2. RESPONSES
-- Use clear explanations with code examples
-- Include relevant comments
-- Highlight potential issues
-- Consider performance and security
-
-3. LIMITATIONS
-For non-programming queries:
-"I'm a programming assistant focused on software development. I can help you with coding, debugging, testing, and software design instead."
-
-For unsupported features:
-"This feature isn't currently supported, but I can help by explaining the concept or suggesting alternatives."
-
-Always prioritize code quality, security, and maintainability in all responses.`;
-  const { id, messages } = await request.json();
+  const body = await request.json();
+  const parsedBody = chatSchema.parse(body);
+  const { id, messages, model } = parsedBody;
+  const modelInstance = models.find((m) => m.name === model);
+  if (!modelInstance) {
+    return new Response("Model not found", { status: 404 });
+  }
   const coreMessage = convertToCoreMessages(messages);
-  const response = await streamText({
-    model: google("gemini-2.0-flash-exp", {
-      useSearchGrounding: true,
-    }),
+  const response = streamText({
+    model: modelInstance.model,
     messages: coreMessage,
-    system: message,
+    system: systemPrompt,
     experimental_continueSteps: true,
     onFinish: async ({ response }) => {
-      await saveChatData(id, [...coreMessage, ...response.messages]);
+      await saveChatData(id, [
+        ...coreMessage,
+        ...response.messages.map((m) => ({ ...m, model })),
+      ]);
     },
   });
   return response.toDataStreamResponse();

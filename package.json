@@ -16,10 +16,12 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@ai-sdk/google": "^1.0.15",
+    "@ai-sdk/google": "^1.2.22",
+    "@ai-sdk/groq": "^1.2.9",
     "@auth/core": "0.35.3",
     "@auth/drizzle-adapter": "1.7.4",
     "@neondatabase/serverless": "0.10.4",
+    "@openrouter/ai-sdk-provider": "1.0.0-beta.1",
     "@radix-ui/react-alert-dialog": "1.1.4",
     "@radix-ui/react-avatar": "1.1.1",
     "@radix-ui/react-dialog": "1.1.2",
@@ -36,7 +38,7 @@
     "@uploadthing/react": "^7.1.5",
     "@upstash/ratelimit": "^2.0.5",
     "@upstash/redis": "^1.34.3",
-    "ai": "^4.0.33",
+    "ai": "^4.3.19",
     "babel-plugin-react-compiler": "19.0.0-beta-201e55d-20241215",
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.1",
@@ -46,7 +48,7 @@
     "lucide-react": "0.441.0",
     "marked": "^15.0.6",
     "motion": "11.12.0",
-    "next": "^15.1.7",
+    "next": "^15.4.1",
     "next-auth": "5.0.0-beta.25",
     "next-themes": "0.3.0",
     "react": "19.0.0",
@@ -63,7 +65,7 @@
     "tailwindcss-animate": "1.0.7",
     "uploadthing": "^7.4.4",
     "use-debounce": "10.0.4",
-    "zod": "3.24.1"
+    "zod": "^4.0.5"
   },
   "devDependencies": {
     "@types/node": "20.17.6",

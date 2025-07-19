@@ -27,7 +27,10 @@ export const getChatById = async (id: string | undefined) => {
   return chat;
 };
 
-export async function saveChatData(id: string, messages: CoreMessage[]) {
+export async function saveChatData(
+  id: string,
+  messages: (CoreMessage & { model?: string })[]
+) {
   try {
     const session = auth();
     const existing = await getChatById(id);
