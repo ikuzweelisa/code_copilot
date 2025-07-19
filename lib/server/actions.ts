@@ -80,7 +80,7 @@ export async function editChat(
   if (!validate.success) {
     return {
       status: "error",
-      message: validate.error.errors[0].message,
+      message: validate.error.message,
     };
   }
   const { chatId, title } = validate.data;

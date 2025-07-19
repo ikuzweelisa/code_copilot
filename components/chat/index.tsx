@@ -17,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
 import { Attachment } from "ai";
 import { AutoScroller } from "./auto-scoller";
+import { Model, models } from "~/lib/ai/models";
 
 interface ChatProps {
   initialMessages: Message[];
@@ -33,6 +34,9 @@ export default function Chat({
   const isLoggedIn = session.status === "loading" ? true : !!session.data?.user;
   const { mutate } = useSWRConfig();
   const path = usePathname();
+  const [selectedModel, setSelectedModel] = useState<Model>(
+    models.find((model) => model.isDefault) || models[0]
+  );
 
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
   const [optimisticAttachments, setOptimisticAttachments] =
@@ -53,6 +57,7 @@ export default function Chat({
     id: chatId,
     body: {
       id: chatId,
+      model: selectedModel.name,
     },
     onFinish: () => {
       const isNew = !path.includes(chatId);
@@ -112,7 +117,7 @@ export default function Chat({
           >
             <AutoScroller
               ref={visibilityRef}
-              className="min-h-full w-full flex flex-col  lg:max-w-2xl mx-auto p-1  "
+              className="min-h-full w-full flex flex-col lg:max-w-2xl mx-auto p-1"
             >
               <Messages
                 error={error}
@@ -132,7 +137,7 @@ export default function Chat({
         </>
       )}
       <div className={cn("w-full z-10", isEmpty ? "" : "mb-14")}>
-        <div className={cn("mx-auto p-2", isEmpty ? "max-w-2xl" : "max-w-xl")}>
+        <div className={cn("mx-auto p-2 max-w-2xl")}>
           <div className="w-full">
             <InputField
               stop={stop}
@@ -144,6 +149,8 @@ export default function Chat({
               optimisticAttachments={optimisticAttachments}
               setAttachments={setAttachments}
               setOPtimisticAttachments={setOptimisticAttachments}
+              selectedModel={selectedModel}
+              setSelectedModel={setSelectedModel}
             />
           </div>
         </div>

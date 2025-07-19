@@ -35,7 +35,10 @@ export const chats = pgTable(
   {
     id: varchar("id").primaryKey(),
     title: varchar("title").notNull(),
-    messages: json("messages").$type<CoreMessage[]>().notNull().default([]),
+    messages: json("messages")
+      .$type<(CoreMessage & { model?: string })[]>()
+      .notNull()
+      .default([]),
     userId: uuid("userId")
       .notNull()
       .references(() => users.id),
