@@ -1,9 +1,11 @@
-import { Attachment } from "~/lib/drizzle";
+
 import { FileText } from "lucide-react";
+import { UIMessage } from "ai";
 
 interface MessageProps {
-  text: string | undefined;
-  attachment?: Attachment | undefined;
+  message: UIMessage;
+  attachment?: File;
+  text?: string;
 }
 export default function MessageText({ attachment, text }: MessageProps) {
   return (

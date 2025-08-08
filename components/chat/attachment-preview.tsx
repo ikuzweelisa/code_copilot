@@ -1,4 +1,4 @@
-import { Attachment } from "ai";
+import { FileUIPart } from "ai";
 import { FileIcon, X, Loader2 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
@@ -9,15 +9,16 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 
+interface AttachmentPreviewProps {
+  attachment: FileUIPart;
+  handleRemove: (name: string) => void;
+}
+
 export default function AttachmentPreview({
   attachment,
   handleRemove,
-}: {
-  attachment: Attachment & { isUploading?: boolean };
-
-  handleRemove: (key: string | undefined) => Promise<void>;
-}) {
-  const isImage = attachment.contentType?.startsWith("image/");
+}: AttachmentPreviewProps) {
+  const isImage = attachment.mediaType?.startsWith("image/");
 
   return (
     <TooltipProvider>
@@ -29,7 +30,7 @@ export default function AttachmentPreview({
                 <div className="relative w-12 h-12 rounded-sm overflow-hidden">
                   <img
                     src={attachment.url}
-                    alt={attachment.name ?? "attachment"}
+                    alt={attachment.filename ?? "attachment"}
                     className="object-cover w-full h-full"
                   />
                 </div>
@@ -40,14 +41,14 @@ export default function AttachmentPreview({
               )}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">
-                  {attachment.name}
+                  {attachment.filename}
                 </p>
                 <p className="text-xs text-muted-foreground truncate">
-                  {isImage ? "Image" : attachment.contentType}
+                  {isImage ? "Image" : attachment.mediaType}
                 </p>
               </div>
               <Button
-                onClick={async () => await handleRemove(attachment.key)}
+                onClick={async () => await handleRemove(attachment.filename!)}
                 variant="ghost"
                 size="icon"
                 className={`absolute top-1 right-1 h-6 w-6 p-0 transition-opacity duration-300 group-hover:opacity-100  opacity-0`}
@@ -58,15 +59,15 @@ export default function AttachmentPreview({
           </Card>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{attachment.name}</p>
-          <p>{attachment.contentType}</p>
+          <p>{attachment.filename}</p>
+          <p>{attachment.mediaType}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
 }
 
-export function Loading({ attachment }: { attachment: Attachment }) {
+export function Loading({ attachment }: { attachment: FileUIPart }) {
   return (
     <Card className="group rounded-md relative w-full max-w-[12rem] transition-all duration-300 ease-in-out hover:shadow-md">
       <CardContent className="p-1 flex justify-center items-center gap-2">
@@ -74,9 +75,9 @@ export function Loading({ attachment }: { attachment: Attachment }) {
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium truncate">{attachment.name}</p>
+          <p className="text-sm font-medium truncate">{attachment.filename}</p>
           <p className="text-xs text-muted-foreground truncate">
-            {attachment.contentType}
+            {attachment.mediaType}
           </p>
         </div>
       </CardContent>

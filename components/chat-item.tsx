@@ -20,7 +20,7 @@ interface Props {
 }
 export default function ChatItem({ chat }: Props) {
   const formatedDate = formatTime(new Date(chat.updatedAt));
-  const firstMessage = chat.messages[0].content.slice(0, 200);
+  const firstMessage = chat.messages[0].parts.map((part) => part.type === "text" && part.text).join("").slice(0, 200);
   const content = typeof firstMessage === "string" ? firstMessage : chat.title;
   const router = useRouter();
   return (

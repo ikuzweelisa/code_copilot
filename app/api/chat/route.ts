@@ -1,11 +1,9 @@
-import { saveChatData } from "~/lib/server";
-import { convertToCoreMessages, streamText } from "ai";
 import { NextRequest } from "next/server";
 import { systemPrompt } from "~/lib/ai/prompt";
 import { chatSchema } from "./schema";
 import { models } from "~/lib/ai/models";
-
-export const runtime = "edge";
+import { convertToModelMessages, streamText } from "ai";
+import { saveChatData } from "~/lib/server";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -15,18 +13,16 @@ export async function POST(request: NextRequest) {
   if (!modelInstance) {
     return new Response("Model not found", { status: 404 });
   }
-  const coreMessage = convertToCoreMessages(messages);
-  const response = streamText({
+  const coreMessage = convertToModelMessages(messages);
+  const result = streamText({
     model: modelInstance.model,
     messages: coreMessage,
     system: systemPrompt,
-    experimental_continueSteps: true,
-    onFinish: async ({ response }) => {
-      await saveChatData(id, [
-        ...coreMessage,
-        ...response.messages.map((m) => ({ ...m, model })),
-      ]);
+  });
+  return result.toUIMessageStreamResponse({
+    onFinish: ({ messages, isAborted }) => {
+      if (isAborted) return;
+      saveChatData(id, messages);
     },
   });
-  return response.toDataStreamResponse();
 }

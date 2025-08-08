@@ -1,7 +1,7 @@
 "use client";
 import React, { useOptimistic, useState } from "react";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { Message, useChat } from "ai/react";
+import { UIMessage, useChat } from "@ai-sdk/react";
 import InputField from "~/components/chat/input";
 import Messages from "~/components/chat/messages";
 import ScrollAnchor from "~/components/chat/scroll-anchor";
@@ -15,12 +15,13 @@ import Link from "next/link";
 import { useIsMobile } from "~/lib/hooks/use-mobile";
 import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
-import { Attachment } from "ai";
 import { AutoScroller } from "./auto-scoller";
 import { Model, models } from "~/lib/ai/models";
+import { DefaultChatTransport, FileUIPart } from "ai";
+import { generateMessageId } from "~/lib/ai/utis";
 
 interface ChatProps {
-  initialMessages: Message[];
+  initialMessages: UIMessage[];
   chatId: string;
   chatTitle?: string;
 }
@@ -30,6 +31,7 @@ export default function Chat({
   chatTitle,
 }: ChatProps) {
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
+  const [input, setInput] = useState("");
   const session = useSession();
   const isLoggedIn = session.status === "loading" ? true : !!session.data?.user;
   const { mutate } = useSWRConfig();
@@ -38,36 +40,33 @@ export default function Chat({
     models.find((model) => model.isDefault) || models[0]
   );
 
-  const [attachments, setAttachments] = useState<Array<Attachment>>([]);
+  const [attachments, setAttachments] = useState<Array<FileUIPart>>([]);
   const [optimisticAttachments, setOptimisticAttachments] =
-    useOptimistic<Array<Attachment & { isUploading?: boolean }>>(attachments);
+    useOptimistic<Array<FileUIPart & { isUploading?: boolean }>>(attachments);
 
-  const {
-    handleSubmit,
-    handleInputChange,
-    input,
-    append,
-    stop,
-    error,
-    isLoading,
-    reload,
-    messages,
-  } = useChat({
-    initialMessages: initialMessages,
-    id: chatId,
-    body: {
-      id: chatId,
-      model: selectedModel.name,
-    },
+  const { messages, status, error, sendMessage, regenerate, stop } = useChat({
+    messages: initialMessages,
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+      body: {
+        id: chatId,
+        model: selectedModel.name,
+      },
+    }),
+    generateId: generateMessageId,
     onFinish: () => {
-      const isNew = !path.includes(chatId);
-      if (isNew && isLoggedIn) {
-        history.pushState({}, "", `/chat/${chatId}`);
-        setChatId(chatId);
-        mutate("/api/chats");
-      }
+      setChatId(chatId);
+      mutate("/api/chats");
     },
   });
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!input) return;
+    sendMessage({ text: input });
+    setInput("");
+  }
+  const loading = status === "submitted" || status === "streaming";
   const isEmpty = messages.length === 0;
   const {
     isAtBottom,
@@ -108,7 +107,7 @@ export default function Chat({
         )
       )}
       {isEmpty ? (
-        <EmptyScreen append={append} />
+        <EmptyScreen onSubmit={(msg) => sendMessage({ text: msg })} />
       ) : (
         <>
           <ScrollArea
@@ -120,11 +119,11 @@ export default function Chat({
               className="min-h-full w-full flex flex-col lg:max-w-2xl mx-auto p-1"
             >
               <Messages
-                error={error}
-                loading={isLoading}
+                isLoading={loading}
                 ref={messagesRef}
                 messages={messages}
-                reload={reload}
+                error={error}
+                regenerate={regenerate}
               />
             </AutoScroller>
           </ScrollArea>
@@ -140,17 +139,16 @@ export default function Chat({
         <div className={cn("mx-auto p-2 max-w-2xl")}>
           <div className="w-full">
             <InputField
-              stop={stop}
-              isLoading={isLoading}
+              isLoading={loading}
               input={input}
               handleSubmit={handleSubmit}
-              handleChange={handleInputChange}
-              attachements={attachments}
               optimisticAttachments={optimisticAttachments}
               setAttachments={setAttachments}
               setOPtimisticAttachments={setOptimisticAttachments}
               selectedModel={selectedModel}
               setSelectedModel={setSelectedModel}
+              stop={stop}
+              handleChange={(e) => setInput(e.target.value)}
             />
           </div>
         </div>

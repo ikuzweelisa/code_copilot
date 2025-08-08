@@ -4,16 +4,16 @@ import {
   CloudUpload,
   MoveUp,
   Paperclip,
-  TriangleAlert,
   Send,
+  TriangleAlert,
 } from "lucide-react";
-import React, { ChangeEvent, useRef, useTransition, useState } from "react";
+import React, { ChangeEvent, useRef, useTransition } from "react";
 import { cn, sleep } from "~/lib/utils";
 import { LoadingButton } from "~/components/ai/spinner-message";
 import AttachmentPreview, {
   Loading,
 } from "~/components/chat/attachment-preview";
-import { Attachment, ChatRequestOptions } from "ai";
+import { FileUIPart } from "ai";
 import { useUploadThing } from "~/lib/uploadthing";
 import { toast } from "sonner";
 import { deleteAttachment } from "~/lib/server/actions";
@@ -22,20 +22,14 @@ import { ModelSelector } from "./model-select";
 import { Model } from "~/lib/ai/models";
 
 interface InputFieldProps {
-  handleSubmit: (
-    event?: {
-      preventDefault?: () => void;
-    },
-    chatRequestOptions?: ChatRequestOptions
-  ) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   handleChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
   input: string;
   isLoading: boolean;
   stop: () => void;
-  attachements: Attachment[];
-  setAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>;
-  setOPtimisticAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>;
-  optimisticAttachments: Array<Attachment & { isUploading?: boolean }>;
+  setAttachments: React.Dispatch<React.SetStateAction<FileUIPart[]>>;
+  setOPtimisticAttachments: React.Dispatch<React.SetStateAction<FileUIPart[]>>;
+  optimisticAttachments: Array<FileUIPart & { isUploading?: boolean }>;
   selectedModel: Model;
   setSelectedModel: React.Dispatch<React.SetStateAction<Model>>;
 }
@@ -45,7 +39,6 @@ function InputField({
   input,
   isLoading,
   stop,
-  attachements,
   setAttachments,
   setOPtimisticAttachments,
   optimisticAttachments,
@@ -82,7 +75,8 @@ function InputField({
             url: file.url,
             contentType: file.type,
             name: file.name,
-            key: file.name,
+            type: "file",
+            mediaType: file.type,
           },
         ]);
       });
@@ -93,7 +87,7 @@ function InputField({
     const deleted = await deleteAttachment(key);
     if (!deleted) return;
     setAttachments((current) => {
-      return current.filter((a) => a.key !== key);
+      return current.filter((a) => a.filename != key);
     });
   }
   function handleOnClick() {
@@ -113,6 +107,8 @@ function InputField({
             url: URL.createObjectURL(file),
             isUploading: true,
             key: file.name,
+            type: "file",
+            mediaType: file.type,
           },
         ]);
       });
@@ -121,14 +117,10 @@ function InputField({
     });
     setAttachments([]);
   }
+
   return (
     <form
-      onSubmit={(e) => {
-        setAttachments([]);
-        handleSubmit(e, {
-          experimental_attachments: attachements,
-        });
-      }}
+      onSubmit={handleSubmit}
       className="flex flex-col bg-card border focus-within:ring-2 focus-within:ring-primary w-full rounded-lg gap-0"
     >
       {optimisticAttachments.length > 0 && (

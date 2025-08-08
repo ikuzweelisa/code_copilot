@@ -13,12 +13,12 @@ Code Copilot Chat bot
 - [x] Regenerate message
 - [x] Save Chat into database
 - [x] Retrieve Chat from database
-- [ ] Upload Attachments
-- [ ] Edit Message prompt
+- [x] Upload Attachments
+- [ ] Edit Messages
 - [x] Delete Chat from database
 - [x] Update Chat from database
 - [x] Show Chat History
-- [ ] Write code using canvas
+- [ ] Canvas Feature
 - [ ] Run code using web container
 
 ## Technologies

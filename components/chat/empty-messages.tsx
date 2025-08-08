@@ -1,15 +1,14 @@
 import { exampleMessages } from "~/lib/data";
 import { Card, CardContent } from "~/components/ui/card";
 import { cn } from "~/lib/utils";
-import { generateId, Message } from "ai";
 import { useAnimatedText } from "~/lib/hooks";
 import { useSession } from "next-auth/react";
 
 interface Props {
-  append: (message: Message) => Promise<string | null | undefined>;
+  onSubmit: (message: string) => void;
 }
 
-export default function EmptyScreen({ append }: Props) {
+export default function EmptyScreen({ onSubmit }: Props) {
   const session = useSession();
   const name = session.data?.user?.name?.split(" ")[0];
   const [text] = useAnimatedText(
@@ -29,13 +28,7 @@ export default function EmptyScreen({ append }: Props) {
           {exampleMessages.map(({ heading, icon: Icon }, index) => (
             <Card
               key={heading}
-              onClick={async () => {
-                await append({
-                  id: generateId(14),
-                  content: heading,
-                  role: "user",
-                });
-              }}
+              onClick={() => onSubmit(heading)}
               className={cn(
                 "cursor-pointer shadow-none rounded-md border p-1",
                 index > 1 && "hidden md:block"

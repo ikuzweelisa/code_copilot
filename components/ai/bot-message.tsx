@@ -2,21 +2,24 @@ import { AssitantIcon } from "~/components/ui/icons";
 import ButtonRow from "~/components/ai/button-row";
 import { cn } from "~/lib/utils";
 import { Markdown } from "./markdown";
-import { ChatRequestOptions } from "ai";
 import { useAnimatedText } from "~/lib/hooks";
+import { RegenerateFunc } from "~/lib/types";
+import {ReasoningMessage} from "~/components/chat/reasoning";
 
 export function BotMessage({
   children,
   className,
   reload,
   isLoading,
+  reasoning,
+  isReasoning=false,
 }: {
   children: string;
   className?: string;
   isLoading?: boolean;
-  reload: (
-    chatRequestOptions?: ChatRequestOptions
-  ) => Promise<string | null | undefined>;
+  reload: RegenerateFunc
+  reasoning?:string
+  isReasoning?:boolean
 }) {
   const [text, isAnimating] = useAnimatedText(children, {
     duration: 3,
@@ -38,7 +41,11 @@ export function BotMessage({
           className
         )}
       >
-        <Markdown>{text}</Markdown>
+        {reasoning && (
+          <ReasoningMessage isLoading={isReasoning} message={reasoning} />
+        )}  
+          <Markdown>{text}</Markdown>
+      
         {!isAnimating ? <ButtonRow reload={reload} content={text} /> : null}
       </div>
     </div>

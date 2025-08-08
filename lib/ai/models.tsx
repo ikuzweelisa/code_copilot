@@ -20,8 +20,7 @@ export const models: Model[] = [
     name: "Gemini 2.5 Pro",
     icon: <Gemini width={24} height={24} />,
     model: openrouter.chat("google/gemini-2.5-pro-exp-03-25"),
-    description: "OpenRouter",
-    isDefault: true,
+    description: "OpenRouter"
   },
   {
     name: "Gemini 2.5 Flash",
@@ -88,6 +87,7 @@ export const models: Model[] = [
     model: groq("deepseek-r1-distill-llama-70b"),
     icon: <DeepSeek width={24} height={24} />,
     description: "Llama Distilled",
+    isDefault:true
   },
   {
     name: "DeepSeek R1 Qwen (Groq)",

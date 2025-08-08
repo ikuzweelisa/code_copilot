@@ -1,6 +1,5 @@
 import Chat from "~/components/chat";
-import { getChatById } from "../../../lib/server";
-import { converToUIMessage } from "~/lib/server/helpers";
+import { getChatById } from "~/lib/server";
 import { capitalize } from "~/lib/utils";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -25,7 +24,6 @@ export default async function Page({ params }: PageParams) {
   const { id } = await params;
   const chat = await getChatById(id);
   if (!chat) notFound();
-
-  const messages = converToUIMessage(chat.messages);
+  const messages = chat.messages;
   return <Chat chatId={id} initialMessages={messages} chatTitle={chat.title} />;
 }
