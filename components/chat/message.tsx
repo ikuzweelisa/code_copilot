@@ -4,6 +4,7 @@ import { UIMessage } from "ai";
 import { BotMessage } from "~/components/ai/bot-message";
 import { useMemo } from "react";
 import { RegenerateFunc } from "~/lib/types";
+import { SpinnerMessage } from "../ai/spinner-message";
 
 interface MessageProps {
   message: UIMessage;
@@ -17,13 +18,29 @@ export default function Message({
 }: MessageProps) {
   const { text, files, reasoning, isReasoning } = useMemo(() => {
     const parts = message?.parts || [];
-    const text = parts.find((part) => part?.type === "text")?.text ?? "";
+    let text = parts.find((part) => part?.type === "text")?.text ?? "";
     const files = parts.filter((part) => part?.type === "file");
-    const reasoning = parts.find((part) => part.type === "reasoning")?.text;
-    const isReasoning =
-      parts.find((part) => part.type === "reasoning")?.state === "streaming" ||
-      false;
-    return { text, files, reasoning, isReasoning };
+    let reasoningText: string | undefined;
+    let isReasoning = false;
+    const reasoningPart = parts.find((part) => part.type === "reasoning");
+    if (reasoningPart && "text" in reasoningPart) {
+      reasoningText = reasoningPart.text;
+      isReasoning = reasoningPart.state === "streaming";
+    } else {
+      const thinkTagRegex = /<think>(.*?)<\/think>/s;
+      const match = text.match(thinkTagRegex);
+      if (match) {
+        reasoningText = match[1].trim();
+        text = text.replace(thinkTagRegex, "").trim();
+      }
+    }
+
+    return {
+      text,
+      files,
+      reasoning: reasoningText,
+      isReasoning,
+    };
   }, [message]);
 
   if (!message) {
@@ -42,14 +59,22 @@ export default function Message({
           </div>
         </UserMessage>
       ) : (
-        <BotMessage
-          isLoading={loading}
-          reload={regenerate}
-          reasoning={reasoning}
-          isReasoning={isReasoning}
-        >
-          {text}
-        </BotMessage>
+        <>
+          {loading ? (
+            <>
+              <SpinnerMessage />
+            </>
+          ) : (
+            <BotMessage
+              isLoading={loading}
+              reload={regenerate}
+              reasoning={reasoning}
+              isReasoning={isReasoning}
+            >
+              {text}
+            </BotMessage>
+          )}
+        </>
       )}
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 import { forwardRef } from "react";
-import { SpinnerMessage } from "~/components/ai/spinner-message";
 import { UIMessage } from "ai";
 import { BotMessage } from "~/components/ai/bot-message";
 import { RegenerateFunc } from "~/lib/types";
@@ -32,11 +31,6 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
           />
         </div>
       ))}
-      {isLoading && (
-        <div className="flex flex-col w-full">
-          <SpinnerMessage />
-        </div>
-      )}
       {error && (
         <div className="flex flex-col w-full">
           <BotMessage
