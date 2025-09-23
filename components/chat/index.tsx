@@ -37,7 +37,7 @@ export default function Chat({
   const { mutate } = useSWRConfig();
   const path = usePathname();
   const [selectedModel, setSelectedModel] = useState<Model>(
-    models.find((model) => model.isDefault) || models[0]
+    models.find((model) => model.isDefault) || models[0],
   );
 
   const [attachments, setAttachments] = useState<Array<FileUIPart>>([]);
@@ -54,7 +54,7 @@ export default function Chat({
       },
     }),
     generateId: generateMessageId,
-    onFinish: () => {
+    onFinish: (data) => {
       setChatId(chatId);
       mutate("/api/chats");
     },
@@ -66,7 +66,7 @@ export default function Chat({
     sendMessage({ text: input });
     setInput("");
   }
-  const loading = status === "submitted" || status === "streaming";
+  const loading = ["streaming", "submitted"].includes(status);
   const isEmpty = messages.length === 0;
   const {
     isAtBottom,

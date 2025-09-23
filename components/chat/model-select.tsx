@@ -66,11 +66,11 @@ export function ModelSelector({
         <div className="p-4 border-b">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input
+            <input
               placeholder="Search models..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-12  outline-none border-secondary shadow-none focus-within:ring-0 focus-within:ring-offset-0"
+              className="pl-10 h-10  outline-0 border-0 shadow-none  focus:border-0 focus:outline-0 focus-within:border-0 focus-within:outline-none "
             />
           </div>
         </div>

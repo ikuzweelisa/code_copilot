@@ -19,10 +19,5 @@ export async function POST(request: NextRequest) {
     messages: coreMessage,
     system: systemPrompt,
   });
-  return result.toUIMessageStreamResponse({
-    onFinish: ({ messages, isAborted }) => {
-      if (isAborted) return;
-      saveChatData(id, messages);
-    },
-  });
+  return result.toUIMessageStreamResponse();
 }

@@ -27,7 +27,7 @@ function MarkdownComponent({ children }: { children: string }) {
             <Table
               className={cn(
                 "w-full border border-border rounded-md",
-                className
+                className,
               )}
               {...props}
             />
@@ -92,7 +92,7 @@ function MarkdownComponent({ children }: { children: string }) {
             <code
               className={cn(
                 "text-sm bg-zinc-100 dark:bg-zinc-800 py-0.5 px-1 rounded-md",
-                className
+                className,
               )}
               {...props}
             >
@@ -121,7 +121,7 @@ function MarkdownComponent({ children }: { children: string }) {
           </h3>
         ),
       }) satisfies Components,
-    []
+    [],
   );
 
   return (
@@ -139,7 +139,7 @@ function MarkdownComponent({ children }: { children: string }) {
 
 const MarkdownBlock = memo(
   MarkdownComponent,
-  (prev, next) => prev.children === next.children
+  (prev, next) => prev.children === next.children,
 );
 
 export const Markdown = memo(({ children }: { children: string }) => {

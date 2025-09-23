@@ -6,8 +6,8 @@ import { Loader2 } from "lucide-react";
 import { ChevronDown } from "lucide-react";
 
 interface ReasoningProps {
-  isLoading: boolean;
-  message: string;
+  isLoading?: boolean;
+  children: string;
 }
 
 const variants = {
@@ -25,12 +25,13 @@ const variants = {
   },
 };
 
-export function ReasoningMessage({ isLoading, message }: ReasoningProps) {
+export function ReasoningMessage({
+  isLoading = false,
+  children,
+}: ReasoningProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   useEffect(() => {
-    if (isLoading) {
-      setIsExpanded(true);
-    }
+    setIsExpanded(isLoading);
   }, [isLoading]);
 
   return (
@@ -56,7 +57,7 @@ export function ReasoningMessage({ isLoading, message }: ReasoningProps) {
             <ChevronDown
               className={cn(
                 "size-4 transition-transform duration-200",
-                isExpanded ? "rotate-180" : ""
+                isExpanded ? "rotate-180" : "",
               )}
             />
           </button>
@@ -76,7 +77,7 @@ export function ReasoningMessage({ isLoading, message }: ReasoningProps) {
             style={{ overflow: "hidden" }}
             className="flex flex-col gap-4 border-l pl-4 text-zinc-600 dark:text-zinc-400"
           >
-            <Markdown>{message}</Markdown>
+            {children}
           </motion.div>
         )}
       </AnimatePresence>

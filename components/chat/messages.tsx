@@ -4,6 +4,8 @@ import { UIMessage } from "ai";
 import { BotMessage } from "~/components/ai/bot-message";
 import { RegenerateFunc } from "~/lib/types";
 import Message from "./message";
+import { SpinnerMessage } from "../ai/spinner-message";
+import ButtonRow from "../ai/button-row";
 interface MessageProps {
   messages: UIMessage[];
   error: Error | undefined;
@@ -13,7 +15,7 @@ interface MessageProps {
 
 const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
   { messages, error, isLoading, regenerate }: MessageProps,
-  ref
+  ref,
 ) {
   return (
     <div
@@ -25,12 +27,17 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
       {messages.map((message) => (
         <div key={message.id} className={"flex flex-col w-full"}>
           <Message
+            loading={isLoading}
             message={message}
             regenerate={regenerate}
-            loading={isLoading}
           />
         </div>
       ))}
+      {isLoading && messages[messages.length - 1].role === "user" && (
+        <div className="flex flex-col w-full">
+          <SpinnerMessage />
+        </div>
+      )}
       {error && (
         <div className="flex flex-col w-full">
           <BotMessage
@@ -40,6 +47,8 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
           >
             Unable to generate response. Please try again
           </BotMessage>
+
+          {!isLoading ? <ButtonRow reload={regenerate} content={""} /> : null}
         </div>
       )}
     </div>
