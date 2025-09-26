@@ -1,32 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useEffect, forwardRef } from "react";
 
 interface AutoScrollerProps {
   children: React.ReactNode;
   className?: string;
-  ref: React.RefObject<HTMLDivElement|null|undefined>;
 }
-const AutoScroller = ({ children, className, ref }: AutoScrollerProps) => {
-  useEffect(() => {
-    if (!ref.current) return;
-    const observer = new MutationObserver(async () => {
-      ref.current?.scroll({
-        top: ref.current.scrollHeight,
-        behavior: "smooth",
+
+const AutoScroller = forwardRef<HTMLDivElement, AutoScrollerProps>(
+  ({ children, className }, ref) => {
+    useEffect(() => {
+      if (!ref || typeof ref === 'function' || !ref.current) return;
+      
+      const observer = new MutationObserver(async () => {
+        if (ref.current) {
+          ref.current.scroll({
+            top: ref.current.scrollHeight,
+            behavior: "smooth",
+          });
+        }
       });
-    });
-    observer.observe(ref.current, {
-      childList: true,
-      subtree: true,
-    });
-    return () => {
-      observer.disconnect();
-    };
-  }, [ref]);
-  return (
-    <div ref={ref} className={className}>
-      {children}
-    </div>
-  );
-};
+      
+      observer.observe(ref.current, {
+        childList: true,
+        subtree: true,
+      });
+      
+      return () => {
+        observer.disconnect();
+      };
+    }, [ref]);
+    
+    return (
+      <div ref={ref} className={className}>
+        {children}
+      </div>
+    );
+  }
+);
+
 AutoScroller.displayName = "AutoScroller";
 export { AutoScroller };

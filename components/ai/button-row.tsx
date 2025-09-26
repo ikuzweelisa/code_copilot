@@ -14,13 +14,11 @@ import {
 } from "~/components/ui/tooltip";
 import { toast } from "sonner";
 import { useClipBoard } from "~/lib/hooks";
-import { ChatRequestOptions } from "ai";
+import { RegenerateFunc } from "~/lib/types";
 
 interface Props {
   content: string;
-  reload: (
-    chatRequestOptions?: ChatRequestOptions
-  ) => Promise<string | null | undefined>;
+  reload:RegenerateFunc
 }
 export default function ButtonRow({ content, reload }: Props) {
   const [isCopied, copyText] = useClipBoard();
@@ -40,7 +38,9 @@ export default function ButtonRow({ content, reload }: Props) {
       icon: Repeat,
       tooltip: "Regenerate",
       onClick: async () => {
-        await reload();
+        await reload({
+          
+        });
       },
     },
     { icon: ThumbsUp, tooltip: "Like", onClick: like },

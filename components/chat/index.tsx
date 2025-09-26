@@ -1,7 +1,7 @@
 "use client";
-import React, { useOptimistic, useState } from "react";
+import React, { useEffect, useMemo, useOptimistic, useState } from "react";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { Message, useChat } from "ai/react";
+import { UIMessage, useChat } from "@ai-sdk/react";
 import InputField from "~/components/chat/input";
 import Messages from "~/components/chat/messages";
 import ScrollAnchor from "~/components/chat/scroll-anchor";
@@ -15,11 +15,14 @@ import Link from "next/link";
 import { useIsMobile } from "~/lib/hooks/use-mobile";
 import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
-import { Attachment } from "ai";
 import { AutoScroller } from "./auto-scoller";
+import { Model, models } from "~/lib/ai/models";
+import { DefaultChatTransport, ChatTransport, FileUIPart } from "ai";
+import { generateMessageId } from "~/lib/ai/utis";
+import cookies from "js-cookie";
 
 interface ChatProps {
-  initialMessages: Message[];
+  initialMessages: UIMessage[];
   chatId: string;
   chatTitle?: string;
 }
@@ -29,40 +32,38 @@ export default function Chat({
   chatTitle,
 }: ChatProps) {
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
+  const [input, setInput] = useState("");
   const session = useSession();
   const isLoggedIn = session.status === "loading" ? true : !!session.data?.user;
   const { mutate } = useSWRConfig();
   const path = usePathname();
-
-  const [attachments, setAttachments] = useState<Array<Attachment>>([]);
+  const [selectedModel, setSelectedModel] = useState<Model>(() => {
+    return models.find((model) => model.isDefault) || models[0];
+  });
+  const [attachments, setAttachments] = useState<Array<FileUIPart>>([]);
   const [optimisticAttachments, setOptimisticAttachments] =
-    useOptimistic<Array<Attachment & { isUploading?: boolean }>>(attachments);
+    useOptimistic<Array<FileUIPart & { isUploading?: boolean }>>(attachments);
 
-  const {
-    handleSubmit,
-    handleInputChange,
-    input,
-    append,
-    stop,
-    error,
-    isLoading,
-    reload,
-    messages,
-  } = useChat({
-    initialMessages: initialMessages,
+  const { messages, status, error, sendMessage, regenerate, stop } = useChat({
+    messages: initialMessages,
     id: chatId,
-    body: {
-      id: chatId,
-    },
-    onFinish: () => {
-      const isNew = !path.includes(chatId);
-      if (isNew && isLoggedIn) {
-        history.pushState({}, "", `/chat/${chatId}`);
-        setChatId(chatId);
-        mutate("/api/chats");
-      }
+    transport: new DefaultChatTransport({
+      api: "/api/chat",
+    }),
+    generateId: generateMessageId,
+    onFinish: (data) => {
+      setChatId(chatId);
+      mutate("/api/chats");
     },
   });
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!input) return;
+    sendMessage({ text: input });
+    setInput("");
+  }
+  const loading = ["streaming", "submitted"].includes(status);
   const isEmpty = messages.length === 0;
   const {
     isAtBottom,
@@ -72,6 +73,12 @@ export default function Chat({
     handleScroll,
   } = useScroll<HTMLDivElement>();
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    cookies.set("model.id", selectedModel.id.toString(), {
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
+  }, [selectedModel]);
 
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden">
@@ -103,7 +110,7 @@ export default function Chat({
         )
       )}
       {isEmpty ? (
-        <EmptyScreen append={append} />
+        <EmptyScreen onSubmit={(msg) => sendMessage({ text: msg })} />
       ) : (
         <>
           <ScrollArea
@@ -112,14 +119,14 @@ export default function Chat({
           >
             <AutoScroller
               ref={visibilityRef}
-              className="min-h-full w-full flex flex-col  lg:max-w-2xl mx-auto p-1  "
+              className="min-h-full w-full flex flex-col lg:max-w-2xl mx-auto p-1"
             >
               <Messages
-                error={error}
-                loading={isLoading}
+                isLoading={loading}
                 ref={messagesRef}
                 messages={messages}
-                reload={reload}
+                error={error}
+                regenerate={regenerate}
               />
             </AutoScroller>
           </ScrollArea>
@@ -132,18 +139,19 @@ export default function Chat({
         </>
       )}
       <div className={cn("w-full z-10", isEmpty ? "" : "mb-14")}>
-        <div className={cn("mx-auto p-2", isEmpty ? "max-w-2xl" : "max-w-xl")}>
+        <div className={cn("mx-auto p-2 max-w-2xl")}>
           <div className="w-full">
             <InputField
-              stop={stop}
-              isLoading={isLoading}
+              isLoading={loading}
               input={input}
               handleSubmit={handleSubmit}
-              handleChange={handleInputChange}
-              attachements={attachments}
               optimisticAttachments={optimisticAttachments}
               setAttachments={setAttachments}
               setOPtimisticAttachments={setOptimisticAttachments}
+              selectedModel={selectedModel}
+              setSelectedModel={setSelectedModel}
+              stop={stop}
+              handleChange={(e) => setInput(e.target.value)}
             />
           </div>
         </div>

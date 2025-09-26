@@ -1,7 +1,7 @@
 import "server-only";
 import { db } from "~/lib/drizzle";
 import { cache } from "react";
-import { CoreMessage } from "ai";
+import { UIMessage } from "ai";
 import { auth } from "~/app/auth";
 import { getChatTitle } from "~/lib/server/helpers";
 import { chats } from "~/lib/drizzle/schema";
@@ -27,19 +27,20 @@ export const getChatById = async (id: string | undefined) => {
   return chat;
 };
 
-export async function saveChatData(id: string, messages: CoreMessage[]) {
+export async function saveChatData(id: string, messages: UIMessage[]) {
   try {
-    const session = auth();
+    const session = await auth();
+    if (!session || !session?.user?.id) return;
     const existing = await getChatById(id);
+    const userId = existing ? existing.userId : session.user.id;
     const title = existing ? existing.title : await getChatTitle(messages);
-    const userId = existing ? existing.userId : (await session)?.user?.id;
     if (!userId) return null;
     await db
       .insert(chats)
       .values({
-        id: id,
-        userId: userId,
-        title: title,
+        id,
+        title,
+        userId,
         messages: messages,
       })
       .onConflictDoUpdate({

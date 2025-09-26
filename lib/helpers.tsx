@@ -2,6 +2,7 @@ import {
   CIcon,
   CSharpIcon,
   CssIcon,
+  Go,
   HtmlIcon,
   JavaIcon,
   JavaScriptIcon,
@@ -39,7 +40,10 @@ function getLanguageIcon(language: string): React.ReactNode {
     case "html":
       return <HtmlIcon size={20} />;
     case "prisma":
-      return <PrismaIcon size={20}/> 
+      return <PrismaIcon size={20} />;
+    case "go":
+    case "golang":  
+      return <Go size={20} />;
     default:
       return <span className="sm:text-xs lowercase">{language}</span>;
   }

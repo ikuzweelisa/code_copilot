@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 import { getFileType } from "~/lib/server/helpers";
 
@@ -8,7 +7,7 @@ export async function GET(request: NextRequest) {
   if (!url) {
     return NextResponse.json(
       { message: "file url is required" },
-      { status: 404 }
+      { status: 404 },
     );
   }
   const res = await fetch(url);

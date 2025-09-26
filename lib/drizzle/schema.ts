@@ -1,5 +1,5 @@
 import { AdapterAccountType } from "@auth/core/adapters";
-import { CoreMessage } from "ai";
+import { UIMessage } from "ai";
 import { relations } from "drizzle-orm";
 import {
   index,
@@ -35,15 +35,17 @@ export const chats = pgTable(
   {
     id: varchar("id").primaryKey(),
     title: varchar("title").notNull(),
-    messages: json("messages").$type<CoreMessage[]>().notNull().default([]),
+    messages: json("messages").$type<UIMessage[]>().notNull().default([]),
     userId: uuid("userId")
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, { onDelete: "cascade" }),
     ...timestamps,
   },
-  (chats) => ({
-    userIndex: index("user_index").on(chats.userId),
-  })
+  (chats) => [
+    {
+      userIndex: index("user_index").on(chats.userId),
+    },
+  ]
 );
 
 export const accounts = pgTable(
@@ -63,11 +65,13 @@ export const accounts = pgTable(
     id_token: text("id_token"),
     session_state: text("session_state"),
   },
-  (account) => ({
-    compoundKey: primaryKey({
-      columns: [account.provider, account.providerAccountId],
-    }),
-  })
+  (account) => [
+    {
+      compoundKey: primaryKey({
+        columns: [account.provider, account.providerAccountId],
+      }),
+    },
+  ]
 );
 
 export const userRelations = relations(users, ({ many }) => {

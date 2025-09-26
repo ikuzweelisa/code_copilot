@@ -1,3 +1,4 @@
+import { ChatRequestOptions } from "ai";
 import { Chat } from "../drizzle";
 
 type Status = "success" | "error";
@@ -13,3 +14,10 @@ export type GroupedChats = {
   lastMonth: Chat[];
   older: Chat[];
 };
+
+export type RegenerateFunc = ({
+  messageId,
+  ...options
+}?: {
+  messageId?: string | undefined;
+} & ChatRequestOptions) => Promise<void>;

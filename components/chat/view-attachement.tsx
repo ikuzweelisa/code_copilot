@@ -1,5 +1,5 @@
 "use client";
-import { Attachment } from "ai";
+
 import { FileIcon, Download, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
