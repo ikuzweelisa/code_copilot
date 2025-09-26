@@ -1,5 +1,5 @@
 "use client";
-import React, { useOptimistic, useState } from "react";
+import React, { useEffect, useMemo, useOptimistic, useState } from "react";
 import { ScrollArea } from "~/components/ui/scroll-area";
 import { UIMessage, useChat } from "@ai-sdk/react";
 import InputField from "~/components/chat/input";
@@ -17,8 +17,9 @@ import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
 import { AutoScroller } from "./auto-scoller";
 import { Model, models } from "~/lib/ai/models";
-import { DefaultChatTransport, FileUIPart } from "ai";
+import { DefaultChatTransport, ChatTransport, FileUIPart } from "ai";
 import { generateMessageId } from "~/lib/ai/utis";
+import cookies from "js-cookie";
 
 interface ChatProps {
   initialMessages: UIMessage[];
@@ -36,22 +37,18 @@ export default function Chat({
   const isLoggedIn = session.status === "loading" ? true : !!session.data?.user;
   const { mutate } = useSWRConfig();
   const path = usePathname();
-  const [selectedModel, setSelectedModel] = useState<Model>(
-    models.find((model) => model.isDefault) || models[0],
-  );
-
+  const [selectedModel, setSelectedModel] = useState<Model>(() => {
+    return models.find((model) => model.isDefault) || models[0];
+  });
   const [attachments, setAttachments] = useState<Array<FileUIPart>>([]);
   const [optimisticAttachments, setOptimisticAttachments] =
     useOptimistic<Array<FileUIPart & { isUploading?: boolean }>>(attachments);
 
   const { messages, status, error, sendMessage, regenerate, stop } = useChat({
     messages: initialMessages,
+    id: chatId,
     transport: new DefaultChatTransport({
       api: "/api/chat",
-      body: {
-        id: chatId,
-        model: selectedModel.name,
-      },
     }),
     generateId: generateMessageId,
     onFinish: (data) => {
@@ -76,6 +73,12 @@ export default function Chat({
     handleScroll,
   } = useScroll<HTMLDivElement>();
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    cookies.set("model.id", selectedModel.id.toString(), {
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
+  }, [selectedModel]);
 
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden">

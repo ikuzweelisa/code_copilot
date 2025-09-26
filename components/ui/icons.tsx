@@ -66,8 +66,9 @@ export const Go: React.FC<IconProps> = ({ size = 24, className = "" }) => (
     height={size}
     viewBox="0 0 207 78"
     width={size}
+    className={className}
   >
-    <g fill="#fff" fillRule="evenodd">
+    <g fill="#00ADD8" fillRule="evenodd">
       <path d="m16.2 24.1c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h35.7c.4 0 .5.3.3.6l-1.7 2.6c-.2.3-.7.6-1 .6z" />
       <path d="m1.1 33.3c-.4 0-.5-.2-.3-.5l2.1-2.7c.2-.3.7-.5 1.1-.5h45.6c.4 0 .6.3.5.6l-.8 2.4c-.1.4-.5.6-.9.6z" />
       <path d="m25.3 42.5c-.4 0-.5-.3-.3-.6l1.4-2.5c.2-.3.6-.6 1-.6h20c.4 0 .6.3.6.7l-.2 2.4c0 .4-.4.7-.7.7z" />
@@ -277,7 +278,7 @@ export const TypeScriptIcon: React.FC<IconProps> = ({
 };
 
 export const ReactIcon = (
-  props: SVGProps<SVGSVGElement> & { size?: number }
+  props: SVGProps<SVGSVGElement> & { size?: number },
 ) => (
   <svg
     viewBox="0 0 256 228"
@@ -295,7 +296,7 @@ export const ReactIcon = (
 );
 
 export const NextJsIcon = (
-  props: SVGProps<SVGSVGElement> & { size?: number }
+  props: SVGProps<SVGSVGElement> & { size?: number },
 ) => (
   <svg
     width={props.size}
@@ -367,7 +368,7 @@ export const NextJsIcon = (
 );
 
 export const PrismaIcon = (
-  props: SVGProps<SVGSVGElement> & { size: number }
+  props: SVGProps<SVGSVGElement> & { size: number },
 ) => (
   <svg
     viewBox="0 0 256 310"
@@ -647,7 +648,7 @@ export const HtmlIcon: React.FC<IconProps> = ({
 };
 
 export const NodejsIcon = (
-  props: SVGProps<SVGSVGElement> & { size?: number }
+  props: SVGProps<SVGSVGElement> & { size?: number },
 ) => (
   <svg
     viewBox="0 0 256 292"
@@ -728,7 +729,7 @@ export const NodejsIcon = (
 );
 
 export const DrizzleORM = (
-  props: SVGProps<SVGSVGElement> & { size?: number }
+  props: SVGProps<SVGSVGElement> & { size?: number },
 ) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

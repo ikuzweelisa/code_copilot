@@ -1,6 +1,6 @@
 "use client";
 import { models, type Model } from "~/lib/ai/models";
-import { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Search, ChevronDown } from "lucide-react";
 import {
   Popover,
@@ -13,7 +13,7 @@ import { ScrollArea } from "~/components/ui/scroll-area";
 
 interface ModelSelectorProps {
   selectedModel: Model | null;
-  onModelSelect: (model: Model) => void;
+  onModelSelect: React.Dispatch<React.SetStateAction<Model>>;
 }
 
 export function ModelSelector({

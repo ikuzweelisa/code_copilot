@@ -72,7 +72,7 @@ function InputField({
         setAttachments((prev) => [
           ...prev,
           {
-            url: file.url,
+            url: file.ufsUrl,
             contentType: file.type,
             name: file.name,
             type: "file",
