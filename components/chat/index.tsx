@@ -20,6 +20,7 @@ import { Model, models } from "~/lib/ai/models";
 import { DefaultChatTransport, ChatTransport, FileUIPart } from "ai";
 import { generateMessageId } from "~/lib/ai/utis";
 import cookies from "js-cookie";
+import { LoginForm } from "../auth/login-form";
 
 interface ChatProps {
   initialMessages: UIMessage[];
@@ -84,12 +85,12 @@ export default function Chat({
     <div className="flex flex-col h-screen w-full overflow-hidden">
       {!isLoggedIn ? (
         <div className="w-fit h-10 flex justify-end mb-3 mt-3 mx-3 gap-2 pl-0 absolute top-1 right-1 z-10">
-          <Button variant="outline" asChild>
-            <Link href="/auth/login">Login</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/auth/login">Register</Link>
-          </Button>
+          <LoginForm>
+            <Button variant="outline">Login</Button>
+          </LoginForm>
+          <LoginForm>
+            <Button>Register</Button>
+          </LoginForm>
         </div>
       ) : (
         isMobile &&

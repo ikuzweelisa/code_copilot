@@ -17,6 +17,7 @@ import NavLinks from "./nav-links";
 import { Session } from "next-auth";
 import NavItems from "./nav-items";
 import { Button } from "../ui/button";
+import { LoginForm } from "../auth/login-form";
 
 interface Props {
   sessionPromise: Promise<Session | null>;
@@ -70,12 +71,14 @@ export default function NavContent({ sessionPromise }: Props) {
           </SidebarContent>
           <SidebarFooter className="group-data-[collapsible=icon]:hidden  gap-2">
             <div className="w-full flex gap-2">
-              <Button className="w-full max-w-xs" asChild variant={"outline"}>
-                <Link href="/auth/login">Login</Link>
-              </Button>
-              <Button className="w-full max-w-xs" asChild>
-                <Link href="/auth/login">Register</Link>
-              </Button>
+              <LoginForm>
+                <Button className="w-full max-w-xs" variant={"outline"}>
+                  Login
+                </Button>
+              </LoginForm>
+              <LoginForm>
+                <Button className="w-full max-w-xs">Register</Button>
+              </LoginForm>
             </div>
           </SidebarFooter>
         </>
