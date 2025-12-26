@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
   const { id, messages } = parsedBody;
   const cookieStore = await cookies();
   const modelId = cookieStore.get("model.id")?.value;
-  const model = models.find((m) => m.id === Number(modelId)) ?? models[0];
+  const model = models.find((m) => m.id === modelId) ?? models[0];
   const coreMessage = convertToModelMessages(messages);
   const result = streamText({
     model: model.model,
