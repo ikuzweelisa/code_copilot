@@ -13,18 +13,20 @@ import { Button } from "~/components/ui/button";
 import ModeToggle from "~/components/navbar/toggle-mode";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Session, signOut } from "~/lib/auth/auth-client";
+import { useRouter } from "next/navigation";
 
 interface Props {
   session: Session | null;
 }
 
 export default function UserButton({ session }: Props) {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="p-0">
-        <div className="flex gap-1 cursor-pointer">
+        <div className="flex gap-2 cursor-pointer">
           <Button variant="ghost" size="icon" className="relative ">
-            <Avatar className="rounded-md h-10 w-10">
+            <Avatar className="rounded-full h-10 w-10">
               <AvatarImage src={session?.user?.image ?? ""} />
               <AvatarFallback>
                 {session?.user?.name
@@ -83,7 +85,12 @@ export default function UserButton({ session }: Props) {
             variant={"default"}
             size={"sm"}
             className="flex items-center w-full justify-start cursor-pointer gap-1"
-            onClick={() => signOut()}
+            onClick={async () => {
+              const { data } = await signOut();
+              if (data?.success) {
+                router.replace("/");
+              }
+            }}
           >
             <LogOut className="mr-2 h-4 w-4" />
             Log out

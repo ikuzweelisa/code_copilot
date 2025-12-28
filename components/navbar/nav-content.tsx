@@ -18,12 +18,13 @@ import NavItems from "./nav-items";
 import { Button } from "../ui/button";
 import { LoginForm } from "../auth/login-form";
 import { useSession } from "~/lib/auth/auth-client";
+import UserSkelton from "../skeletons";
 
 export default function NavContent() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const session = useSession();
-
+  const isPending = session.isPending;
   const isLoggedIn = !!session?.data;
   return (
     <Sidebar
@@ -43,43 +44,40 @@ export default function NavContent() {
           </span>
         </Link>
       </SidebarHeader>
-      {isLoggedIn ? (
-        <>
-          <SidebarContent className="mt-2">
-            <ScrollArea className="flex-grow">
-              <NavLinks />
-              <NavItems />
-            </ScrollArea>
-          </SidebarContent>
-          <SidebarFooter className="border-t">
-            <Suspense fallback={null}>
-              <UserButton session={session?.data} />
-            </Suspense>
-          </SidebarFooter>
-        </>
-      ) : (
-        <>
-          <SidebarContent className="group-data-[collapsible=icon]:hidden">
-            <SidebarMenu>
-              <SidebarMenuItem className="text-center mt-5">
-                Login to save chats
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarContent>
-          <SidebarFooter className="group-data-[collapsible=icon]:hidden  gap-2">
-            <div className="w-full flex gap-2">
-              <LoginForm>
-                <Button className="w-full max-w-xs" variant={"outline"}>
-                  Login
-                </Button>
-              </LoginForm>
-              <LoginForm>
-                <Button className="w-full max-w-xs">Register</Button>
-              </LoginForm>
-            </div>
-          </SidebarFooter>
-        </>
-      )}
+      <SidebarContent className="group-data-[collapsible=icon]:hidden">
+        {isPending ? null : isLoggedIn ? (
+          <ScrollArea className="flex-grow">
+            <NavLinks />
+            <NavItems />
+          </ScrollArea>
+        ) : (
+          <SidebarMenu>
+            <SidebarMenuItem className="text-center mt-5">
+              Login to save chats
+            </SidebarMenuItem>
+          </SidebarMenu>
+        )}
+      </SidebarContent>
+      <SidebarFooter className="group-data-[collapsible=icon]:hidden gap-2 border-t">
+        {isPending ? (
+          <UserSkelton />
+        ) : isLoggedIn ? (
+          <Suspense fallback={null}>
+            <UserButton session={session?.data} />
+          </Suspense>
+        ) : (
+          <div className="w-full flex gap-2">
+            <LoginForm>
+              <Button className="w-full max-w-xs" variant={"outline"}>
+                Login
+              </Button>
+            </LoginForm>
+            <LoginForm>
+              <Button className="w-full max-w-xs">Register</Button>
+            </LoginForm>
+          </div>
+        )}
+      </SidebarFooter>
     </Sidebar>
   );
 }

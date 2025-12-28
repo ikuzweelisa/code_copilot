@@ -61,3 +61,15 @@ export function ChatHistorySkeleton() {
     </div>
   );
 }
+
+export default function UserSkelton() {
+  return (
+    <div className="w-full flex gap-2">
+      <Skeleton className={"w-10 h-10 rounded-full"} />
+      <div className="flex flex-col justify-center items-start  gap-1">
+        <Skeleton className="h-4 w-20" />
+        <Skeleton className="h-3 w-10" />
+      </div>
+    </div>
+  );
+}
