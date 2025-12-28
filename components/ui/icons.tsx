@@ -1,9 +1,9 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback } from "./avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import type { SVGProps } from "react";
+import { useSession } from "~/lib/auth/auth-client";
 import { cn } from "~/lib/utils";
 
 export const XAIGrok: React.FC<IconProps> = ({ size = 24, className = "" }) => (
@@ -200,9 +200,7 @@ export const Go: React.FC<IconProps> = ({ size = 24, className = "" }) => (
 );
 
 export const Meta: React.FC<IconProps> = ({ size = 24, className = "" }) => (
-  <div
-    className={cn("rounded-full border bg-foreground p-1", className)}
-  >
+  <div className={cn("rounded-full border bg-foreground p-1", className)}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={size}
@@ -253,9 +251,7 @@ export const DeepSeek: React.FC<IconProps> = ({
   size = 24,
   className = "",
 }) => (
-  <div
-    className={cn("rounded-full border bg-foreground p-1", className)}
-  >
+  <div className={cn("rounded-full border bg-foreground p-1", className)}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       style={{
@@ -332,7 +328,6 @@ export const AssitantIcon = ({
 
 export function IconUser({ className }: { className?: string }) {
   const session = useSession();
-
   return (
     <Avatar className={cn("h-8 w-8", className)}>
       <AvatarImage src={session.data?.user?.image || ""} />

@@ -4,8 +4,8 @@ import { ChevronLeft, ShieldCheck, Box, Brain } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Separator } from "~/components/ui/separator";
 import { Card, CardContent } from "~/components/ui/card";
-import Provider from "./providers/provider";
 import { AssitantIcon } from "../ui/icons";
+import Provider from "./provider";
 
 export function LoginCard({
   setIsOpen,

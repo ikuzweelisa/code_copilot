@@ -13,7 +13,6 @@ import { usePathname } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { useIsMobile } from "~/lib/hooks/use-mobile";
-import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
 import { AutoScroller } from "./auto-scoller";
 import { Model, models } from "~/lib/ai/models";
@@ -21,6 +20,7 @@ import { DefaultChatTransport, ChatTransport, FileUIPart } from "ai";
 import { generateMessageId } from "~/lib/ai/utis";
 import cookies from "js-cookie";
 import { LoginForm } from "../auth/login-form";
+import { useSession } from "~/lib/auth/auth-client";
 
 interface ChatProps {
   initialMessages: UIMessage[];
@@ -35,7 +35,7 @@ export default function Chat({
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
   const [input, setInput] = useState("");
   const session = useSession();
-  const isLoggedIn = session.status === "loading" ? true : !!session.data?.user;
+  const isLoggedIn = session.isPending ? true : !!session.data?.user;
   const { mutate } = useSWRConfig();
   const path = usePathname();
   const [selectedModel, setSelectedModel] = useState<Model>(() => {

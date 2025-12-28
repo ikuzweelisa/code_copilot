@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, use } from "react";
+import React, { Suspense } from "react";
 import { AssitantIcon } from "../ui/icons";
 import { ScrollArea } from "../ui/scroll-area";
 import {
@@ -14,20 +14,17 @@ import {
 import UserButton from "./user";
 import Link from "next/link";
 import NavLinks from "./nav-links";
-import { Session } from "next-auth";
 import NavItems from "./nav-items";
 import { Button } from "../ui/button";
 import { LoginForm } from "../auth/login-form";
+import { useSession } from "~/lib/auth/auth-client";
 
-interface Props {
-  sessionPromise: Promise<Session | null>;
-}
-
-export default function NavContent({ sessionPromise }: Props) {
+export default function NavContent() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const session = use(sessionPromise);
-  const isLoggedIn = !!session?.user;
+  const session = useSession();
+
+  const isLoggedIn = !!session?.data;
   return (
     <Sidebar
       data-collapsed={collapsed}
@@ -56,7 +53,7 @@ export default function NavContent({ sessionPromise }: Props) {
           </SidebarContent>
           <SidebarFooter className="border-t">
             <Suspense fallback={null}>
-              <UserButton sessionPromise={sessionPromise} />
+              <UserButton session={session?.data} />
             </Suspense>
           </SidebarFooter>
         </>

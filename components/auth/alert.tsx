@@ -1,4 +1,4 @@
-import { AuthStatus } from "~/lib/types";
+import type { AuthStatus } from "~/lib/types";
 import { Alert, AlertDescription } from "~/components/ui/alert";
 import { CheckCheck, TriangleAlert } from "lucide-react";
 

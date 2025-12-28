@@ -1,12 +1,15 @@
 import * as schema from "./schema";
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Pool } from "pg";
 
-const db = drizzle(process.env.DATABASE_URL!, {
-  schema,
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
 });
 
+const db = drizzle({ client: pool as any, schema });
+
 type Chat = typeof schema.chats.$inferSelect;
-type User = typeof schema.users.$inferSelect;
-type Account = typeof schema.accounts.$inferSelect;
+type User = typeof schema.user.$inferSelect;
+type Account = typeof schema.account.$inferSelect;
 
 export { db, type Chat, type User, type Account };

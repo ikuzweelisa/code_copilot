@@ -1,7 +1,7 @@
 import { Card, CardContent } from "~/components/ui/card";
-import { cn } from "~/lib/utils";
+import { useSession } from "~/lib/auth/auth-client";
 import { useAnimatedText } from "~/lib/hooks";
-import { useSession } from "next-auth/react";
+
 
 interface Props {
   onSubmit: (message: string) => void;

@@ -6,6 +6,7 @@ import { fileTypeFromBuffer } from "file-type";
 import { generateObject, UIMessage, convertToModelMessages } from "ai";
 import { z } from "zod";
 import { UTApi } from "uploadthing/server";
+import { groq } from "@ai-sdk/groq";
 
 export const utpapi = new UTApi({
   token: process.env.UPLOADTHING_TOKEN,
@@ -18,9 +19,9 @@ export const ratelimit = new Ratelimit({
 async function getChatTitle(messages: UIMessage[]) {
   const modelMessages = convertToModelMessages(messages);
   const title = await generateObject({
-    model: google("gemini-2.0-flash-exp"),
-    system: `you are a chat title generator assistant  based The main context in chat messages about programming concepts.
-    if you are given achat message generate a small title for it`,
+    model: groq("openai/gpt-oss-20b"),
+    system: `you are a chat title generator assistant  based The main context in chat messages.
+    if you are given a chat message generate a small title for it`,
     messages: modelMessages,
     schema: z.object({
       title: z.string().describe("chat title"),

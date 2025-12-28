@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { Settings, LogOut, SquareChevronUp } from "lucide-react";
-import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,15 +12,13 @@ import {
 import { Button } from "~/components/ui/button";
 import ModeToggle from "~/components/navbar/toggle-mode";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Session } from "next-auth";
-import { use } from "react";
+import { Session, signOut } from "~/lib/auth/auth-client";
 
 interface Props {
-  sessionPromise: Promise<Session | null>;
+  session: Session | null;
 }
 
-export default function UserButton({ sessionPromise }: Props) {
-  const session = use(sessionPromise);
+export default function UserButton({ session }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="p-0">
@@ -53,7 +50,10 @@ export default function UserButton({ sessionPromise }: Props) {
           </div>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="center" className="w-60 space-y-1 mb-2  pb-2 px-2 pt-0 mx-2 rounded-md bg-muted/50">
+      <DropdownMenuContent
+        align="center"
+        className="w-60 space-y-1 mb-2  pb-2 px-2 pt-0 mx-2 rounded-md bg-muted/50"
+      >
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
@@ -77,7 +77,7 @@ export default function UserButton({ sessionPromise }: Props) {
           Toggle theme
           <ModeToggle />
         </DropdownMenuItem>
-        <DropdownMenuSeparator/>
+        <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Button
             variant={"default"}

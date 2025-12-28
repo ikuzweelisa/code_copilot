@@ -2,9 +2,9 @@ import "server-only";
 import { db } from "~/lib/drizzle";
 import { cache } from "react";
 import { UIMessage } from "ai";
-import { auth } from "~/app/auth";
 import { getChatTitle } from "~/lib/server/helpers";
 import { chats } from "~/lib/drizzle/schema";
+import { getSession } from "../auth";
 
 export const getChats = cache(async (userId: string | undefined) => {
   if (!userId) return [];
@@ -29,7 +29,7 @@ export const getChatById = async (id: string | undefined) => {
 
 export async function saveChatData(id: string, messages: UIMessage[]) {
   try {
-    const session = await auth();
+    const session = await getSession();
     if (!session || !session?.user?.id) return;
     const existing = await getChatById(id);
     const userId = existing ? existing.userId : session.user.id;
@@ -50,14 +50,14 @@ export async function saveChatData(id: string, messages: UIMessage[]) {
         },
       });
   } catch (e) {
-    console.error("Error saving chat data:",e);
+    console.error("Error saving chat data:", e);
     return null;
   }
 }
 
 export const getUserChats = async () => {
   try {
-    const session = await auth();
+    const session = await getSession();
     const userId = session?.user?.id;
     if (!userId) {
       return [];

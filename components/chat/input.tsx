@@ -1,14 +1,12 @@
 import { Button } from "~/components/ui/button";
 import Textarea from "react-textarea-autosize";
 import {
-  CloudUpload,
-  MoveUp,
   Paperclip,
   Send,
   TriangleAlert,
 } from "lucide-react";
 import React, { ChangeEvent, useRef, useTransition } from "react";
-import { cn, sleep } from "~/lib/utils";
+import { sleep } from "~/lib/utils";
 import { LoadingButton } from "~/components/ai/spinner-message";
 import AttachmentPreview, {
   Loading,
@@ -87,7 +85,7 @@ function InputField({
     const deleted = await deleteAttachment(key);
     if (!deleted) return;
     setAttachments((current) => {
-      return current.filter((a) => a.filename != key);
+      return current.filter((a) => a.filename !== key);
     });
   }
   function handleOnClick() {

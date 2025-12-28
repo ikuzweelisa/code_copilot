@@ -1,9 +1,10 @@
-import { auth } from "~/app/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { getSession } from "./lib/auth";
 
-export default auth((request) => {
+export default async function proxy(request: NextRequest) {
   const { nextUrl } = request;
-  const isLoggedIn = !!request.auth?.user;
+  const session = await getSession();
+  const isLoggedIn = !!session;
   const isAuthRoute = nextUrl.pathname.startsWith("/auth");
   if (isAuthRoute) {
     if (isLoggedIn) {
@@ -13,7 +14,8 @@ export default auth((request) => {
   }
 
   return NextResponse.next();
-});
+}
 export const config = {
   matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+  runtime: "nodejs",
 };
