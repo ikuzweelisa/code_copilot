@@ -93,7 +93,7 @@ export function ModelSelector({
                     }
                   }}
                 >
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 ">
                     <model.icon size={18} />
                   </div>
                   <div className="flex-1 min-w-0">

@@ -50,7 +50,7 @@ export async function saveChatData(id: string, messages: UIMessage[]) {
         },
       });
   } catch (e) {
-    console.error("Error saving chat data:");
+    console.error("Error saving chat data:",e);
     return null;
   }
 }

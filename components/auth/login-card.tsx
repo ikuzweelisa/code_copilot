@@ -7,15 +7,20 @@ import { Card, CardContent } from "~/components/ui/card";
 import Provider from "./providers/provider";
 import { AssitantIcon } from "../ui/icons";
 
-export function LoginCard() {
+export function LoginCard({
+  setIsOpen,
+}: {
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   return (
-    <Card className="overflow-hidden border-none max-w-4xl w-full bg-card shadow-2xl">
+    <Card className="overflow-hidden border-none max-w-4xl w-full">
       <CardContent className="p-0 flex flex-col md:flex-row min-h-[580px]">
         <div className="flex-1 p-8 flex flex-col relative">
           <Button
             variant="ghost"
             size="icon"
             className="absolute left-6 top-6 rounded-full bg-muted/50 hover:bg-muted"
+            onClick={() => setIsOpen(false)}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>

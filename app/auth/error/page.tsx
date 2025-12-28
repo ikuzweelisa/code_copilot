@@ -44,7 +44,7 @@ export default async function Page(props: {
                     variant={"outline"}
                     className="w-full max-w-sm"
                   >
-                    <Link href="/auth/login">Login Again</Link>
+                    <Link href="/?login=true">Login Again</Link>
                   </Button>
                 </div>
               </div>
