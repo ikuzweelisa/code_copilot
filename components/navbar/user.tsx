@@ -68,7 +68,7 @@ export default function UserButton({ session }: Props) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="#" className="flex cursor-pointer w-full items-center">
+          <Link href="/settings" className="flex cursor-pointer w-full items-center">
             <Settings className="mr-2 h-4 w-4" />
             Settings
           </Link>
