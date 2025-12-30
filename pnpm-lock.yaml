@@ -19,7 +19,7 @@ importers:
         version: 2.0.13(zod@4.1.5)
       '@ai-sdk/groq':
         specifier: ^2.0.17
-        version: 2.0.17(zod@4.1.5)
+        version: 2.0.34(zod@4.1.5)
       '@ai-sdk/react':
         specifier: ^2.0.38
         version: 2.0.38(react@19.1.1)(zod@4.1.5)
@@ -228,11 +228,17 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4
 
-  '@ai-sdk/groq@2.0.17':
-    resolution: {integrity: sha512-Oh6Fk988KNvqy4w1crBhBQU8JIkfqhxSiYCbBZFqZSeDsagZ8SHsS2ni9+7pq6e0DR/XGp6fDGDFsm+01kmsmg==}
+  '@ai-sdk/groq@2.0.34':
+    resolution: {integrity: sha512-wfCYkVgmVjxNA32T57KbLabVnv9aFUflJ4urJ7eWgTwbnmGQHElCTu+rJ3ydxkXSqxOkXPwMOttDm7XNrvPjmg==}
     engines: {node: '>=18'}
     peerDependencies:
-      zod: ^3.25.76 || ^4
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider-utils@3.0.20':
+    resolution: {integrity: sha512-iXHVe0apM2zUEzauqJwqmpC37A5rihrStAih5Ks+JE32iTe4LZ58y17UGBjpQQTCRw9YxMeo2UFLxLpBluyvLQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
 
   '@ai-sdk/provider-utils@3.0.8':
     resolution: {integrity: sha512-cDj1iigu7MW2tgAQeBzOiLhjHOUM9vENsgh4oAVitek0d//WdgfPCsKO3euP7m7LyO/j9a1vr/So+BGNdpFXYw==}
@@ -242,6 +248,10 @@ packages:
 
   '@ai-sdk/provider@2.0.0':
     resolution: {integrity: sha512-6o7Y2SeO9vFKB8lArHXehNuusnpddKPk7xqL7T2/b+OvXMRIXUO1rR4wcv1hAFUAT9avGZshty3Wlua/XA7TvA==}
+    engines: {node: '>=18'}
+
+  '@ai-sdk/provider@2.0.1':
+    resolution: {integrity: sha512-KCUwswvsC5VsW2PWFqF8eJgSCu5Ysj7m1TxiHTVA6g7k360bk0RNQENT8KTMAYEs+8fWPD3Uu4dEmzGHc+jGng==}
     engines: {node: '>=18'}
 
   '@ai-sdk/react@2.0.38':
@@ -1663,6 +1673,9 @@ packages:
 
   '@standard-schema/spec@1.0.0-beta.4':
     resolution: {integrity: sha512-d3IxtzLo7P1oZ8s8YNvxzBUXRXojSut8pbPrTYtzsc5sn4+53jVqbk66pQerSZbZSJZQux6LkclB/+8IDordHg==}
+
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
@@ -3253,6 +3266,7 @@ packages:
   next@15.5.2:
     resolution: {integrity: sha512-H8Otr7abj1glFhbGnvUt3gz++0AF1+QoCXEBmd/6aKbfdFwrn0LpA836Ed5+00va/7HQSDD+mOoVhn3tNy3e/Q==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/CVE-2025-66478 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -4139,10 +4153,17 @@ snapshots:
       '@ai-sdk/provider-utils': 3.0.8(zod@4.1.5)
       zod: 4.1.5
 
-  '@ai-sdk/groq@2.0.17(zod@4.1.5)':
+  '@ai-sdk/groq@2.0.34(zod@4.1.5)':
     dependencies:
-      '@ai-sdk/provider': 2.0.0
-      '@ai-sdk/provider-utils': 3.0.8(zod@4.1.5)
+      '@ai-sdk/provider': 2.0.1
+      '@ai-sdk/provider-utils': 3.0.20(zod@4.1.5)
+      zod: 4.1.5
+
+  '@ai-sdk/provider-utils@3.0.20(zod@4.1.5)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.1
+      '@standard-schema/spec': 1.1.0
+      eventsource-parser: 3.0.6
       zod: 4.1.5
 
   '@ai-sdk/provider-utils@3.0.8(zod@4.1.5)':
@@ -4153,6 +4174,10 @@ snapshots:
       zod: 4.1.5
 
   '@ai-sdk/provider@2.0.0':
+    dependencies:
+      json-schema: 0.4.0
+
+  '@ai-sdk/provider@2.0.1':
     dependencies:
       json-schema: 0.4.0
 
@@ -5327,6 +5352,8 @@ snapshots:
   '@standard-schema/spec@1.0.0': {}
 
   '@standard-schema/spec@1.0.0-beta.4': {}
+
+  '@standard-schema/spec@1.1.0': {}
 
   '@swc/helpers@0.5.15':
     dependencies:
