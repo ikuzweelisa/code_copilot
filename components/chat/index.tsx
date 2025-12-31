@@ -159,7 +159,7 @@ export default function Chat({
         <div className="flex container justify-center items-center  bottom-1 w-fit">
           <div className=" flex justify-center absolute bottom-1  right-1/3">
             <Link
-              href={"https://github.com/Ikuzweshema/code_copilot"}
+              href={"https://github.com/Ikuzweshema/_Chat"}
               target="_blank"
               className="text-sm flex gap-1 items-center text-muted-foreground"
             >

@@ -13,14 +13,18 @@ import {
 } from "./ui/dropdown-menu";
 import { DeleteDialog, RenameDialog, ShareDialog } from "./dialogs";
 import { useRouter } from "next/navigation";
-import {Chat,User} from "~/lib/drizzle"
+import type { Chat, User } from "~/lib/drizzle";
+import ChatOptions from "./chat-options";
 
 interface Props {
   chat: Chat & { user: User };
 }
 export default function ChatItem({ chat }: Props) {
   const formatedDate = formatTime(new Date(chat.updatedAt));
-  const firstMessage = chat.messages[0].parts.map((part) => part.type === "text" && part.text).join("").slice(0, 200);
+  const firstMessage = chat.messages[0].parts
+    .map((part) => part.type === "text" && part.text)
+    .join("")
+    .slice(0, 200);
   const content = typeof firstMessage === "string" ? firstMessage : chat.title;
   const router = useRouter();
   return (
@@ -41,24 +45,7 @@ export default function ChatItem({ chat }: Props) {
           <span className="text-muted-foreground text-sm">
             Last Updated {formatedDate}
           </span>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant={"ghost"} size={"icon"}>
-                <Ellipsis />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="rounded-lg w-60 mx-3 ">
-              <DropdownMenuItem asChild>
-                <ShareDialog chat={chat} />
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <RenameDialog chat={chat} />
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <DeleteDialog chat={chat} />
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ChatOptions chat={chat} />
         </div>
       </CardFooter>
     </Card>

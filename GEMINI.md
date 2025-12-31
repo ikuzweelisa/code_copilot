@@ -4,7 +4,7 @@
 
 This is a Next.js application that provides a chat interface for interacting with an AI. It uses a variety of modern web technologies to provide a feature-rich experience.
 
-The project is a "Code Copilot" chat bot. It allows users to generate responses, copy messages, regenerate messages, save and retrieve chats from a database, and upload attachments.
+The project is a " Chat" chat bot. It allows users to generate responses, copy messages, regenerate messages, save and retrieve chats from a database, and upload attachments.
 
 ## Building and Running
 
@@ -38,7 +38,7 @@ To get started with this project, you'll need to have Node.js and pnpm installed
 
 ### Other useful commands:
 
-*   `pnpm run lint`: Lint the code.
+*   `pnpm run lint`: Lint the .
 *   `pnpm run typecheck`: Run the TypeScript compiler to check for type errors.
 *   `pnpm run db:push`: Push database schema changes.
 *   `pnpm run db:generate`: Generate database migration files.
@@ -52,5 +52,5 @@ To get started with this project, you'll need to have Node.js and pnpm installed
 *   **Database:** The project uses a PostgreSQL database with [Drizzle ORM](https://orm.drizzle.team/). The database schema is defined in `lib/drizzle/schema.ts`.
 *   **Styling:** The project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
 *   **UI Components:** The project uses [Radix UI](https://www.radix-ui.com/) and custom components for the user interface.
-*   **Linting and Formatting:** The project uses [ESLint](https://eslint.org/) for linting and [Prettier](https://prettier.io/) for code formatting.
+*   **Linting and Formatting:** The project uses [ESLint](https://eslint.org/) for linting and [Prettier](https://prettier.io/) for  formatting.
 *   **Type Checking:** The project uses [TypeScript](https://www.typescriptlang.org/) for static type checking.

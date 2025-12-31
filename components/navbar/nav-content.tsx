@@ -40,7 +40,7 @@ export default function NavContent() {
           </div>
 
           <span className="font-semibold text-center text-xl group-data-[collapsible=icon]:hidden">
-            Code Copilot
+             Chat
           </span>
         </Link>
       </SidebarHeader>

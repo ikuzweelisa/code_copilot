@@ -9,7 +9,7 @@ export function SpinnerMessage() {
           <AssitantIcon />
         </div>
         <div className="ml-2 h-[24px] animate-pulse flex flex-row items-center flex-1 space-y-2 overflow-hidden px-1">
-          Copilot is thinking...
+          Chat is thinking...
         </div>
       </div>
     </div>

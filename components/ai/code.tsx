@@ -12,12 +12,12 @@ import { useTheme } from "next-themes";
 import { Card } from "../ui/card";
 import { getLanguageIcon } from "~/lib/helpers";
 
-interface CodeProps {
+interface Props {
   language: string;
-  codes: string;
+  s: string;
 }
 
-export default function Code({ codes, language }: CodeProps) {
+export default function ({ s, language }: Props) {
   const [isCopied, copyText] = useClipBoard();
   const { theme } = useTheme();
   const languageIcon = getLanguageIcon(language);
@@ -33,7 +33,7 @@ export default function Code({ codes, language }: CodeProps) {
             size="icon"
             className="h-6 w-6 sm:h-8 sm:w-8 text-xs hover:bg-zinc-200 dark:hover:bg-zinc-700 focus-visible:ring-1 focus-visible:ring-zinc-300 dark:focus-visible:ring-zinc-600 focus-visible:ring-offset-0"
             onClick={() => {
-              copyText(codes);
+              copyText(s);
             }}
           >
             {isCopied ? (
@@ -44,7 +44,7 @@ export default function Code({ codes, language }: CodeProps) {
             ) : (
               <span>
                 <CopyIcon className="h-3 w-3 sm:h-4 sm:w-4" />
-                <span className="sr-only">Copy code</span>
+                <span className="sr-only">Copy </span>
               </span>
             )}
           </Button>
@@ -72,7 +72,7 @@ export default function Code({ codes, language }: CodeProps) {
           }}
           wrapLines={true}
           wrapLongLines={true}
-          codeTagProps={{
+          TagProps={{
             style: {
               fontSize: "0.90rem",
               fontFamily: "var(--font-mono)",
@@ -83,7 +83,7 @@ export default function Code({ codes, language }: CodeProps) {
           }}
           className="max-w-full text-[0.75rem] sm:text-[0.9rem]"
         >
-          {codes}
+          {s}
         </SyntaxHighlighter>
       </div>
     </Card>

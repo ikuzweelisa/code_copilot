@@ -8,20 +8,20 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    default: "Code Copilot",
-    template: "%s | Code Copilot",
+    default: " Chat",
+    template: "%s |  Chat",
   },
   description: "A Programming AI Assistant",
   
   icons: {
     icon: "/favicon.ico",
   },
-  metadataBase: new URL("https://code-copilot.vercel.app"),
+  metadataBase: new URL("https://-Chat.vercel.app"),
   keywords: [
     "Programming assistant",
-    "Code analysis",
+    " analysis",
     "AI-powered coding",
-    "Code debugging",
+    " debugging",
   ],
 };
 
