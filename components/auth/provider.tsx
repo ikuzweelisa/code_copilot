@@ -15,7 +15,7 @@ export default function Provider({ name }: Props) {
   const [isPending, startTransition] = useTransition();
   const login = () => {
     startTransition(async () => {
-      signIn.social({ provider: name });
+      await signIn.social({ provider: name });
     });
   };
   return (

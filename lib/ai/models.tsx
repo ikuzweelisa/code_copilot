@@ -40,64 +40,55 @@ function withMiddleware<T extends Exclude<LanguageModel, string>>(model: T) {
 
 export const models: Model[] = [
   {
+    id: "gemini-2.5-flash",
+    name: "Gemini 2.5 Flash",
+    model: withMiddleware(google("gemini-2.5-flash")),
+    icon: Gemini,
+    isDefault: true,
+  },
+  {
+    id: "openai/gpt-oss-20b",
+    name: "GPT OSS 20B 128k",
+    model: withMiddleware(groq("openai/gpt-oss-20b")),
+    icon: OpenAI,
+  },
+  {
+    id: "openai/gpt-oss-120b",
+    name: "GPT OSS 120B 128k",
+    model: withMiddleware(groq("openai/gpt-oss-120b")),
+    icon: OpenAI,
+  },
+  {
     id: "DeepSeek: DeepSeek V3",
     name: "DeepSeek V3",
     model: withMiddleware(openrouter.chat("DeepSeek: DeepSeek V3")),
     icon: DeepSeek,
   },
   {
-    id: "deepseek/deepseek-r1:free",
+    id: "deepseek/deepseek-r1",
     name: "DeepSeek R1",
     model: withMiddleware(openrouter.chat("deepseek/deepseek-r1:free")),
     icon: DeepSeek,
   },
   {
-    id: "deepseek/deepseek-r1-distill-llama-70b:free",
-    name: "DeepSeek R1 Llama Distilled",
-    model: withMiddleware(
-      openrouter.chat("deepseek/deepseek-r1-distill-llama-70b:free"),
-    ),
-    icon: DeepSeek,
-  },
-  {
-    id: "deepseek/deepseek-r1-distill-qwen-14b:free",
-    name: "DeepSeek R1 Qwen  Distilled",
-    model: withMiddleware(
-      openrouter.chat("deepseek/deepseek-r1-distill-qwen-14b:free"),
-    ),
-    icon: DeepSeek,
-  },
-  {
-    id: "qwen/qwen3-4b:free",
+    id: "qwen/qwen3-4b",
     name: "Qwen 2.5 32B",
     model: withMiddleware(openrouter.chat("qwen/qwen3-4b:free")),
     icon: Qwen,
   },
   {
-    id: "moonshotai/kimi-k2:free",
+    id: "moonshotai/kimi-k2",
     name: "Kimi K2",
     model: withMiddleware(openrouter.chat("moonshotai/kimi-k2:free")),
     icon: Kimi,
     isPremium: true,
   },
   {
-    id: "x-ai/grok-4-fast:free",
+    id: "x-ai/grok-4-fast",
     icon: XAIGrok,
     model: openrouter.chat("x-ai/grok-4-fast:free"),
     name: "Grok 4 Fast Non-Reasoning",
     isPremium: true,
-  },
-  {
-    id: "openai/gpt-oss-20b:free",
-    name: "GPT OSS 20B 128k",
-    model: openrouter.chat("openai/gpt-oss-20b:free"),
-    icon: OpenAI,
-  },
-  {
-    id: "openai/gpt-oss-120b:free",
-    name: "GPT OSS 120B 128k",
-    model: openrouter.chat("openai/gpt-oss-120b:free"),
-    icon: OpenAI,
   },
   {
     id: "anthropic/claude-4.5-sonnet",
@@ -140,43 +131,5 @@ export const models: Model[] = [
     model: "xai/grok-4-fast-reasoning",
     name: "Grok 4 Fast Reasoning",
     isPremium: true,
-  },
-  {
-    id: "openai/gpt-4o",
-    icon: OpenAI,
-    model: "openai/gpt-4o",
-    name: "GPT-4o",
-    isPremium: true,
-  },
-  {
-    id: "deepseek-r1-distill-llama-70b",
-    name: "DeepSeek R1 Llama Distilled",
-    model: withMiddleware(groq("deepseek-r1-distill-llama-70b")),
-    icon: DeepSeek,
-  },
-  {
-    id: "deepseek-r1-distill-qwen-14b",
-    name: "DeepSeek R1 Qwen Distilled",
-    model: withMiddleware(groq("deepseek-r1-distill-qwen-14b")),
-    icon: DeepSeek,
-  },
-  {
-    id: "openai/gpt-oss-20b",
-    name: "GPT OSS 20B 128k",
-    model: withMiddleware(groq("openai/gpt-oss-20b")),
-    icon: OpenAI,
-  },
-  {
-    id: "openai/gpt-oss-120b",
-    name: "GPT OSS 120B 128k",
-    model: withMiddleware(groq("openai/gpt-oss-120b")),
-    icon: OpenAI,
-  },
-  {
-    id: "gemini-2.5-flash",
-    name: "Gemini 2.5 Flash",
-    model: withMiddleware(google("gemini-2.5-flash")),
-    icon: Gemini,
-    isDefault: true,
   },
 ];

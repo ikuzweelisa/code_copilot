@@ -8,7 +8,6 @@ const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   database: drizzleAdapter(db, {
     provider: "pg",
-    debugLogs: process.env.NODE_ENV === "development",
   }),
   account: {
     accountLinking: {

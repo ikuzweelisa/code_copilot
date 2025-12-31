@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 import { systemPrompt } from "~/lib/ai/prompt";
 import { chatSchema } from "./schema";
 import { models } from "~/lib/ai/models";
@@ -7,7 +7,9 @@ import { saveChatData } from "~/lib/server";
 import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
-  const parsedBody = chatSchema.parse(await request.json());
+  const body = await request.json();
+  const parsedBody = chatSchema.parse(body);
+
   const { id, messages } = parsedBody;
   const cookieStore = await cookies();
   const modelId = cookieStore.get("model.id")?.value;
@@ -19,8 +21,9 @@ export async function POST(request: NextRequest) {
     system: systemPrompt,
   });
   return result.toUIMessageStreamResponse({
-    async onFinish({ messages, responseMessage }) {
-      await saveChatData(id, [...messages, responseMessage]);
+    originalMessages: messages,
+    onFinish: async ({ messages }) => {
+      await saveChatData(id, messages);
     },
   });
 }
