@@ -14,10 +14,10 @@ import { getLanguageIcon } from "~/lib/helpers";
 
 interface Props {
   language: string;
-  s: string;
+  code: string;
 }
 
-export default function ({ s, language }: Props) {
+export default function Code({ code, language }: Props) {
   const [isCopied, copyText] = useClipBoard();
   const { theme } = useTheme();
   const languageIcon = getLanguageIcon(language);
@@ -33,7 +33,7 @@ export default function ({ s, language }: Props) {
             size="icon"
             className="h-6 w-6 sm:h-8 sm:w-8 text-xs hover:bg-zinc-200 dark:hover:bg-zinc-700 focus-visible:ring-1 focus-visible:ring-zinc-300 dark:focus-visible:ring-zinc-600 focus-visible:ring-offset-0"
             onClick={() => {
-              copyText(s);
+              copyText(code);
             }}
           >
             {isCopied ? (
@@ -81,9 +81,14 @@ export default function ({ s, language }: Props) {
               overflowWrap: "break-word",
             },
           }}
+          codeTagProps={{
+            style: {
+              background: "transparent",
+            },
+          }}
           className="max-w-full text-[0.75rem] sm:text-[0.9rem]"
         >
-          {s}
+          {code}
         </SyntaxHighlighter>
       </div>
     </Card>

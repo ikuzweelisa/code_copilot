@@ -6,32 +6,25 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
-import useSwr from "swr";
-import { Chat } from "~/lib/drizzle";
-import { fetcher, groupChats } from "~/lib/utils";
-import Spinner from "../ai/spinner";
-
+import type { Chat } from "~/lib/drizzle";
+import { groupChats } from "~/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 import { MessageSquarePlus } from "lucide-react";
 import { ChatsSkeleton } from "../skeletons";
 export default function NavItems() {
-  const {
-    data: chats,
-    isLoading,
-    isValidating,
-  } = useSwr<Array<Chat>>("/api/chats", fetcher, {
-    suspense: true,
-    fallbackData: [],
-    revalidateOnFocus: false,
+  const { data: chats, isLoading } = useQuery<Array<Chat>>({
+    queryKey: ["chats"],
+    queryFn: async () => {
+      const res = await fetch("/api/chats");
+      return res.json();
+    },
   });
   const groupedChats = groupChats(chats || []);
 
   return (
     <>
-      {isLoading || isValidating ? (
+      {isLoading ? (
         <SidebarGroup>
-          <SidebarGroupLabel className="flex justify-center items-center gap-2">
-            <Spinner /> Loading chats
-          </SidebarGroupLabel>
           <SidebarGroupContent className="list-none">
             <ChatsSkeleton />
           </SidebarGroupContent>

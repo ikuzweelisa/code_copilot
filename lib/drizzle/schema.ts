@@ -99,6 +99,7 @@ export const chats = pgTable(
     userId: text("userId")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
+    activeStreamId: text("active_stream_id"),
     ...timestamps,
   },
   (chats) => [

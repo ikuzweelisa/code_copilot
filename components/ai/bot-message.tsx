@@ -9,7 +9,7 @@ import { Fragment } from "react";
 
 export function BotMessage({
   className,
-  reload,
+  regenerate,
   isLoading,
   message,
   children = null,
@@ -17,7 +17,7 @@ export function BotMessage({
   className?: string;
   isLoading?: boolean;
   children?: React.ReactNode;
-  reload: RegenerateFunc;
+  regenerate: RegenerateFunc;
   message?: UIMessage;
 }) {
   return (
@@ -25,7 +25,7 @@ export function BotMessage({
       <div
         className={cn(
           "flex size-[24px] shrink-0 select-none items-center justify-center rounded-md  bg-primary text-primary-foreground",
-          className,
+          className
         )}
       >
         <AssitantIcon size={18} />
@@ -33,7 +33,7 @@ export function BotMessage({
       <div
         className={cn(
           "ml-1 flex-1 flex-col text-sm md:text-sm lg:text-base ",
-          className,
+          className
         )}
       >
         {message
@@ -42,7 +42,11 @@ export function BotMessage({
                 case "reasoning":
                   return (
                     <Fragment key={index}>
-                      <ReasoningMessage isLoading={msg.state === "streaming"}>
+                      <ReasoningMessage
+                        isLoading={
+                          isLoading && index === message.parts.length - 1
+                        }
+                      >
                         {msg.text}
                       </ReasoningMessage>
                     </Fragment>
@@ -52,7 +56,7 @@ export function BotMessage({
                     <Fragment key={index}>
                       <Markdown>{msg.text}</Markdown>
                       {!isLoading ? (
-                        <ButtonRow reload={reload} content={msg.type} />
+                        <ButtonRow messageId={message.id} reload={regenerate} content={msg.type} />
                       ) : null}
                     </Fragment>
                   );

@@ -11,5 +11,5 @@ const db = drizzle({ client: pool as any, schema });
 type Chat = typeof schema.chats.$inferSelect;
 type User = typeof schema.user.$inferSelect;
 type Account = typeof schema.account.$inferSelect;
-
-export { db, type Chat, type User, type Account };
+type ChatStream = typeof schema.chatStream.$inferInsert;
+export { db, type Chat, type User, type Account, type ChatStream };

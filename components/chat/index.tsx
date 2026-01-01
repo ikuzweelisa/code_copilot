@@ -8,8 +8,7 @@ import ScrollAnchor from "~/components/chat/scroll-anchor";
 import EmptyScreen from "~/components/chat/empty-messages";
 import { useLocalStorage, useScroll } from "~/lib/hooks";
 import { cn } from "~/lib/utils";
-import { useSWRConfig } from "swr";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { useIsMobile } from "~/lib/hooks/use-mobile";
@@ -21,6 +20,7 @@ import { generateMessageId } from "~/lib/ai/utis";
 import cookies from "js-cookie";
 import { LoginForm } from "../auth/login-form";
 import { useSession } from "~/lib/auth/auth-client";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ChatProps {
   initialMessages: UIMessage[];
@@ -36,8 +36,9 @@ export default function Chat({
   const [input, setInput] = useState("");
   const session = useSession();
   const isLoggedIn = session.isPending ? true : !!session.data?.user;
-  const { mutate } = useSWRConfig();
+  const { invalidateQueries } = useQueryClient();
   const path = usePathname();
+  const router = useRouter();
   const [selectedModel, setSelectedModel] = useState<Model>(() => {
     return models.find((model) => model.isDefault) || models[0];
   });
@@ -49,12 +50,34 @@ export default function Chat({
     messages: initialMessages,
     id: chatId,
     transport: new DefaultChatTransport({
-      api: "/api/chat",
+      prepareSendMessagesRequest: ({ id, messages, trigger, messageId }) => {
+        switch (trigger) {
+          case "regenerate-message":
+            return {
+              body: {
+                trigger,
+                id,
+                messageId,
+              },
+            };
+          case "submit-message":
+            // avoid sending all messages
+            return {
+              body: {
+                trigger: trigger,
+                id,
+                message: messages[messages.length - 1],
+                messageId,
+              },
+            };
+        }
+      },
     }),
+    resume: true,
     generateId: generateMessageId,
     onFinish: (data) => {
       setChatId(chatId);
-      mutate("/api/chats");
+      invalidateQueries({ queryKey: ["chats"] });
     },
   });
 
@@ -62,7 +85,12 @@ export default function Chat({
     e.preventDefault();
     if (!input) return;
     sendMessage({ text: input });
+    const isNew = !path.includes(chatId);
     setInput("");
+    if (isNew) {
+      console.log("is new ");
+      router.replace(`/chat/${chatId}`);
+    }
   }
   const loading = ["streaming", "submitted"].includes(status);
   const isEmpty = messages.length === 0;
@@ -100,7 +128,7 @@ export default function Chat({
             <span className="text-sm">
               {chatTitle
                 ? chatTitle?.length > 35
-                  ? chatTitle?.slice(0, 30) + "..."
+                  ? `${chatTitle?.slice(0, 35)}...`
                   : chatTitle
                 : "Unititled Chat"}
             </span>

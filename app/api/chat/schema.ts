@@ -1,6 +1,8 @@
-import { z } from "zod";
+import { z } from 'zod/v3';
 
 export const chatSchema = z.object({
   id: z.string(),
-  messages: z.array(z.any()),
+  message: z.any(),
+  trigger:z.enum(["regenerate-message","submit-message"]),
+  messageId:z.string().optional()
 });

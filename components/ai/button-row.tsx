@@ -18,9 +18,10 @@ import { RegenerateFunc } from "~/lib/types";
 
 interface Props {
   content: string;
-  reload:RegenerateFunc
+  reload: RegenerateFunc;
+  messageId: string;
 }
-export default function ButtonRow({ content, reload }: Props) {
+export default function ButtonRow({ content, reload, messageId }: Props) {
   const [isCopied, copyText] = useClipBoard();
   const buttons: Array<{
     icon: LucideIcon;
@@ -39,7 +40,7 @@ export default function ButtonRow({ content, reload }: Props) {
       tooltip: "Regenerate",
       onClick: async () => {
         await reload({
-          
+          messageId,
         });
       },
     },

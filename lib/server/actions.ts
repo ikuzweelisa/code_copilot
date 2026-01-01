@@ -2,7 +2,7 @@
 import { AuthStatus } from "~/lib/types";
 import { db } from "~/lib/drizzle";
 import { editChatSchema } from "~/lib/types/schema";
-import { z } from "zod";
+import { z } from 'zod/v3';
 import { revalidatePath } from "next/cache";
 import { chats } from "~/lib/drizzle/schema";
 import { eq } from "drizzle-orm";
@@ -36,7 +36,6 @@ export async function deleteChat(
   revalidatePath("/history", "page");
   redirect("/history");
 }
-
 export async function editChat(
   prevState: AuthStatus | undefined,
   formData: FormData,

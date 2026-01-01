@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { cn } from "~/lib/utils";
 import { Markdown } from "~/components/ai/markdown";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { ChevronDown } from "lucide-react";
 
@@ -30,39 +30,34 @@ export function ReasoningMessage({
   children,
 }: ReasoningProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  useEffect(() => {
-    setIsExpanded(isLoading);
-  }, [isLoading]);
 
   return (
     <div className="flex flex-col">
-      {isLoading ? (
-        <div className="flex flex-row items-center gap-2">
-          <div className="font-medium">Reasoning</div>
+      <div className="flex flex-row items-center gap-2">
+        <div className="font-medium">
+          {isLoading ? "Reasoning" : "Reasoned for a few seconds"}
+        </div>
+        {isLoading && (
           <div className="animate-spin">
             <Loader2 className="size-4" />
           </div>
-        </div>
-      ) : (
-        <div className="flex flex-row items-center gap-2">
-          <div className="font-medium">Reasoned for a few seconds</div>
-          <button
-            data-testid="message-reasoning-toggle"
-            type="button"
-            className="cursor-pointer"
-            onClick={() => {
-              setIsExpanded(!isExpanded);
-            }}
-          >
-            <ChevronDown
-              className={cn(
-                "size-4 transition-transform duration-200",
-                isExpanded ? "rotate-180" : "",
-              )}
-            />
-          </button>
-        </div>
-      )}
+        )}
+        <button
+          data-testid="message-reasoning-toggle"
+          type="button"
+          className="cursor-pointer"
+          onClick={() => {
+            setIsExpanded(!isExpanded);
+          }}
+        >
+          <ChevronDown
+            className={cn(
+              "size-4 transition-transform duration-200",
+              isExpanded ? "rotate-180" : ""
+            )}
+          />
+        </button>
+      </div>
 
       <AnimatePresence initial={false}>
         {isExpanded && (
@@ -77,7 +72,7 @@ export function ReasoningMessage({
             style={{ overflow: "hidden" }}
             className="flex flex-col gap-4 border-l pl-4 text-zinc-600 dark:text-zinc-400"
           >
-            {children}
+            <Markdown>{children}</Markdown>
           </motion.div>
         )}
       </AnimatePresence>

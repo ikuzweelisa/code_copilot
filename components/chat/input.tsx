@@ -1,23 +1,19 @@
 import { Button } from "~/components/ui/button";
 import Textarea from "react-textarea-autosize";
-import {
-  Paperclip,
-  Send,
-  TriangleAlert,
-} from "lucide-react";
-import React, { ChangeEvent, useRef, useTransition } from "react";
+import { Paperclip, Send, TriangleAlert } from "lucide-react";
+import React, { ChangeEvent, useEffect, useRef, useTransition } from "react";
 import { sleep } from "~/lib/utils";
 import { LoadingButton } from "~/components/ai/spinner-message";
 import AttachmentPreview, {
   Loading,
 } from "~/components/chat/attachment-preview";
-import { FileUIPart } from "ai";
+import type { FileUIPart } from "ai";
 import { useUploadThing } from "~/lib/uploadthing";
 import { toast } from "sonner";
 import { deleteAttachment } from "~/lib/server/actions";
 import { Separator } from "../ui/separator";
 import { ModelSelector } from "./model-select";
-import { Model } from "~/lib/ai/models";
+import type { Model } from "~/lib/ai/models";
 
 interface InputFieldProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -52,6 +48,10 @@ function InputField({
       e.preventDefault();
     }
   }
+  // auto focus
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const { startUpload } = useUploadThing("imageUploader", {
     onUploadError: (error) => {

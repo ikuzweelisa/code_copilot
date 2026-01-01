@@ -5,6 +5,7 @@ import { Toaster } from "~/components/ui/sonner";
 import { cn } from "~/lib/utils";
 import { Geist } from "next/font/google";
 import type { Metadata } from "next";
+import Providers from "~/components/providers";
 
 export const metadata: Metadata = {
   title: {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     template: "%s |  Chat",
   },
   description: "A Programming AI Assistant",
-  
+
   icons: {
     icon: "/favicon.ico",
   },
@@ -42,18 +43,17 @@ export default function RootLayout({
         className={cn("font-sans antialiased", geist.className)}
         suppressContentEditableWarning
       >
-        <TooltipProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-
-            <Toaster />
-          </ThemeProvider>
-        </TooltipProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>
+            <TooltipProvider>{children}</TooltipProvider>
+          </Providers>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

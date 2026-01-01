@@ -27,7 +27,7 @@ export default function NavItem({ chat }: NavItemProps) {
 
   const [text] = useAnimatedText(chat.title, {
     shouldAnimate: animate,
-    duration: 2,
+    duration: 1,
     onComplete() {
       setNewChat(null);
     },
@@ -40,7 +40,7 @@ export default function NavItem({ chat }: NavItemProps) {
             asChild
             className={cn(
               "w-full justify-start px-2 py-1.5 text-sm transition-colors hover:bg-muted group/chat-item",
-              isActive && "bg-muted"
+              isActive && "bg-muted",
             )}
           >
             <Link href={path} className="flex items-center space-x-2 w-full">
