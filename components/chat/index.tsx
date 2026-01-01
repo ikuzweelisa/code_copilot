@@ -34,9 +34,10 @@ export default function Chat({
 }: ChatProps) {
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
   const [input, setInput] = useState("");
-  const session = useSession();
-  const isLoggedIn = session.isPending ? true : !!session.data?.user;
-  const { invalidateQueries } = useQueryClient();
+  const { data, isPending } = useSession();
+
+  const isLoggedIn = isPending ? true : !!data?.user;
+  const queryClient = useQueryClient();
   const path = usePathname();
   const router = useRouter();
   const [selectedModel, setSelectedModel] = useState<Model>(() => {
@@ -73,11 +74,11 @@ export default function Chat({
         }
       },
     }),
-    resume: true,
+    resume: isLoggedIn,
     generateId: generateMessageId,
     onFinish: (data) => {
       setChatId(chatId);
-      invalidateQueries({ queryKey: ["chats"] });
+      queryClient.invalidateQueries({ queryKey: ["chats"] });
     },
   });
 
@@ -88,8 +89,7 @@ export default function Chat({
     const isNew = !path.includes(chatId);
     setInput("");
     if (isNew) {
-      console.log("is new ");
-      router.replace(`/chat/${chatId}`);
+      history.pushState(null, "", `/chat/${chatId}`);
     }
   }
   const loading = ["streaming", "submitted"].includes(status);

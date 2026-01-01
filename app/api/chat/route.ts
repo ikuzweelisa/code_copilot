@@ -20,16 +20,7 @@ export async function POST(request: NextRequest) {
   const chat = await getChatById(id);
   let messages = chat?.messages ?? [];
   if (trigger === "submit-message") {
-    if (messageId !== null) {
-      const messageIndex = messages?.findIndex((m) => m.id === messageId);
-      if (messageIndex === -1) {
-        throw new Error(`message ${messageId} not found`);
-      }
-      messages = messages.slice(0, messageIndex);
-      messages.push(message);
-    } else {
-      messages = [...messages, message];
-    }
+    messages = [...messages, message];
   }
   if (trigger === "regenerate-message") {
     const messageIndex =
