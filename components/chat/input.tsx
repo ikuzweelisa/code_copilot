@@ -145,12 +145,12 @@ function InputField({
       )}
 
       <div className="flex items-center p-3 relative">
-        <div className="flex-grow">
+        <div className="grow">
           <Textarea
             tabIndex={0}
             onKeyDown={onKeyDown}
             placeholder="Send a message..."
-            className="min-h-10 max-h-32 w-full resize-none bg-transparent px-3 py-2 focus-within:outline-none text-base"
+            className="min-h-10 max-h-32 w-full resize-none bg-transparent px-3 py-2 focus-within:outline-hidden text-base"
             autoFocus
             spellCheck={false}
             ref={inputRef}

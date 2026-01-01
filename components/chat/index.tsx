@@ -144,7 +144,7 @@ export default function Chat({
         <>
           <ScrollArea
             onScrollCapture={handleScroll}
-            className="flex-grow w-full overflow-y-auto mt-3"
+            className="grow w-full overflow-y-auto mt-3"
           >
             <AutoScroller
               ref={visibilityRef}

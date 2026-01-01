@@ -80,7 +80,7 @@ export function LoginCard({
 
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="mt-1 p-2 rounded-lg bg-background shadow-sm">
+                <div className="mt-1 p-2 rounded-lg bg-background shadow-xs">
                   <ShieldCheck className="h-5 w-5 text-primary" />
                 </div>
                 <div>
@@ -91,7 +91,7 @@ export function LoginCard({
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="mt-1 p-2 rounded-lg bg-background shadow-sm">
+                <div className="mt-1 p-2 rounded-lg bg-background shadow-xs">
                   <Box className="h-5 w-5 text-primary" />
                 </div>
                 <div>
@@ -102,7 +102,7 @@ export function LoginCard({
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="mt-1 p-2 rounded-lg bg-background shadow-sm">
+                <div className="mt-1 p-2 rounded-lg bg-background shadow-xs">
                   <Brain className="h-5 w-5 text-primary" />
                 </div>
                 <div>

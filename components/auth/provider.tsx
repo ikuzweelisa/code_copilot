@@ -24,7 +24,7 @@ export default function Provider({ name }: Props) {
       <Button
         onClick={login}
         disabled={isPending}
-        variant={name === "google" ? "default" : "outline"}
+        variant={name === "google" ? "default" : "outline-solid"}
         size={"lg"}
         className={"w-full flex gap-2  p-3 rounded-md"}
       >

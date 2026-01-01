@@ -24,7 +24,7 @@ export default function AttachmentPreview({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Card className="group rounded-md relative w-full max-w-[12rem] transition-all duration-300 ease-in-out hover:shadow-md">
+          <Card className="group rounded-md relative w-full max-w-48 transition-all duration-300 ease-in-out hover:shadow-md">
             <CardContent className="p-1 flex items-center gap-2">
               {isImage ? (
                 <div className="relative w-12 h-12 rounded-sm overflow-hidden">
@@ -69,7 +69,7 @@ export default function AttachmentPreview({
 
 export function Loading({ attachment }: { attachment: FileUIPart }) {
   return (
-    <Card className="group rounded-md relative w-full max-w-[12rem] transition-all duration-300 ease-in-out hover:shadow-md">
+    <Card className="group rounded-md relative w-full max-w-48 transition-all duration-300 ease-in-out hover:shadow-md">
       <CardContent className="p-1 flex justify-center items-center gap-2">
         <div className="flex items-center justify-center w-full h-12">
           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />

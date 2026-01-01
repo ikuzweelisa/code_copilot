@@ -16,6 +16,5 @@ export default async function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
-  runtime: "nodejs",
+  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"]
 };

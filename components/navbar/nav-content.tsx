@@ -46,7 +46,7 @@ export default function NavContent() {
       </SidebarHeader>
       <SidebarContent className="group-data-[collapsible=icon]:hidden">
         {isPending ? null : isLoggedIn ? (
-          <ScrollArea className="flex-grow">
+          <ScrollArea className="grow">
             <NavLinks />
             <NavItems />
           </ScrollArea>
