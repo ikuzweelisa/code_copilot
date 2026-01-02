@@ -1,4 +1,4 @@
-import { z } from 'zod/v3';
+import { z } from "zod";
 const fileSchema = z
   .instanceof(File, { message: "File is Required" })
   .refine((file) => file.type.startsWith("application/pdf"), {
@@ -6,7 +6,7 @@ const fileSchema = z
   });
 
 const editChatSchema = z.object({
-  chatId: z.string().min(10, {
+  chatId: z.string().min(4, {
     message: "Chat does not exist",
   }),
   title: z

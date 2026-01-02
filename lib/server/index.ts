@@ -63,7 +63,7 @@ export async function saveChatData({
         },
       });
   } catch (e) {
-    console.error("Error saving chat data:", e);
+    console.error("Error savingachat data:", e);
     return null;
   }
 }

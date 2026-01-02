@@ -13,6 +13,7 @@ import {
   ContextMenuTrigger,
 } from "../ui/context-menu";
 import { DeleteDialog, RenameDialog, ShareDialog } from "../dialogs";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface NavItemProps {
   chat: Chat;
@@ -24,7 +25,11 @@ export default function NavItem({ chat }: NavItemProps) {
   const isActive = pathname === path;
   const [newChat, setNewChat] = useLocalStorage<string | null>("chatId", null);
   const animate = chat.id === newChat;
+  const queryClient = useQueryClient();
 
+  const onSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["chats"] });
+  };
   const [text] = useAnimatedText(chat.title, {
     shouldAnimate: animate,
     duration: 1,
@@ -56,10 +61,10 @@ export default function NavItem({ chat }: NavItemProps) {
             <ShareDialog chat={chat} />
           </ContextMenuItem>
           <ContextMenuItem asChild>
-            <RenameDialog chat={chat} />
+            <RenameDialog chat={chat} onSuccess={onSuccess} />
           </ContextMenuItem>
           <ContextMenuItem asChild>
-            <DeleteDialog chat={chat} />
+            <DeleteDialog chat={chat} onSuccess={onSuccess} />
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>

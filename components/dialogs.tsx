@@ -1,5 +1,4 @@
-import React from "react";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import {
   Dialog,
   DialogClose,
@@ -26,15 +25,27 @@ import {
   Trash2,
 } from "lucide-react";
 import AlertMessage from "~/components/auth/alert";
-import { Chat } from "~/lib/drizzle";
+import type { Chat } from "~/lib/drizzle";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   chat: Chat;
+  onSuccess?: () => void;
 }
 
-export function DeleteDialog({ chat }: Props) {
+export function DeleteDialog({ chat, onSuccess }: Props) {
   const [state, action, isPending] = useActionState(deleteChat, undefined);
+  const pathname = usePathname();
+  const router = useRouter();
 
+  useEffect(() => {
+    if (state?.status === "success") {
+      if (pathname.includes(chat.id)) {
+        router.replace("/");
+      }
+      onSuccess?.();
+    }
+  }, [state?.status, chat.id, onSuccess, pathname, router]);
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -87,9 +98,13 @@ export function DeleteDialog({ chat }: Props) {
   );
 }
 
-export function RenameDialog({ chat }: Props) {
+export function RenameDialog({ chat, onSuccess }: Props) {
   const [state, action, isPending] = useActionState(editChat, undefined);
-
+  useEffect(() => {
+    if (state?.status === "success") {
+      onSuccess?.();
+    }
+  }, [state?.status, onSuccess]);
   return (
     <Dialog>
       <DialogTrigger asChild>

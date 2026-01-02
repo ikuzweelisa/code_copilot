@@ -52,6 +52,19 @@ export async function POST(request: NextRequest) {
   return result.toUIMessageStreamResponse({
     generateMessageId: generateMessageId,
     originalMessages: messages,
+    messageMetadata: ({ part }) => {
+      if (part.type === "start") {
+        return {
+          createdAt: Date.now(),
+          model: model.name,
+        };
+      }
+      if (part.type === "finish") {
+        return {
+          totalTokens: part.totalUsage.totalTokens,
+        };
+      }
+    },
     onFinish: async ({ messages }) => {
       await saveChatData({ id, messages, streamId: null });
     },
@@ -60,7 +73,6 @@ export async function POST(request: NextRequest) {
       const streamContext = createResumableStreamContext({ waitUntil: after });
       await streamContext.createNewResumableStream(streamId, () => stream);
       // Update the chat with the active stream ID
-      console.log("streamId", streamId);
       await saveChatData({ id, streamId: streamId });
     },
   });

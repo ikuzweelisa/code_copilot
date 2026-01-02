@@ -10,7 +10,6 @@ export default async function proxy(request: NextRequest) {
     if (isLoggedIn) {
       return NextResponse.redirect(new URL("/", nextUrl));
     }
-    return NextResponse.next();
   }
 
   return NextResponse.next();

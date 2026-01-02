@@ -1,9 +1,9 @@
 import { UserMessage } from "~/components/ai/user-message";
 import ViewAttachment from "~/components/chat/view-attachment";
-import { UIMessage } from "ai";
 import { BotMessage } from "~/components/ai/bot-message";
 import { useMemo } from "react";
 import { RegenerateFunc } from "~/lib/types";
+import { UIMessage } from "~/lib/ai/types";
 
 interface MessageProps {
   message: UIMessage;

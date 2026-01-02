@@ -1,4 +1,3 @@
-import type { UIMessage } from "ai";
 import { relations } from "drizzle-orm";
 import {
   boolean,
@@ -9,6 +8,7 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
+import { UIMessage } from "../ai/types";
 
 const timestamps = {
   createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),

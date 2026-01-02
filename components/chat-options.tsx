@@ -1,3 +1,4 @@
+"use client";
 import { Ellipsis } from "lucide-react";
 import { Button } from "./ui/button";
 import {
@@ -8,8 +9,15 @@ import {
 } from "./ui/dropdown-menu";
 import { DeleteDialog, RenameDialog, ShareDialog } from "./dialogs";
 import type { Chat } from "~/lib/drizzle";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function ChatOptionsMenu({ chat }: { chat: Chat }) {
+  const queryClient = useQueryClient();
+
+  const onSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["chats"] });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,10 +30,10 @@ export default function ChatOptionsMenu({ chat }: { chat: Chat }) {
           <ShareDialog chat={chat} />
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <RenameDialog chat={chat} />
+          <RenameDialog chat={chat} onSuccess={onSuccess} />
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <DeleteDialog chat={chat} />
+          <DeleteDialog chat={chat} onSuccess={onSuccess} />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -4,8 +4,8 @@ import { cn } from "~/lib/utils";
 import { Markdown } from "./markdown";
 import { RegenerateFunc } from "~/lib/types";
 import { ReasoningMessage } from "~/components/chat/reasoning";
-import { UIMessage } from "ai";
 import { Fragment } from "react";
+import { UIMessage } from "~/lib/ai/types";
 
 export function BotMessage({
   className,
@@ -56,7 +56,7 @@ export function BotMessage({
                     <Fragment key={index}>
                       <Markdown>{msg.text}</Markdown>
                       {!isLoading ? (
-                        <ButtonRow messageId={message.id} reload={regenerate} content={msg.type} />
+                        <ButtonRow message={message} reload={regenerate} content={msg.type} />
                       ) : null}
                     </Fragment>
                   );

@@ -61,19 +61,22 @@ export function ReasoningMessage({
 
       <AnimatePresence initial={false}>
         {isExpanded && (
-          <motion.div
-            data-testid="message-reasoning"
-            key="content"
-            initial="collapsed"
-            animate="expanded"
-            exit="collapsed"
-            variants={variants}
-            transition={{ duration: 0.2, ease: "easeInOut" }}
-            style={{ overflow: "hidden" }}
-            className="flex flex-col gap-4 border-l pl-4 text-zinc-600 dark:text-zinc-400"
-          >
-            <Markdown>{children}</Markdown>
-          </motion.div>
+          // <motion.div
+          //   data-testid="message-reasoning"
+          //   key="content"
+          //   initial="collapsed"
+          //   animate="expanded"
+          //   exit="collapsed"
+          //   variants={variants}
+          //   transition={{ duration: 0.2, ease: "easeInOut" }}
+          //   style={{ overflow: "hidden" }}
+          //   className="flex flex-col gap-4 border-l pl-4 text-zinc-600 dark:text-zinc-400"
+          // >
+          //   <Markdown>{children}</Markdown>
+          // </motion.div>
+          <div className="flex flex-col gap-4 border-l pl-4 text-zinc-600 dark:text-zinc-400">
+            {children}
+          </div>
         )}
       </AnimatePresence>
     </div>

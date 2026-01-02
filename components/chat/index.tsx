@@ -1,14 +1,14 @@
 "use client";
-import React, { useEffect, useMemo, useOptimistic, useState } from "react";
+import React, { useEffect, useOptimistic, useState } from "react";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { UIMessage, useChat } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
 import InputField from "~/components/chat/input";
 import Messages from "~/components/chat/messages";
 import ScrollAnchor from "~/components/chat/scroll-anchor";
 import EmptyScreen from "~/components/chat/empty-messages";
 import { useLocalStorage, useScroll } from "~/lib/hooks";
 import { cn } from "~/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { useIsMobile } from "~/lib/hooks/use-mobile";
@@ -21,6 +21,7 @@ import cookies from "js-cookie";
 import { LoginForm } from "../auth/login-form";
 import { useSession } from "~/lib/auth/auth-client";
 import { useQueryClient } from "@tanstack/react-query";
+import { UIMessage } from "~/lib/ai/types";
 
 interface ChatProps {
   initialMessages: UIMessage[];
@@ -39,7 +40,6 @@ export default function Chat({
   const isLoggedIn = isPending ? true : !!data?.user;
   const queryClient = useQueryClient();
   const path = usePathname();
-  const router = useRouter();
   const [selectedModel, setSelectedModel] = useState<Model>(() => {
     return models.find((model) => model.isDefault) || models[0];
   });
@@ -47,40 +47,41 @@ export default function Chat({
   const [optimisticAttachments, setOptimisticAttachments] =
     useOptimistic<Array<FileUIPart & { isUploading?: boolean }>>(attachments);
 
-  const { messages, status, error, sendMessage, regenerate, stop } = useChat({
-    messages: initialMessages,
-    id: chatId,
-    transport: new DefaultChatTransport({
-      prepareSendMessagesRequest: ({ id, messages, trigger, messageId }) => {
-        switch (trigger) {
-          case "regenerate-message":
-            return {
-              body: {
-                trigger,
-                id,
-                messageId,
-              },
-            };
-          case "submit-message":
-            // avoid sending all messages
-            return {
-              body: {
-                trigger: trigger,
-                id,
-                message: messages[messages.length - 1],
-                messageId,
-              },
-            };
-        }
+  const { messages, status, error, sendMessage, regenerate, stop } =
+    useChat<UIMessage>({
+      messages: initialMessages,
+      id: chatId,
+      transport: new DefaultChatTransport({
+        prepareSendMessagesRequest: ({ id, messages, trigger, messageId }) => {
+          switch (trigger) {
+            case "regenerate-message":
+              return {
+                body: {
+                  trigger,
+                  id,
+                  messageId,
+                },
+              };
+            case "submit-message":
+              // avoid sending all messages
+              return {
+                body: {
+                  trigger: trigger,
+                  id,
+                  message: messages[messages.length - 1],
+                  messageId,
+                },
+              };
+          }
+        },
+      }),
+      resume: isLoggedIn,
+      generateId: generateMessageId,
+      onFinish: (data) => {
+        setChatId(chatId);
+        queryClient.invalidateQueries({ queryKey: ["chats"] });
       },
-    }),
-    resume: isLoggedIn,
-    generateId: generateMessageId,
-    onFinish: (data) => {
-      setChatId(chatId);
-      queryClient.invalidateQueries({ queryKey: ["chats"] });
-    },
-  });
+    });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

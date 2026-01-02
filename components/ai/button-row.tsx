@@ -1,6 +1,7 @@
 import {
   Check,
   Copy,
+  CpuIcon,
   LucideIcon,
   Repeat,
   ThumbsDown,
@@ -15,13 +16,14 @@ import {
 import { toast } from "sonner";
 import { useClipBoard } from "~/lib/hooks";
 import { RegenerateFunc } from "~/lib/types";
+import { UIMessage } from "~/lib/ai/types";
 
 interface Props {
   content: string;
   reload: RegenerateFunc;
-  messageId: string;
+  message: UIMessage;
 }
-export default function ButtonRow({ content, reload, messageId }: Props) {
+export default function ButtonRow({ content, reload, message }: Props) {
   const [isCopied, copyText] = useClipBoard();
   const buttons: Array<{
     icon: LucideIcon;
@@ -40,7 +42,7 @@ export default function ButtonRow({ content, reload, messageId }: Props) {
       tooltip: "Regenerate",
       onClick: async () => {
         await reload({
-          messageId,
+          messageId: message.id,
         });
       },
     },
@@ -61,8 +63,15 @@ export default function ButtonRow({ content, reload, messageId }: Props) {
   function copy() {
     copyText(content);
   }
+
   return (
     <div className="flex gap-2 mt-2 justify-end">
+      <div className="flex justify-center items-center gap-2">
+        {message?.metadata?.model && <span className="text-sm">{message.metadata.model}</span>}
+        {message?.metadata?.totalTokens && (
+          <span className="text-sm">{`${message.metadata.totalTokens} Tokens`}</span>
+        )}
+      </div>
       {buttons.map(({ icon: Icon, onClick, tooltip, label }, index) => (
         <Tooltip key={index}>
           <TooltipTrigger asChild>
