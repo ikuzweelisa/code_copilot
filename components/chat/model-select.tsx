@@ -81,7 +81,7 @@ export function ModelSelector({
                   key={model.id}
                   disabled={model.isPremium}
                   className={cn(
-                    "flex  items-center justify-start space-x-3 p-3 rounded-lg cursor-pointer transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:text-muted-foreground disabled:bg-none ",
+                    "flex items-start w-full gap-2 p-3 rounded-lg cursor-pointer transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:text-muted-foreground disabled:bg-none ",
                     selectedModel?.id === model.id && "bg-muted/30",
                   )}
                   onClick={() => handleModelSelect(model)}
@@ -96,7 +96,7 @@ export function ModelSelector({
                   <div className="shrink-0 ">
                     <model.icon size={18} />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex min-w-0">
                     <div className="font-medium text-sm">{model.name}</div>
                   </div>
                 </button>

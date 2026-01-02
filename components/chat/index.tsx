@@ -185,7 +185,7 @@ export default function Chat({
             />
           </div>
         </div>
-        <div className="flex container justify-center items-center  bottom-1 w-fit">
+        {/* <div className="flex container justify-center items-center  bottom-1 w-fit">
           <div className=" flex justify-center absolute bottom-1  right-1/3">
             <Link
               href={"https://github.com/Ikuzweshema/_Chat"}
@@ -195,7 +195,7 @@ export default function Chat({
               <Github className="h-4 w-4" /> view Project On Github
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

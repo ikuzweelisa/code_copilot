@@ -1,4 +1,4 @@
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -27,6 +27,8 @@ import {
 import AlertMessage from "~/components/auth/alert";
 import type { Chat } from "~/lib/drizzle";
 import { usePathname, useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface Props {
   chat: Chat;
@@ -34,18 +36,24 @@ interface Props {
 }
 
 export function DeleteDialog({ chat, onSuccess }: Props) {
-  const [state, action, isPending] = useActionState(deleteChat, undefined);
   const pathname = usePathname();
   const router = useRouter();
-
-  useEffect(() => {
-    if (state?.status === "success") {
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`/api/chats/${chat.id}`, { method: "DELETE" });
+      return res.json();
+    },
+    onSuccess: () => {
       if (pathname.includes(chat.id)) {
         router.replace("/");
       }
       onSuccess?.();
-    }
-  }, [state?.status, chat.id, onSuccess, pathname, router]);
+    },
+    onError: () => {
+      toast.error("Failed to delete chat");
+    },
+  });
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -68,43 +76,55 @@ export function DeleteDialog({ chat, onSuccess }: Props) {
             undone.
           </DialogDescription>
         </DialogHeader>
-        <form action={action}>
-          <input type="hidden" name="chatId" value={chat.id} />
-          {state && <AlertMessage {...state} />}
-          <DialogFooter className="mt-4">
-            <DialogClose asChild>
-              <Button type="button" variant="outline">
-                Cancel
-              </Button>
-            </DialogClose>
 
-            <Button type="submit" variant="destructive" disabled={isPending}>
-              {isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Deleting...
-                </>
-              ) : (
-                <>
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete
-                </>
-              )}
+        <DialogFooter className="mt-4">
+          <DialogClose asChild>
+            <Button type="button" variant="outline">
+              Cancel
             </Button>
-          </DialogFooter>
-        </form>
+          </DialogClose>
+
+          <Button
+            onClick={() => mutate()}
+            variant="destructive"
+            disabled={isPending}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Deleting...
+              </>
+            ) : (
+              <>
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </>
+            )}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
 
 export function RenameDialog({ chat, onSuccess }: Props) {
-  const [state, action, isPending] = useActionState(editChat, undefined);
-  useEffect(() => {
-    if (state?.status === "success") {
+  const [title, setTitle] = useState(chat.title);
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`/api/chats/${chat.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ title }),
+      });
+      return res.json();
+    },
+    onSuccess: () => {
       onSuccess?.();
-    }
-  }, [state?.status, onSuccess]);
+    },
+    onError: () => {
+      toast.error("Failed to rename chat");
+    },
+  });
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -121,42 +141,39 @@ export function RenameDialog({ chat, onSuccess }: Props) {
           </DialogTitle>
           <DialogDescription>Enter a new name for your chat.</DialogDescription>
         </DialogHeader>
-        <form action={action} className="space-y-4">
-          <Input
-            type="text"
-            defaultValue={chat.title}
-            name="title"
-            placeholder="New chat name"
-          />
-          <input
-            type="hidden"
-            name="chatId"
-            value={chat.id}
-            className="hidden"
-          />
-          {state && <AlertMessage {...state} />}
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="outline">
-                Cancel
-              </Button>
-            </DialogClose>
+        <Input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          name="title"
+          placeholder="New chat name"
+        />
+        <input type="hidden" name="chatId" value={chat.id} className="hidden" />
 
-            <Button type="submit" disabled={isPending}>
-              {isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4 mr-2" />
-                  Save
-                </>
-              )}
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button type="button" variant="outline">
+              Cancel
             </Button>
-          </DialogFooter>
-        </form>
+          </DialogClose>
+
+          <Button
+            disabled={isPending || title === chat.title || !title.trim()}
+            onClick={() => mutate()}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 mr-2" />
+                Save
+              </>
+            )}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
