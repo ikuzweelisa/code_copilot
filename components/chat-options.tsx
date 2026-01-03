@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { DeleteDialog, RenameDialog, ShareDialog } from "./dialogs";
-import type { Chat } from "~/lib/drizzle";
+import type { Chat } from "~/lib/ai/types";
 import { useQueryClient } from "@tanstack/react-query";
 
 export default function ChatOptionsMenu({ chat }: { chat: Chat }) {

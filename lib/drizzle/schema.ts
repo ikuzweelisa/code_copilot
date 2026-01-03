@@ -94,7 +94,7 @@ export const chats = pgTable(
   "chats",
   {
     id: text("id").primaryKey(),
-    title: varchar("title").notNull(),
+    title: varchar("title"),
     messages: json("messages").$type<UIMessage[]>().notNull().default([]),
     userId: text("userId")
       .notNull()

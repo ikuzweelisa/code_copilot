@@ -1,5 +1,6 @@
-import { ChatRequestOptions, UIMessage } from "ai";
-import { Chat } from "../drizzle";
+import { ChatRequestOptions,} from "ai";
+import { Chat } from "../ai/types";
+
 
 type Status = "success" | "error";
 

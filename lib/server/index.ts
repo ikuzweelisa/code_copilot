@@ -1,10 +1,10 @@
 import "server-only";
 import { db } from "~/lib/drizzle";
 import { cache } from "react";
-import type { UIMessage } from "ai";
 import { getChatTitle } from "~/lib/server/helpers";
 import { chats } from "~/lib/drizzle/schema";
 import { getSession } from "../auth";
+import { UIMessage } from "../ai/types";
 
 export const getChats = cache(async (userId: string | undefined) => {
   if (!userId) return [];
@@ -32,19 +32,22 @@ export async function saveChatData({
   id,
   messages,
   streamId,
+  genTittle = false,
 }: {
   id: string;
   messages?: UIMessage[];
   streamId?: string | null;
+  genTittle?: boolean;
 }) {
   try {
     const session = await getSession();
     if (!session || !session?.user?.id) return;
     const existing = await getChatById(id);
     const userId = existing ? existing.userId : session.user.id;
-    const title = existing
-      ? existing.title
-      : await getChatTitle(messages ?? []);
+    let title = existing?.title;
+    if (!title && genTittle) {
+      title = await getChatTitle(messages ?? []);
+    }
     if (!userId) return null;
     await db
       .insert(chats)

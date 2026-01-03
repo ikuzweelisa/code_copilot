@@ -42,7 +42,11 @@ export async function POST(request: NextRequest) {
   }
   const coreMessage = convertToModelMessages(messages);
 
-  await saveChatData({ id: id, messages: messages, streamId: null });
+  await saveChatData({
+    id: id,
+    messages: messages,
+    streamId: null,
+  });
   const result = streamText({
     model: model.model,
     messages: coreMessage,
@@ -66,7 +70,8 @@ export async function POST(request: NextRequest) {
       }
     },
     onFinish: async ({ messages }) => {
-      await saveChatData({ id, messages, streamId: null });
+      //generete title when model is done
+      await saveChatData({ id, messages, streamId: null, genTittle: true });
     },
     async consumeSseStream({ stream }) {
       const streamId = generateId();

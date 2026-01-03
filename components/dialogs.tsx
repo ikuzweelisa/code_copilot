@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { deleteChat, editChat } from "~/lib/server/actions";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { useClipBoard } from "~/lib/hooks";
@@ -24,8 +23,7 @@ import {
   Share2,
   Trash2,
 } from "lucide-react";
-import AlertMessage from "~/components/auth/alert";
-import type { Chat } from "~/lib/drizzle";
+import type { Chat } from "~/lib/ai/types";
 import { usePathname, useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";

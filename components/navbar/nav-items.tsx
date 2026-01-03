@@ -6,11 +6,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../ui/sidebar";
-import type { Chat } from "~/lib/drizzle";
 import { groupChats } from "~/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { MessageSquarePlus } from "lucide-react";
 import { ChatsSkeleton } from "../skeletons";
+import { Chat } from "~/lib/ai/types";
 export default function NavItems() {
   const { data: chats, isLoading } = useQuery<Array<Chat>>({
     queryKey: ["chats"],

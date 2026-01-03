@@ -1,19 +1,23 @@
 "use client";
 import Link from "next/link";
-import { SidebarMenuButton, SidebarMenuItem } from "~/components/ui/sidebar";
+import {
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "~/components/ui/sidebar";
 import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
-import type { Chat } from "~/lib/drizzle";
 import { useAnimatedText, useLocalStorage } from "~/lib/hooks";
-import ChatOptionsMenu from "../chat-options";
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "../ui/context-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { DeleteDialog, RenameDialog, ShareDialog } from "../dialogs";
 import { useQueryClient } from "@tanstack/react-query";
+import { Chat } from "~/lib/ai/types";
+import { Loader2, MoreHorizontal } from "lucide-react";
 
 interface NavItemProps {
   chat: Chat;
@@ -30,7 +34,7 @@ export default function NavItem({ chat }: NavItemProps) {
   const onSuccess = () => {
     queryClient.invalidateQueries({ queryKey: ["chats"] });
   };
-  const [text] = useAnimatedText(chat.title, {
+  const [text] = useAnimatedText(chat?.title || "New chat", {
     shouldAnimate: animate,
     duration: 1,
     onComplete() {
@@ -39,35 +43,37 @@ export default function NavItem({ chat }: NavItemProps) {
   });
   return (
     <SidebarMenuItem>
-      <ContextMenu>
-        <ContextMenuTrigger asChild>
-          <SidebarMenuButton
-            asChild
-            className={cn(
-              "w-full justify-start px-2 py-1.5 text-sm transition-colors hover:bg-muted group/chat-item",
-              isActive && "bg-muted",
-            )}
-          >
-            <Link href={path} className="flex items-center space-x-2 w-full">
-              <span className="flex-1 truncate">{text}</span>
-              <div className="opacity-0 group-hover/chat-item:opacity-100 focus-within:opacity-100 transition-opacity">
-                <ChatOptionsMenu chat={chat} />
-              </div>
-            </Link>
-          </SidebarMenuButton>
-        </ContextMenuTrigger>
-        <ContextMenuContent className="w-32">
-          <ContextMenuItem asChild>
+      <SidebarMenuButton
+        asChild
+        isActive={isActive}
+        className="group/chat-item"
+      >
+        <Link href={path}>
+          <span className="truncate">{text}</span>
+          {chat?.isPending && (
+            <Loader2 className="w-4 h-4 animate-spin ml-auto" />
+          )}
+        </Link>
+      </SidebarMenuButton>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuAction showOnHover>
+            <MoreHorizontal />
+            <span className="sr-only">More</span>
+          </SidebarMenuAction>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-32" align="end">
+          <DropdownMenuItem asChild>
             <ShareDialog chat={chat} />
-          </ContextMenuItem>
-          <ContextMenuItem asChild>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <RenameDialog chat={chat} onSuccess={onSuccess} />
-          </ContextMenuItem>
-          <ContextMenuItem asChild>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <DeleteDialog chat={chat} onSuccess={onSuccess} />
-          </ContextMenuItem>
-        </ContextMenuContent>
-      </ContextMenu>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </SidebarMenuItem>
   );
 }

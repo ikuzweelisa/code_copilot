@@ -15,13 +15,13 @@ import { useIsMobile } from "~/lib/hooks/use-mobile";
 import { Github } from "lucide-react";
 import { AutoScroller } from "./auto-scoller";
 import { Model, models } from "~/lib/ai/models";
-import { DefaultChatTransport, ChatTransport, FileUIPart } from "ai";
+import { DefaultChatTransport, FileUIPart } from "ai";
 import { generateMessageId } from "~/lib/ai/utis";
 import cookies from "js-cookie";
 import { LoginForm } from "../auth/login-form";
 import { useSession } from "~/lib/auth/auth-client";
 import { useQueryClient } from "@tanstack/react-query";
-import { UIMessage } from "~/lib/ai/types";
+import { type Chat as TChat, UIMessage } from "~/lib/ai/types";
 
 interface ChatProps {
   initialMessages: UIMessage[];
@@ -90,6 +90,19 @@ export default function Chat({
     const isNew = !path.includes(chatId);
     setInput("");
     if (isNew) {
+      queryClient.setQueryData(["chats"], (prevChats: TChat[]): TChat[] => {
+        return [
+          ...(prevChats || []),
+          {
+            id: chatId,
+            title: "New Chat",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            userId: data?.user?.id ?? "",
+            isPending: true,
+          },
+        ];
+      });
       history.pushState(null, "", `/chat/${chatId}`);
     }
   }
