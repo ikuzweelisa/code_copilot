@@ -9,6 +9,7 @@ import {
 } from "~/components/ui/popover";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
+import { cn } from "~/lib/utils";
 
 interface ModelSelectorProps {
   selectedModel: Model | null;
@@ -24,9 +25,9 @@ export function ModelSelector({
 
   const filteredModels = useMemo(() => {
     return models.filter((model) => {
-      const matchesSearch =
-        model.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        model.provider.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesSearch = model.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
       return matchesSearch;
     });
   }, [searchQuery]);
@@ -42,21 +43,16 @@ export function ModelSelector({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full max-w-xs justify-between h-auto p-1.5 focus-within:bg-transparent bg-none outline-none border-none shadow-none"
+          className="w-full max-w-xs justify-between h-auto p-1.5 focus-within:bg-transparent bg-none outline-hidden border-none shadow-none"
           onClick={() => setOpen(!open)}
         >
           {selectedModel && (
             <div key={selectedModel.id} className="flex items-center space-x-3">
-              <div className="flex-shrink-0">
+              <div className="shrink-0">
                 <selectedModel.icon size={28} />
               </div>
               <div className="flex-1 min-w-0 text-left">
                 <div className="font-medium text-sm">{selectedModel.name}</div>
-                <div className="flex items-center space-x-1 text-xs text-muted-foreground mt-1">
-                  <span className="text-xs text-muted-foreground">
-                    {selectedModel.provider.name}
-                  </span>
-                </div>
               </div>
             </div>
           )}
@@ -71,7 +67,7 @@ export function ModelSelector({
               placeholder="Search models..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 h-10  outline-0 border-0 shadow-none  focus:border-0 focus:outline-0 focus-within:border-0 focus-within:outline-none "
+              className="pl-10 h-10  outline-0 border-0 shadow-none  focus:border-0 focus:outline-0 focus-within:border-0 focus-within:outline-hidden "
             />
           </div>
         </div>
@@ -80,32 +76,30 @@ export function ModelSelector({
           <div className="p-2">
             {filteredModels.length > 0 ? (
               filteredModels.map((model) => (
-                <div
+                <button
+                  type="button"
                   key={model.id}
-                  className={`flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-colors hover:bg-muted/50 ${
-                    selectedModel?.id === model.id ? "bg-muted/30" : ""
-                  }`}
+                  disabled={model.isPremium}
+                  className={cn(
+                    "flex items-start w-full gap-2 p-3 rounded-lg cursor-pointer transition-colors hover:bg-muted/50 disabled:cursor-not-allowed disabled:text-muted-foreground disabled:bg-none ",
+                    selectedModel?.id === model.id && "bg-muted/30",
+                  )}
                   onClick={() => handleModelSelect(model)}
-                  role="button"
                   tabIndex={0}
-                  aria-label={`Select ${model.name} from ${model.provider.name}`}
+                  aria-label={`Select ${model.name} `}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       handleModelSelect(model);
                     }
                   }}
                 >
-                  <div className="flex-shrink-0">
-                    <model.icon size={26} />
+                  <div className="shrink-0 ">
+                    <model.icon size={18} />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex min-w-0">
                     <div className="font-medium text-sm">{model.name}</div>
-                    <div className="flex items-center space-x-1 text-xs text-muted-foreground mt-1">
-                      <model.provider.icon size={6} />
-                      <p className="line-clamp-2">{model.provider.name}</p>
-                    </div>
                   </div>
-                </div>
+                </button>
               ))
             ) : (
               <div className="text-center py-8 text-muted-foreground">

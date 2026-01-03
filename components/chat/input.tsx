@@ -1,25 +1,19 @@
 import { Button } from "~/components/ui/button";
 import Textarea from "react-textarea-autosize";
-import {
-  CloudUpload,
-  MoveUp,
-  Paperclip,
-  Send,
-  TriangleAlert,
-} from "lucide-react";
-import React, { ChangeEvent, useRef, useTransition } from "react";
-import { cn, sleep } from "~/lib/utils";
+import { Paperclip, Send, TriangleAlert } from "lucide-react";
+import React, { ChangeEvent, useEffect, useRef, useTransition } from "react";
+import { sleep } from "~/lib/utils";
 import { LoadingButton } from "~/components/ai/spinner-message";
 import AttachmentPreview, {
   Loading,
 } from "~/components/chat/attachment-preview";
-import { FileUIPart } from "ai";
+import type { FileUIPart } from "ai";
 import { useUploadThing } from "~/lib/uploadthing";
 import { toast } from "sonner";
 import { deleteAttachment } from "~/lib/server/actions";
 import { Separator } from "../ui/separator";
 import { ModelSelector } from "./model-select";
-import { Model } from "~/lib/ai/models";
+import type { Model } from "~/lib/ai/models";
 
 interface InputFieldProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -54,6 +48,10 @@ function InputField({
       e.preventDefault();
     }
   }
+  // auto focus
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   const { startUpload } = useUploadThing("imageUploader", {
     onUploadError: (error) => {
@@ -87,7 +85,7 @@ function InputField({
     const deleted = await deleteAttachment(key);
     if (!deleted) return;
     setAttachments((current) => {
-      return current.filter((a) => a.filename != key);
+      return current.filter((a) => a.filename !== key);
     });
   }
   function handleOnClick() {
@@ -147,12 +145,12 @@ function InputField({
       )}
 
       <div className="flex items-center p-3 relative">
-        <div className="flex-grow">
+        <div className="grow">
           <Textarea
             tabIndex={0}
             onKeyDown={onKeyDown}
             placeholder="Send a message..."
-            className="min-h-10 max-h-32 w-full resize-none bg-transparent px-3 py-2 focus-within:outline-none text-base"
+            className="min-h-10 max-h-32 w-full resize-none bg-transparent px-3 py-2 focus-within:outline-hidden text-base"
             autoFocus
             spellCheck={false}
             ref={inputRef}

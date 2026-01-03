@@ -1,15 +1,15 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
-import { auth as authUser } from "~/app/auth";
+import { getSession } from "~/lib/auth";
 import { ratelimit } from "~/lib/server/helpers";
 const f = createUploadthing({
   errorFormatter: (error) => {
     throw new UploadThingError(error.message);
   },
 });
-const auth = (req: Request) => {
-  const user = authUser();
-  return user;
+const auth = async (req: Request) => {
+  const session = await getSession();
+  return session;
 };
 
 export const ourFileRouter = {
@@ -24,8 +24,8 @@ export const ourFileRouter = {
     },
   })
     .middleware(async ({ req }) => {
-      const user = await auth(req);
-      const userId = user?.user?.id;
+      const session = await auth(req);
+      const userId = session?.user?.id;
       if (!userId)
         throw new UploadThingError("Please login to upload attachments.");
       const { success } = await ratelimit.limit(userId);

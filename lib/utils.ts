@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { GroupedChats } from "~/lib/types";
-import { Chat } from "~/lib/drizzle";
 import {
   isToday,
   isYesterday,
@@ -9,6 +8,7 @@ import {
   subWeeks,
   formatDistanceToNow,
 } from "date-fns";
+import { Chat } from "./ai/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -57,4 +57,8 @@ export function formatTime(chatDate: Date): string {
 
   const formated = formatDistanceToNow(date);
   return `${formated} ago`;
+}
+
+export function formatNumber(num: number|string): string {
+  return new Intl.NumberFormat("en-US").format(Number(num));
 }

@@ -1,25 +1,27 @@
 "use client";
-import React, { useEffect, useMemo, useOptimistic, useState } from "react";
+import React, { useEffect, useOptimistic, useState } from "react";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { UIMessage, useChat } from "@ai-sdk/react";
+import { useChat } from "@ai-sdk/react";
 import InputField from "~/components/chat/input";
 import Messages from "~/components/chat/messages";
 import ScrollAnchor from "~/components/chat/scroll-anchor";
 import EmptyScreen from "~/components/chat/empty-messages";
 import { useLocalStorage, useScroll } from "~/lib/hooks";
 import { cn } from "~/lib/utils";
-import { useSWRConfig } from "swr";
 import { usePathname } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { useIsMobile } from "~/lib/hooks/use-mobile";
-import { useSession } from "next-auth/react";
 import { Github } from "lucide-react";
 import { AutoScroller } from "./auto-scoller";
 import { Model, models } from "~/lib/ai/models";
-import { DefaultChatTransport, ChatTransport, FileUIPart } from "ai";
+import { DefaultChatTransport, FileUIPart } from "ai";
 import { generateMessageId } from "~/lib/ai/utis";
 import cookies from "js-cookie";
+import { LoginForm } from "../auth/login-form";
+import { useSession } from "~/lib/auth/auth-client";
+import { useQueryClient } from "@tanstack/react-query";
+import { type Chat as TChat, UIMessage } from "~/lib/ai/types";
 
 interface ChatProps {
   initialMessages: UIMessage[];
@@ -33,9 +35,10 @@ export default function Chat({
 }: ChatProps) {
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
   const [input, setInput] = useState("");
-  const session = useSession();
-  const isLoggedIn = session.status === "loading" ? true : !!session.data?.user;
-  const { mutate } = useSWRConfig();
+  const { data, isPending } = useSession();
+
+  const isLoggedIn = isPending ? true : !!data?.user;
+  const queryClient = useQueryClient();
   const path = usePathname();
   const [selectedModel, setSelectedModel] = useState<Model>(() => {
     return models.find((model) => model.isDefault) || models[0];
@@ -44,24 +47,64 @@ export default function Chat({
   const [optimisticAttachments, setOptimisticAttachments] =
     useOptimistic<Array<FileUIPart & { isUploading?: boolean }>>(attachments);
 
-  const { messages, status, error, sendMessage, regenerate, stop } = useChat({
-    messages: initialMessages,
-    id: chatId,
-    transport: new DefaultChatTransport({
-      api: "/api/chat",
-    }),
-    generateId: generateMessageId,
-    onFinish: (data) => {
-      setChatId(chatId);
-      mutate("/api/chats");
-    },
-  });
+  const { messages, status, error, sendMessage, regenerate, stop } =
+    useChat<UIMessage>({
+      messages: initialMessages,
+      id: chatId,
+      transport: new DefaultChatTransport({
+        prepareSendMessagesRequest: ({ id, messages, trigger, messageId }) => {
+          switch (trigger) {
+            case "regenerate-message":
+              return {
+                body: {
+                  trigger,
+                  id,
+                  messageId,
+                },
+              };
+            case "submit-message":
+              // avoid sending all messages
+              return {
+                body: {
+                  trigger: trigger,
+                  id,
+                  message: messages[messages.length - 1],
+                  messageId,
+                },
+              };
+          }
+        },
+      }),
+      resume: isLoggedIn,
+      generateId: generateMessageId,
+      onFinish: (data) => {
+        setChatId(chatId);
+        queryClient.invalidateQueries({ queryKey: ["chats"] });
+      },
+    });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!input) return;
     sendMessage({ text: input });
+    const isNew = !path.includes(chatId);
     setInput("");
+    if (isNew) {
+      queryClient.setQueryData(["chats"], (prevChats: TChat[]): TChat[] => {
+        return [
+          ...(prevChats || []),
+          {
+            id: chatId,
+            title: "New Chat",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            userId: data?.user?.id ?? "",
+            isPending: true,
+          },
+        ];
+      });
+      history.pushState(null, "", `/chat/${chatId}`);
+    }
   }
   const loading = ["streaming", "submitted"].includes(status);
   const isEmpty = messages.length === 0;
@@ -84,12 +127,12 @@ export default function Chat({
     <div className="flex flex-col h-screen w-full overflow-hidden">
       {!isLoggedIn ? (
         <div className="w-fit h-10 flex justify-end mb-3 mt-3 mx-3 gap-2 pl-0 absolute top-1 right-1 z-10">
-          <Button variant="outline" asChild>
-            <Link href="/auth/login">Login</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/auth/login">Register</Link>
-          </Button>
+          <LoginForm>
+            <Button variant="outline">Login</Button>
+          </LoginForm>
+          <LoginForm>
+            <Button>Register</Button>
+          </LoginForm>
         </div>
       ) : (
         isMobile &&
@@ -99,7 +142,7 @@ export default function Chat({
             <span className="text-sm">
               {chatTitle
                 ? chatTitle?.length > 35
-                  ? chatTitle?.slice(0, 30) + "..."
+                  ? `${chatTitle?.slice(0, 35)}...`
                   : chatTitle
                 : "Unititled Chat"}
             </span>
@@ -115,7 +158,7 @@ export default function Chat({
         <>
           <ScrollArea
             onScrollCapture={handleScroll}
-            className="flex-grow w-full overflow-y-auto mt-3"
+            className="grow w-full overflow-y-auto mt-3"
           >
             <AutoScroller
               ref={visibilityRef}
@@ -155,17 +198,17 @@ export default function Chat({
             />
           </div>
         </div>
-        <div className="flex container justify-center items-center  bottom-1 w-fit">
+        {/* <div className="flex container justify-center items-center  bottom-1 w-fit">
           <div className=" flex justify-center absolute bottom-1  right-1/3">
             <Link
-              href={"https://github.com/Ikuzweshema/code_copilot"}
+              href={"https://github.com/Ikuzweshema/_Chat"}
               target="_blank"
               className="text-sm flex gap-1 items-center text-muted-foreground"
             >
               <Github className="h-4 w-4" /> view Project On Github
             </Link>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

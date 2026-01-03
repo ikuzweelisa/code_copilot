@@ -1,10 +1,10 @@
 import "server-only";
 import { db } from "~/lib/drizzle";
 import { cache } from "react";
-import { UIMessage } from "ai";
-import { auth } from "~/app/auth";
 import { getChatTitle } from "~/lib/server/helpers";
 import { chats } from "~/lib/drizzle/schema";
+import { getSession } from "../auth";
+import { UIMessage } from "../ai/types";
 
 export const getChats = cache(async (userId: string | undefined) => {
   if (!userId) return [];
@@ -15,6 +15,7 @@ export const getChats = cache(async (userId: string | undefined) => {
     });
     return chats;
   } catch (e) {
+    console.error("error:", e);
     return [];
   }
 });
@@ -27,37 +28,52 @@ export const getChatById = async (id: string | undefined) => {
   return chat;
 };
 
-export async function saveChatData(id: string, messages: UIMessage[]) {
+export async function saveChatData({
+  id,
+  messages,
+  streamId,
+  genTittle = false,
+}: {
+  id: string;
+  messages?: UIMessage[];
+  streamId?: string | null;
+  genTittle?: boolean;
+}) {
   try {
-    const session = await auth();
+    const session = await getSession();
     if (!session || !session?.user?.id) return;
     const existing = await getChatById(id);
     const userId = existing ? existing.userId : session.user.id;
-    const title = existing ? existing.title : await getChatTitle(messages);
+    let title = existing?.title;
+    if (!title && genTittle) {
+      title = await getChatTitle(messages ?? []);
+    }
     if (!userId) return null;
     await db
       .insert(chats)
       .values({
-        id,
-        title,
-        userId,
-        messages: messages,
+        id: id,
+        title: title,
+        userId: userId,
+        ...(messages ? { messages } : {}),
+        ...(streamId !== undefined ? { activeStreamId: streamId } : {}),
       })
       .onConflictDoUpdate({
         target: chats.id,
         set: {
-          messages: messages,
+          ...(messages ? { messages } : {}),
+          ...(streamId !== undefined ? { activeStreamId: streamId } : {}),
         },
       });
   } catch (e) {
-    console.error("Error saving chat data:");
+    console.error("Error savingachat data:", e);
     return null;
   }
 }
 
 export const getUserChats = async () => {
   try {
-    const session = await auth();
+    const session = await getSession();
     const userId = session?.user?.id;
     if (!userId) {
       return [];

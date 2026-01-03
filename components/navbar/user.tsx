@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { Settings, LogOut, SquareChevronUp } from "lucide-react";
-import { signOut } from "next-auth/react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,21 +12,21 @@ import {
 import { Button } from "~/components/ui/button";
 import ModeToggle from "~/components/navbar/toggle-mode";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { Session } from "next-auth";
-import { use } from "react";
+import { Session, signOut } from "~/lib/auth/auth-client";
+import { useRouter } from "next/navigation";
 
 interface Props {
-  sessionPromise: Promise<Session | null>;
+  session: Session | null;
 }
 
-export default function UserButton({ sessionPromise }: Props) {
-  const session = use(sessionPromise);
+export default function UserButton({ session }: Props) {
+  const router = useRouter();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="p-0">
-        <div className="flex gap-1 cursor-pointer">
+        <div className="flex gap-2 cursor-pointer">
           <Button variant="ghost" size="icon" className="relative ">
-            <Avatar className="rounded-md h-10 w-10">
+            <Avatar className="rounded-full h-10 w-10">
               <AvatarImage src={session?.user?.image ?? ""} />
               <AvatarFallback>
                 {session?.user?.name
@@ -53,7 +52,10 @@ export default function UserButton({ sessionPromise }: Props) {
           </div>
         </div>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="center" className="w-60 space-y-1 mb-2  pb-2 px-2 pt-0 mx-2 rounded-md bg-muted/50">
+      <DropdownMenuContent
+        align="center"
+        className="w-60 space-y-1 mb-2  pb-2 px-2 pt-0 mx-2 rounded-md bg-muted/50"
+      >
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
@@ -66,7 +68,7 @@ export default function UserButton({ sessionPromise }: Props) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="#" className="flex cursor-pointer w-full items-center">
+          <Link href="/settings" className="flex cursor-pointer w-full items-center">
             <Settings className="mr-2 h-4 w-4" />
             Settings
           </Link>
@@ -77,13 +79,18 @@ export default function UserButton({ sessionPromise }: Props) {
           Toggle theme
           <ModeToggle />
         </DropdownMenuItem>
-        <DropdownMenuSeparator/>
+        <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Button
             variant={"default"}
             size={"sm"}
             className="flex items-center w-full justify-start cursor-pointer gap-1"
-            onClick={() => signOut()}
+            onClick={async () => {
+              const { data } = await signOut();
+              if (data?.success) {
+                router.replace("/");
+              }
+            }}
           >
             <LogOut className="mr-2 h-4 w-4" />
             Log out

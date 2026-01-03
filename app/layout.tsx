@@ -1,27 +1,28 @@
 import "./globals.css";
 import ThemeProvider from "~/components/providers/theme-provider";
 import { TooltipProvider } from "~/components/ui/tooltip";
-import { SessionProvider } from "next-auth/react";
 import { Toaster } from "~/components/ui/sonner";
 import { cn } from "~/lib/utils";
 import { Geist } from "next/font/google";
+import type { Metadata } from "next";
+import Providers from "~/components/providers";
 
-import React from "react";
-export const metadata = {
+export const metadata: Metadata = {
   title: {
-    default: "Code Copilot",
-    template: "%s | Code Copilot",
+    default: " Chat",
+    template: "%s |  Chat",
   },
   description: "A Programming AI Assistant",
+
   icons: {
     icon: "/favicon.ico",
   },
-  metadataBase: new URL("https://code-copilot.vercel.app"),
+  metadataBase: new URL("https://-Chat.vercel.app"),
   keywords: [
     "Programming assistant",
-    "Code analysis",
+    " analysis",
     "AI-powered coding",
-    "Code debugging",
+    " debugging",
   ],
 };
 
@@ -42,20 +43,17 @@ export default function RootLayout({
         className={cn("font-sans antialiased", geist.className)}
         suppressContentEditableWarning
       >
-        <SessionProvider>
-          <TooltipProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-
-              <Toaster />
-            </ThemeProvider>
-          </TooltipProvider>
-        </SessionProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>
+            <TooltipProvider>{children}</TooltipProvider>
+          </Providers>
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

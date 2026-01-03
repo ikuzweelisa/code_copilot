@@ -7,7 +7,7 @@ export function UserMessage({ children }: { children: React.ReactNode }) {
       <div className="flex  shrink-0 select-none items-center justify-center  ">
         <IconUser />
       </div>
-      <div className="ml-2 flex-1 flex-col text-sm md:text-sm lg:text-base">
+      <div className="ml-2 flex-1 flex-col justify-center text-sm md:text-sm lg:text-base">
         {children}
       </div>
     </div>

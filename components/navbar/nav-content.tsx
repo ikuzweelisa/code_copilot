@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, use } from "react";
+import React, { Suspense } from "react";
 import { AssitantIcon } from "../ui/icons";
 import { ScrollArea } from "../ui/scroll-area";
 import {
@@ -14,19 +14,18 @@ import {
 import UserButton from "./user";
 import Link from "next/link";
 import NavLinks from "./nav-links";
-import { Session } from "next-auth";
 import NavItems from "./nav-items";
 import { Button } from "../ui/button";
+import { LoginForm } from "../auth/login-form";
+import { useSession } from "~/lib/auth/auth-client";
+import UserSkelton from "../skeletons";
 
-interface Props {
-  sessionPromise: Promise<Session | null>;
-}
-
-export default function NavContent({ sessionPromise }: Props) {
+export default function NavContent() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const session = use(sessionPromise);
-  const isLoggedIn = !!session?.user;
+  const session = useSession();
+  const isPending = session.isPending;
+  const isLoggedIn = !!session?.data;
   return (
     <Sidebar
       data-collapsed={collapsed}
@@ -41,45 +40,44 @@ export default function NavContent({ sessionPromise }: Props) {
           </div>
 
           <span className="font-semibold text-center text-xl group-data-[collapsible=icon]:hidden">
-            Code Copilot
+             Chat
           </span>
         </Link>
       </SidebarHeader>
-      {isLoggedIn ? (
-        <>
-          <SidebarContent className="mt-2">
-            <ScrollArea className="flex-grow">
-              <NavLinks />
-              <NavItems />
-            </ScrollArea>
-          </SidebarContent>
-          <SidebarFooter className="border-t">
-            <Suspense fallback={null}>
-              <UserButton sessionPromise={sessionPromise} />
-            </Suspense>
-          </SidebarFooter>
-        </>
-      ) : (
-        <>
-          <SidebarContent className="group-data-[collapsible=icon]:hidden">
-            <SidebarMenu>
-              <SidebarMenuItem className="text-center mt-5">
-                Login to save chats
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarContent>
-          <SidebarFooter className="group-data-[collapsible=icon]:hidden  gap-2">
-            <div className="w-full flex gap-2">
-              <Button className="w-full max-w-xs" asChild variant={"outline"}>
-                <Link href="/auth/login">Login</Link>
+      <SidebarContent className="group-data-[collapsible=icon]:hidden">
+        {isPending ? null : isLoggedIn ? (
+          <ScrollArea className="grow">
+            <NavLinks />
+            <NavItems />
+          </ScrollArea>
+        ) : (
+          <SidebarMenu>
+            <SidebarMenuItem className="text-center mt-5">
+              Login to save chats
+            </SidebarMenuItem>
+          </SidebarMenu>
+        )}
+      </SidebarContent>
+      <SidebarFooter className="group-data-[collapsible=icon]:hidden gap-2 border-t">
+        {isPending ? (
+          <UserSkelton />
+        ) : isLoggedIn ? (
+          <Suspense fallback={null}>
+            <UserButton session={session?.data} />
+          </Suspense>
+        ) : (
+          <div className="w-full flex gap-2">
+            <LoginForm>
+              <Button className="w-full max-w-xs" variant={"outline"}>
+                Login
               </Button>
-              <Button className="w-full max-w-xs" asChild>
-                <Link href="/auth/login">Register</Link>
-              </Button>
-            </div>
-          </SidebarFooter>
-        </>
-      )}
+            </LoginForm>
+            <LoginForm>
+              <Button className="w-full max-w-xs">Register</Button>
+            </LoginForm>
+          </div>
+        )}
+      </SidebarFooter>
     </Sidebar>
   );
 }

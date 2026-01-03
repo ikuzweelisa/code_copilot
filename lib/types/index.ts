@@ -1,5 +1,6 @@
-import { ChatRequestOptions } from "ai";
-import { Chat } from "../drizzle";
+import { ChatRequestOptions,} from "ai";
+import { Chat } from "../ai/types";
+
 
 type Status = "success" | "error";
 
@@ -13,6 +14,12 @@ export type GroupedChats = {
   lastWeek: Chat[];
   lastMonth: Chat[];
   older: Chat[];
+};
+
+export type ChatData = {
+  id: string;
+  createdAt: number;
+  activeStreamId: string | null;
 };
 
 export type RegenerateFunc = ({

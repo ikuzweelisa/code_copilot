@@ -1,11 +1,23 @@
 "use client";
-import { MessageSquareText } from "lucide-react";
 import Link from "next/link";
-import { SidebarMenuButton, SidebarMenuItem } from "~/components/ui/sidebar";
+import {
+  SidebarMenuAction,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from "~/components/ui/sidebar";
 import { cn } from "~/lib/utils";
 import { usePathname } from "next/navigation";
-import { Chat } from "~/lib/drizzle";
 import { useAnimatedText, useLocalStorage } from "~/lib/hooks";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
+import { DeleteDialog, RenameDialog, ShareDialog } from "../dialogs";
+import { useQueryClient } from "@tanstack/react-query";
+import { Chat } from "~/lib/ai/types";
+import { Loader2, MoreHorizontal } from "lucide-react";
 
 interface NavItemProps {
   chat: Chat;
@@ -17,10 +29,14 @@ export default function NavItem({ chat }: NavItemProps) {
   const isActive = pathname === path;
   const [newChat, setNewChat] = useLocalStorage<string | null>("chatId", null);
   const animate = chat.id === newChat;
+  const queryClient = useQueryClient();
 
-  const [text] = useAnimatedText(chat.title, {
+  const onSuccess = () => {
+    queryClient.invalidateQueries({ queryKey: ["chats"] });
+  };
+  const [text] = useAnimatedText(chat?.title || "New chat", {
     shouldAnimate: animate,
-    duration: 2,
+    duration: 1,
     onComplete() {
       setNewChat(null);
     },
@@ -29,23 +45,35 @@ export default function NavItem({ chat }: NavItemProps) {
     <SidebarMenuItem>
       <SidebarMenuButton
         asChild
-        className={cn(
-          "w-full justify-start px-2 py-1.5 text-sm transition-colors hover:bg-muted ",
-          isActive && "bg-muted"
-        )}
+        isActive={isActive}
+        className="group/chat-item"
       >
-        <Link href={path} className="flex items-center space-x-2 w-full">
-          <div
-            className={cn(
-              "flex h-8 w-8 items-center justify-center rounded-md",
-              isActive && "text-primary-foreground bg-primary"
-            )}
-          >
-            <MessageSquareText className="h-4 w-4" />
-          </div>
-          <span className="flex-1 truncate">{text}</span>
+        <Link href={path}>
+          <span className="truncate">{text}</span>
+          {chat?.isPending && (
+            <Loader2 className="w-4 h-4 animate-spin ml-auto" />
+          )}
         </Link>
       </SidebarMenuButton>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuAction showOnHover>
+            <MoreHorizontal />
+            <span className="sr-only">More</span>
+          </SidebarMenuAction>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-32" align="end">
+          <DropdownMenuItem asChild>
+            <ShareDialog chat={chat} />
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <RenameDialog chat={chat} onSuccess={onSuccess} />
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <DeleteDialog chat={chat} onSuccess={onSuccess} />
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </SidebarMenuItem>
   );
 }

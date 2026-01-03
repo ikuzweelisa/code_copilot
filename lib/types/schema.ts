@@ -6,7 +6,7 @@ const fileSchema = z
   });
 
 const editChatSchema = z.object({
-  chatId: z.string().min(10, {
+  chatId: z.string().min(4, {
     message: "Chat does not exist",
   }),
   title: z

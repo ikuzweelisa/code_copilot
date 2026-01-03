@@ -1,5 +1,4 @@
-import React from "react";
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -10,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { deleteChat, editChat } from "~/lib/server/actions";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { useClipBoard } from "~/lib/hooks";
@@ -25,15 +23,34 @@ import {
   Share2,
   Trash2,
 } from "lucide-react";
-import AlertMessage from "~/components/auth/alert";
-import { Chat } from "~/lib/drizzle";
+import type { Chat } from "~/lib/ai/types";
+import { usePathname, useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 interface Props {
   chat: Chat;
+  onSuccess?: () => void;
 }
 
-export function DeleteDialog({ chat }: Props) {
-  const [state, action, isPending] = useActionState(deleteChat, undefined);
+export function DeleteDialog({ chat, onSuccess }: Props) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`/api/chats/${chat.id}`, { method: "DELETE" });
+      return res.json();
+    },
+    onSuccess: () => {
+      if (pathname.includes(chat.id)) {
+        router.replace("/");
+      }
+      onSuccess?.();
+    },
+    onError: () => {
+      toast.error("Failed to delete chat");
+    },
+  });
 
   return (
     <Dialog>
@@ -57,38 +74,54 @@ export function DeleteDialog({ chat }: Props) {
             undone.
           </DialogDescription>
         </DialogHeader>
-        <form action={action}>
-          <input type="hidden" name="chatId" value={chat.id} />
-          {state && <AlertMessage {...state} />}
-          <DialogFooter className="mt-4">
-            <DialogClose asChild>
-              <Button type="button" variant="outline">
-                Cancel
-              </Button>
-            </DialogClose>
 
-            <Button type="submit" variant="destructive" disabled={isPending}>
-              {isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Deleting...
-                </>
-              ) : (
-                <>
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete
-                </>
-              )}
+        <DialogFooter className="mt-4">
+          <DialogClose asChild>
+            <Button type="button" variant="outline">
+              Cancel
             </Button>
-          </DialogFooter>
-        </form>
+          </DialogClose>
+
+          <Button
+            onClick={() => mutate()}
+            variant="destructive"
+            disabled={isPending}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Deleting...
+              </>
+            ) : (
+              <>
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete
+              </>
+            )}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
 
-export function RenameDialog({ chat }: Props) {
-  const [state, action, isPending] = useActionState(editChat, undefined);
+export function RenameDialog({ chat, onSuccess }: Props) {
+  const [title, setTitle] = useState(chat.title);
+  const { mutate, isPending } = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`/api/chats/${chat.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ title }),
+      });
+      return res.json();
+    },
+    onSuccess: () => {
+      onSuccess?.();
+    },
+    onError: () => {
+      toast.error("Failed to rename chat");
+    },
+  });
 
   return (
     <Dialog>
@@ -106,42 +139,39 @@ export function RenameDialog({ chat }: Props) {
           </DialogTitle>
           <DialogDescription>Enter a new name for your chat.</DialogDescription>
         </DialogHeader>
-        <form action={action} className="space-y-4">
-          <Input
-            type="text"
-            defaultValue={chat.title}
-            name="title"
-            placeholder="New chat name"
-          />
-          <input
-            type="hidden"
-            name="chatId"
-            value={chat.id}
-            className="hidden"
-          />
-          {state && <AlertMessage {...state} />}
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="outline">
-                Cancel
-              </Button>
-            </DialogClose>
+        <Input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          name="title"
+          placeholder="New chat name"
+        />
+        <input type="hidden" name="chatId" value={chat.id} className="hidden" />
 
-            <Button type="submit" disabled={isPending}>
-              {isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4 mr-2" />
-                  Save
-                </>
-              )}
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button type="button" variant="outline">
+              Cancel
             </Button>
-          </DialogFooter>
-        </form>
+          </DialogClose>
+
+          <Button
+            disabled={isPending || title === chat.title || !title.trim()}
+            onClick={() => mutate()}
+          >
+            {isPending ? (
+              <>
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 mr-2" />
+                Save
+              </>
+            )}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

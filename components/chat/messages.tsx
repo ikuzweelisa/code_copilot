@@ -15,7 +15,7 @@ interface MessageProps {
 
 const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
   { messages, error, isLoading, regenerate }: MessageProps,
-  ref,
+  ref
 ) {
   return (
     <div
@@ -43,12 +43,18 @@ const Messages = forwardRef<HTMLDivElement, MessageProps>(function Messages(
           <BotMessage
             isLoading={isLoading}
             className="text-red-500"
-            reload={regenerate}
+            regenerate={regenerate}
           >
             Unable to generate response. Please try again
           </BotMessage>
 
-          {!isLoading ? <ButtonRow reload={regenerate} content={""} /> : null}
+          {!isLoading ? (
+            <ButtonRow
+              messageId={messages[messages.length - 1].id}
+              reload={regenerate}
+              content={""}
+            />
+          ) : null}
         </div>
       )}
     </div>
