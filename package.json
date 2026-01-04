@@ -83,7 +83,7 @@
     "@types/react-syntax-highlighter": "15.5.13",
     "drizzle-kit": "0.31.8",
     "eslint": "9.39.2",
-    "eslint-config-next": "15.0.4",
+    "eslint-config-next": "15.5.9",
     "postcss": "8.4.48",
     "prettier": "3.4.2",
     "tailwindcss": "4.1.18",
