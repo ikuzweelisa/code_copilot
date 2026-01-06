@@ -145,7 +145,7 @@ export default function Chat({
                 ? chatTitle?.length > 35
                   ? `${chatTitle?.slice(0, 35)}...`
                   : chatTitle
-                : "Unititled Chat"}
+                : "Untitled Chat"}
             </span>
             <Button asChild size="sm">
               <Link href="/">New Chat</Link>

@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       0,
       messages[messageIndex].role === "assistant"
         ? messageIndex
-        : messageIndex + 1,
+        : messageIndex + 1
     );
   }
   const coreMessage = convertToModelMessages(messages);
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     },
     onFinish: async ({ messages }) => {
       //generete title when model is done
-      await saveChatData({ id, messages, streamId: null, genTittle: true });
+      await saveChatData({ id, messages, streamId: null, generateTitle: true });
     },
     async consumeSseStream({ stream }) {
       const streamId = generateId();

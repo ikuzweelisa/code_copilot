@@ -32,12 +32,12 @@ export async function saveChatData({
   id,
   messages,
   streamId,
-  genTittle = false,
+  generateTitle = false,
 }: {
   id: string;
   messages?: UIMessage[];
   streamId?: string | null;
-  genTittle?: boolean;
+  generateTitle?: boolean;
 }) {
   try {
     const session = await getSession();
@@ -45,7 +45,8 @@ export async function saveChatData({
     const existing = await getChatById(id);
     const userId = existing ? existing.userId : session.user.id;
     let title = existing?.title;
-    if (!title && genTittle) {
+    if (!title && generateTitle) {
+      console.log("genereted chat title");
       title = await getChatTitle(messages ?? []);
     }
     if (!userId) return null;
@@ -63,6 +64,7 @@ export async function saveChatData({
         set: {
           ...(messages ? { messages } : {}),
           ...(streamId !== undefined ? { activeStreamId: streamId } : {}),
+          ...(title ? { title } : {}),
         },
       });
   } catch (e) {

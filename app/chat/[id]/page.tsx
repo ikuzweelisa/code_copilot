@@ -25,5 +25,11 @@ export default async function Page({ params }: PageParams) {
   const chat = await getChatById(id);
   if (!chat) notFound();
   const messages = chat.messages;
-  return <Chat chatId={id} initialMessages={messages} chatTitle={chat.title} />;
+  return (
+    <Chat
+      chatId={id}
+      initialMessages={messages}
+      chatTitle={chat.title ?? undefined}
+    />
+  );
 }
