@@ -1,7 +1,7 @@
 import {
   Check,
   Copy,
-  CpuIcon,
+  GitBranchIcon,
   LucideIcon,
   Repeat,
   ThumbsDown,
@@ -39,6 +39,11 @@ export default function ButtonRow({ content, reload, message }: Props) {
       label: isCopied ? "Copied!" : "Copy",
     },
     {
+      icon: GitBranchIcon,
+      tooltip: "Branch",
+      onClick: () => {},
+    },
+    {
       icon: Repeat,
       tooltip: "Regenerate",
       onClick: async () => {
@@ -68,7 +73,9 @@ export default function ButtonRow({ content, reload, message }: Props) {
   return (
     <div className="flex gap-2 mt-2 justify-end">
       <div className="flex justify-center items-center gap-2 italic">
-        {message?.metadata?.model && <span className="text-sm">{message.metadata.model}</span>}
+        {message?.metadata?.model && (
+          <span className="text-sm">{message.metadata.model}</span>
+        )}
         {message?.metadata?.totalTokens && (
           <span className="text-sm">{`${formatNumber(message.metadata.totalTokens)} Tokens`}</span>
         )}

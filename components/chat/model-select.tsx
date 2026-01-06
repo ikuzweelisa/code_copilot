@@ -43,7 +43,7 @@ export function ModelSelector({
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full max-w-xs justify-between h-auto p-1.5 focus-within:bg-transparent bg-none outline-hidden border-none shadow-none"
+          className="w-fit max-w-xs justify-between h-auto p-1.5 focus-within:bg-transparent bg-none outline-hidden border-none shadow-none"
           onClick={() => setOpen(!open)}
         >
           {selectedModel && (

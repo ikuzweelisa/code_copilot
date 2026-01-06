@@ -1,7 +1,13 @@
 import { Button } from "~/components/ui/button";
 import Textarea from "react-textarea-autosize";
 import { Paperclip, Send, TriangleAlert } from "lucide-react";
-import React, { ChangeEvent, useEffect, useRef, useTransition } from "react";
+import React, {
+  ChangeEvent,
+  ClipboardEventHandler,
+  useEffect,
+  useRef,
+  useTransition,
+} from "react";
 import { sleep } from "~/lib/utils";
 import { LoadingButton } from "~/components/ai/spinner-message";
 import AttachmentPreview, {
@@ -92,6 +98,45 @@ function InputField({
     if (!attachementRef.current) return;
     attachementRef.current?.click();
   }
+  const handlePaste: ClipboardEventHandler<HTMLTextAreaElement> = (event) => {
+    const items = event.clipboardData?.items;
+
+    if (!items) {
+      return;
+    }
+
+    const files: File[] = [];
+
+    for (const item of items) {
+      if (item.kind === "file") {
+        const file = item.getAsFile();
+        if (file) {
+          files.push(file);
+        }
+      }
+    }
+    if (files.length > 0) {
+      event.preventDefault();
+      startTransition(async () => {
+        files.forEach((file) => {
+          setOPtimisticAttachments((prev) => [
+            ...prev,
+            {
+              name: file.name,
+              contentType: file.type,
+              url: URL.createObjectURL(file),
+              isUploading: true,
+              key: file.name,
+              type: "file",
+              mediaType: file.type,
+            },
+          ]);
+        });
+        await sleep(2000);
+        await startUpload(files);
+      });
+    }
+  };
   async function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || []);
     if (!files) return;
@@ -147,6 +192,7 @@ function InputField({
       <div className="flex items-center p-3 relative">
         <div className="grow">
           <Textarea
+            onPaste={handlePaste}
             tabIndex={0}
             onKeyDown={onKeyDown}
             placeholder="Send a message..."

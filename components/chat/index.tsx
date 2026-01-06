@@ -12,7 +12,6 @@ import { usePathname } from "next/navigation";
 import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import { useIsMobile } from "~/lib/hooks/use-mobile";
-import { Github } from "lucide-react";
 import { AutoScroller } from "./auto-scoller";
 import { Model, models } from "~/lib/ai/models";
 import { DefaultChatTransport, FileUIPart } from "ai";
@@ -52,7 +51,7 @@ export default function Chat({
       messages: initialMessages,
       id: chatId,
       transport: new DefaultChatTransport({
-        prepareSendMessagesRequest: ({ id, messages, trigger, messageId }) => {
+        prepareSendMessagesRequest: ({ id, messages, trigger, messageId}) => {
           switch (trigger) {
             case "regenerate-message":
               return {

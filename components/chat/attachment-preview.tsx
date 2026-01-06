@@ -48,7 +48,7 @@ export default function AttachmentPreview({
                 </p>
               </div>
               <Button
-                onClick={async () => await handleRemove(attachment.filename as string)}
+                onClick={() => handleRemove(attachment.filename as string)}
                 variant="ghost"
                 size="icon"
                 className={`absolute top-1 right-1 h-6 w-6 p-0 transition-opacity duration-300 group-hover:opacity-100  opacity-0`}

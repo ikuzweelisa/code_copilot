@@ -1,9 +1,13 @@
 import { AssitantIcon } from "~/components/ui/icons";
 import ButtonRow from "~/components/ai/button-row";
 import { cn } from "~/lib/utils";
-import { Markdown } from "./markdown";
+import Markdown from "./markdown";
 import { RegenerateFunc } from "~/lib/types";
-import { ReasoningMessage } from "~/components/chat/reasoning";
+import {
+  Reasoning,
+  ReasoningContent,
+  ReasoningTrigger,
+} from "~/components/ui/reasoning";
 import { Fragment } from "react";
 import { UIMessage } from "~/lib/ai/types";
 
@@ -42,21 +46,26 @@ export function BotMessage({
                 case "reasoning":
                   return (
                     <Fragment key={index}>
-                      <ReasoningMessage
-                        isLoading={
+                      <Reasoning
+                        isStreaming={
                           isLoading && index === message.parts.length - 1
                         }
                       >
-                        {msg.text}
-                      </ReasoningMessage>
+                        <ReasoningTrigger />
+                        <ReasoningContent>{msg.text}</ReasoningContent>
+                      </Reasoning>
                     </Fragment>
                   );
                 case "text":
                   return (
                     <Fragment key={index}>
-                      <Markdown>{msg.text}</Markdown>
+                      <Markdown isAnimating={isLoading}>{msg.text}</Markdown>
                       {!isLoading ? (
-                        <ButtonRow message={message} reload={regenerate} content={msg.type} />
+                        <ButtonRow
+                          message={message}
+                          reload={regenerate}
+                          content={msg.type}
+                        />
                       ) : null}
                     </Fragment>
                   );

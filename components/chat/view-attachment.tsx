@@ -9,7 +9,7 @@ import { Card, CardContent, CardFooter } from "~/components/ui/card";
 export default function ViewAttachment({
   attachment,
 }: {
-  attachment: Attachment;
+  attachment: Attachmen;
 }) {
   const isImage = attachment.contentType?.startsWith("image/");
 

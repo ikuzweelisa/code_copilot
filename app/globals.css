@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
+@source "../node_modules/streamdown/dist/*.js";
 
 @theme {
   --color-background: hsl(var(--background));
