@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       0,
       messages[messageIndex].role === "assistant"
         ? messageIndex
-        : messageIndex + 1
+        : messageIndex + 1,
     );
   }
   const coreMessage = convertToModelMessages(messages);
@@ -64,8 +64,13 @@ export async function POST(request: NextRequest) {
         };
       }
       if (part.type === "finish") {
+        console.log("total tokens:", part.totalUsage.totalTokens);
+        console.log("output tokens:", part.totalUsage.outputTokens);
+        console.log("Input tokens:", part.totalUsage.inputTokens);
+        console.log("reasoning tokens:", part.totalUsage.reasoningTokens);
+
         return {
-          totalTokens: part.totalUsage.totalTokens,
+          totalTokens: part.totalUsage.outputTokens,
         };
       }
     },

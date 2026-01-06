@@ -32,7 +32,7 @@ export const ourFileRouter = {
       if (!success) {
         throw new UploadThingError("rate limited");
       }
-      return { userId: user.user?.id };
+      return { userId: userId };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       return { uploadedBy: metadata.userId };

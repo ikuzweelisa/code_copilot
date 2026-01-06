@@ -51,7 +51,7 @@ export default function Chat({
       messages: initialMessages,
       id: chatId,
       transport: new DefaultChatTransport({
-        prepareSendMessagesRequest: ({ id, messages, trigger, messageId}) => {
+        prepareSendMessagesRequest: ({ id, messages, trigger, messageId }) => {
           switch (trigger) {
             case "regenerate-message":
               return {
@@ -85,9 +85,11 @@ export default function Chat({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!input) return;
-    sendMessage({ text: input });
+    console.log(attachments);
+    sendMessage({ text: input, files: attachments });
     const isNew = !path.includes(chatId);
     setInput("");
+    setAttachments([]);
     if (isNew) {
       queryClient.setQueryData(["chats"], (prevChats: TChat[]): TChat[] => {
         return [

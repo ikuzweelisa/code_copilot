@@ -5,25 +5,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
+import { Attachment } from "~/lib/types";
 
 export default function ViewAttachment({
   attachment,
 }: {
-  attachment: Attachmen;
+  attachment: Attachment;
 }) {
   const isImage = attachment.contentType?.startsWith("image/");
 
   return (
-    <Card className="w-full max-w-xs rounded-md h-fit transition-all duration-300 ease-in-out hover:shadow-lg">
+    <Card className=" rounded-md h-fit transition-all duration-300 ease-in-out hover:shadow-lg">
       <CardContent className="p-1">
         {isImage ? (
-          <div className="relative aspect-square overflow-hidden rounded-sm">
+          <div className="rounded-sm">
             <Image
               src={attachment.url}
               alt={attachment.name || "Image attachment"}
-              layout="fill"
-              objectFit="cover"
-              className="transition-transform duration-300 ease-in-out hover:scale-105"
+              width={150}
+              height={80}
+              className="object-cover transition-transform duration-300 ease-in-out hover:scale-105"
             />
           </div>
         ) : (
@@ -38,30 +39,6 @@ export default function ViewAttachment({
           <p className="text-xs text-gray-500">
             {isImage ? "Image" : attachment.contentType}
           </p>
-        </div>
-        <div
-          className={`flex gap-2 transition-opacity duration-3 group-hover:opacity-100  opacity-0`}
-        >
-          <Button size="sm" variant="outline" asChild>
-            <Link
-              target="_blank"
-              href={attachment.url}
-              className="flex gap-1 items-center"
-            >
-              <Eye className="h-4 w-4 mr-1" />
-              View
-            </Link>
-          </Button>
-          <Button size="sm" variant="outline" asChild>
-            <a
-              download
-              href={`/api/file/download?url=${attachment.url}`}
-              className="flex items-center gap-1"
-            >
-              <Download className="h-4 w-4 mr-1" />
-              Download
-            </a>
-          </Button>
         </div>
       </CardFooter>
     </Card>

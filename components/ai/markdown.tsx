@@ -1,7 +1,7 @@
 "use client";
 
-import remarkGfm from "remark-gfm";
 import { Streamdown } from "streamdown";
+
 interface Props {
   isAnimating?: boolean;
   children: string;
@@ -16,7 +16,7 @@ export default function Markdown({ children, isAnimating }: Props) {
           },
         }}
         isAnimating={isAnimating}
-        remarkPlugins={[remarkGfm]}
+        // remarkPlugins={[remarkGfm]}
         className="max-w-none space-y-2"
       >
         {children}

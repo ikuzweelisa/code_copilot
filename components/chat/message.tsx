@@ -29,7 +29,7 @@ export default function Message({
     <div key={message.id} className={"flex flex-col w-full"}>
       {message.role === "user" ? (
         <UserMessage>
-          <div className="ml-1 flex-1 flex-col items-start gap-2 w-full">
+          <div className="ml-1 flex flex-col items-start gap-2 w-full">
             {files.map((part, index) => (
               <ViewAttachment key={index} attachment={part} />
             ))}

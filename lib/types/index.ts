@@ -1,6 +1,5 @@
-import { ChatRequestOptions,} from "ai";
+import { ChatRequestOptions } from "ai";
 import { Chat } from "../ai/types";
-
 
 type Status = "success" | "error";
 
@@ -20,6 +19,14 @@ export type ChatData = {
   id: string;
   createdAt: number;
   activeStreamId: string | null;
+};
+
+export type Attachment = {
+  contentType: string;
+  mediaType: string;
+  name: string;
+  type: string;
+  url: string;
 };
 
 export type RegenerateFunc = ({
