@@ -68,7 +68,7 @@
     "remark-gfm": "4.0.0",
     "resumable-stream": "^2.2.10",
     "server-only": "0.0.1",
-    "sonner": "1.7.0",
+    "sonner": "1.7.4",
     "streamdown": "^1.6.10",
     "tailwind-merge": "2.5.4",
     "tailwindcss-animate": "1.0.7",
