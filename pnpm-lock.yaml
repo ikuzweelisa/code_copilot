@@ -153,8 +153,8 @@ importers:
         specifier: 15.6.1
         version: 15.6.1(react@19.2.3)
       react-textarea-autosize:
-        specifier: 8.5.4
-        version: 8.5.4(@types/react@19.2.7)(react@19.2.3)
+        specifier: 8.5.9
+        version: 8.5.9(@types/react@19.2.7)(react@19.2.3)
       remark-gfm:
         specifier: 4.0.0
         version: 4.0.0
@@ -4356,11 +4356,11 @@ packages:
     peerDependencies:
       react: '>= 0.14.0'
 
-  react-textarea-autosize@8.5.4:
-    resolution: {integrity: sha512-eSSjVtRLcLfFwFcariT77t9hcbVJHQV76b51QjQGarQIHml2+gM2lms0n3XrhnDmgK5B+/Z7TmQk5OHNzqYm/A==}
+  react-textarea-autosize@8.5.9:
+    resolution: {integrity: sha512-U1DGlIQN5AwgjTyOEnI1oCcMuEr1pv1qOtklB2l4nyMGbHzWrI0eFsYK0zos2YWqAolJyG0IWJaqWmWj5ETh0A==}
     engines: {node: '>=10'}
     peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   react@19.2.3:
     resolution: {integrity: sha512-Ku/hhYbVjOQnXDZFv2+RibmLFGwFdeeKHFcOTlrt7xplBnya5OGn/hIRDsqDiSUcfORsDC7MPxwork8jBwsIWA==}
@@ -9292,7 +9292,7 @@ snapshots:
       react: 19.2.3
       refractor: 3.6.0
 
-  react-textarea-autosize@8.5.4(@types/react@19.2.7)(react@19.2.3):
+  react-textarea-autosize@8.5.9(@types/react@19.2.7)(react@19.2.3):
     dependencies:
       '@babel/runtime': 7.28.4
       react: 19.2.3
