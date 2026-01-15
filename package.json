@@ -44,7 +44,7 @@
     "ai": "^5.0.38",
     "babel-plugin-react-compiler": "19.0.0-beta-201e55d-20241215",
     "better-auth": "^1.4.9",
-    "class-variance-authority": "0.7.0",
+    "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "4.1.0",
