@@ -150,8 +150,8 @@ importers:
         specifier: 9.0.1
         version: 9.0.1(@types/react@19.2.7)(react@19.2.3)
       react-syntax-highlighter:
-        specifier: 15.6.1
-        version: 15.6.1(react@19.2.3)
+        specifier: 15.6.6
+        version: 15.6.6(react@19.2.3)
       react-textarea-autosize:
         specifier: 8.5.4
         version: 8.5.4(@types/react@19.2.7)(react@19.2.3)
@@ -4351,8 +4351,8 @@ packages:
       '@types/react':
         optional: true
 
-  react-syntax-highlighter@15.6.1:
-    resolution: {integrity: sha512-OqJ2/vL7lEeV5zTJyG7kmARppUjiB9h9udl4qHQjjgEos66z00Ia0OckwYfRxCSFrW8RJIBnsBwQsHZbVPspqg==}
+  react-syntax-highlighter@15.6.6:
+    resolution: {integrity: sha512-DgXrc+AZF47+HvAPEmn7Ua/1p10jNoVZVI/LoPiYdtY+OM+/nG5yefLHKJwdKqY1adMuHFbeyBaG9j64ML7vTw==}
     peerDependencies:
       react: '>= 0.14.0'
 
@@ -9282,7 +9282,7 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.2.7
 
-  react-syntax-highlighter@15.6.1(react@19.2.3):
+  react-syntax-highlighter@15.6.6(react@19.2.3):
     dependencies:
       '@babel/runtime': 7.28.4
       highlight.js: 10.7.3
