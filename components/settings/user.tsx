@@ -1,19 +1,16 @@
-import { checkout, useSession } from "~/lib/auth/auth-client";
+import Link from "next/link";
+
+import { useSession } from "~/lib/auth/auth-client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 
 import Customization from "./customization";
-import { Button } from "../ui/button";
 
 export default function Personalization() {
   const { data } = useSession();
-  const handleUpgrade = () => {
-    checkout({
-      products:["2503e827-61f6-49e5-9c7a-3e29b1f6c80a"],
-      slug:"pro"
-    });
-  };
+
   return (
     <div className="mx-10 mb-4 h-full">
       <section className="space-y-6">
@@ -28,7 +25,9 @@ export default function Personalization() {
           <div className="space-y-1">
             <p className="font-medium">{data?.user?.name}</p>
             <p className="text-sm text-muted-foreground">{data?.user?.email}</p>
-            <Button onClick={handleUpgrade}>Upgrade</Button>
+            <Button size={"sm"} asChild>
+              <Link href={"/pricing/upgrade"}>Upgrade</Link>
+            </Button>
           </div>
         </div>
       </section>

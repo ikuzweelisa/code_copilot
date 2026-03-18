@@ -18,8 +18,8 @@ export function LoginCard({
 }) {
   const lastMethod = getLastUsedLoginMethod();
   return (
-    <Card className="w-full max-w-4xl overflow-hidden border-none">
-      <CardContent className="flex min-h-145 flex-col p-0 md:flex-row">
+    // <Card className="w-full max-w-4xl overflow-hidden border-none">
+      <div className="flex min-h-145 flex-col p-0 md:flex-row">
         <div className="relative flex flex-1 flex-col p-8">
           <Button
             variant="ghost"
@@ -132,7 +132,6 @@ export function LoginCard({
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
   );
 }

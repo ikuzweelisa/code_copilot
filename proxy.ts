@@ -5,6 +5,7 @@ import { getSession } from "./lib/auth";
 export default async function proxy(request: NextRequest) {
   const { nextUrl } = request;
   const session = await getSession();
+  // console.log("session", session);
   const isLoggedIn = !!session;
   const isAuthRoute = nextUrl.pathname.startsWith("/auth");
   if (isAuthRoute) {

@@ -1,5 +1,7 @@
 import { CreditCard, Download } from "lucide-react";
 
+import { customer } from "~/lib/auth/auth-client";
+
 import { Button } from "../ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 
@@ -8,6 +10,7 @@ export default function Subscription() {
     { id: "INV-001", date: "Dec 12, 2025", amount: "$12.00", status: "Paid" },
     { id: "INV-002", date: "Nov 12, 2025", amount: "$12.00", status: "Paid" },
   ];
+  customer.state().then(s=>console.log(s))
   return (
     <div className="space-y-2">
       <section className="flex flex-col justify-between gap-5 md:flex-row md:items-center">
@@ -16,7 +19,11 @@ export default function Subscription() {
           <p className="text-sm text-muted-foreground">Subscribe to unlock all features</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <Button variant="outline" className="space-x-2 border-border bg-transparent">
+          <Button
+            onClick={() => customer.portal()}
+            variant="outline"
+            className="space-x-2 border-border bg-transparent"
+          >
             <CreditCard className="h-4 w-4" />
             <span>Upgrade Now</span>
           </Button>

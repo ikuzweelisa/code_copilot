@@ -94,14 +94,12 @@ export async function saveChatData({
     let title = existing?.title;
     if (!title && generateTitle) {
       title = await getChatTitle(messages ?? []);
-      
     }
     if (!userId) return null;
     await db
       .insert(chats)
       .values({
         id: id,
-        title: title,
         userId: userId,
         ...(messages ? { messages } : {}),
         ...(title ? { title } : {}),

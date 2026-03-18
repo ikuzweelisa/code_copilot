@@ -38,9 +38,7 @@ export async function POST(request: NextRequest) {
 
     const cookieStore = await cookies();
     const modelId = cookieStore.get("model.id")?.value;
-    console.log(modelId);
     const model = await getModelByIdOrDefault(modelId);
-    console.log(model);
     if (!model) return NextResponse.json("Unimplemented", { status: 405 });
 
     const userPreferences = await getUserPreferences(session?.user.id);
