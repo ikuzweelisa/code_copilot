@@ -29,7 +29,7 @@ export default function ThemeSettings() {
   useEffect(() => {
     if (mutation.isError) {
       setSelected(basePreset);
-      setThemePreset(basePreset, true);
+      setThemePreset(basePreset);
       toast.error("Could not save", {
         description: "Please try again",
       });
@@ -44,7 +44,7 @@ export default function ThemeSettings() {
     if (isDisabled) return;
     const next = resolveTheme(presetId);
     setSelected(next);
-    setThemePreset(next, true);
+    setThemePreset(next);
     mutation.mutate({
       name: data?.nickName ?? "",
       occupation: data?.occupation ?? "",

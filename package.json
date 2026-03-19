@@ -16,7 +16,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:pull": "drizzle-kit pull",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:seed": "tsx lib/drizzle/seed.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.15",
@@ -61,6 +62,7 @@
     "clsx": "2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "4.1.0",
+    "dotenv": "^17.3.1",
     "drizzle-orm": "0.45.1",
     "effect": "^3.19.14",
     "file-type": "^19.6.0",
@@ -106,6 +108,7 @@
     "postcss": "8.5.6",
     "prettier": "3.7.4",
     "tailwindcss": "4.1.18",
+    "tsx": "^4.19.2",
     "typescript": "5.9.3"
   }
 }

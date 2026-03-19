@@ -1,5 +1,4 @@
 export const DEFAULT_THEME_PRESET = "default" as const;
-export const THEME_PRESET_STORAGE_KEY = "themePreset";
 export const THEME_STYLE_ELEMENT_ID = "app-theme-preset";
 
 export type ThemePresetConfig = {
@@ -15,10 +14,7 @@ export const THEME_PRESETS_OPTIONS = [
 ] as const;
 
 export type ThemePresetId = (typeof THEME_PRESETS_OPTIONS)[number]["id"];
-export const THEME_PRESET_IDS = THEME_PRESETS_OPTIONS.map((preset) => preset.id) as [
-  ThemePresetId,
-  ...ThemePresetId[],
-];
+export const THEME_PRESET_IDS = THEME_PRESETS_OPTIONS.map((preset) => preset.id)
 
 const BASE_LIGHT: Record<string, string> = {
   background: "oklch(1 0 0)",
@@ -189,18 +185,11 @@ export function getThemeInitScript(defaultPresetId?: string | null) {
   const safeDefault = resolveTheme(defaultPresetId);
   const lines = [
     "(function () {",
-    `  const storageKey = ${JSON.stringify(THEME_PRESET_STORAGE_KEY)};`,
     `  const styleId = ${JSON.stringify(THEME_STYLE_ELEMENT_ID)};`,
     `  const presets = ${JSON.stringify(THEME_PRESETS)};`,
     `  const defaultPreset = ${JSON.stringify(safeDefault)};`,
     "  function resolve(id){ return id && presets[id] ? id : defaultPreset; }",
-    "  let presetId = defaultPreset;",
-    "  try {",
-    "    const stored = localStorage.getItem(storageKey);",
-    "    presetId = resolve(stored || defaultPreset);",
-    "  } catch (e) {",
-    "    presetId = defaultPreset;",
-    "  }",
+    "  const presetId = resolve(defaultPreset);",
     "  const preset = presets[presetId] || presets[defaultPreset];",
     "  const light = Object.entries(preset.light).map(function(entry){ return '--' + entry[0] + ': ' + entry[1] + ';'; }).join('');",
     "  const dark = Object.entries(preset.dark).map(function(entry){ return '--' + entry[0] + ': ' + entry[1] + ';'; }).join('');",
@@ -218,13 +207,7 @@ export function getThemeInitScript(defaultPresetId?: string | null) {
   return lines.join("\n");
 }
 
-export function setThemePreset(presetId: string, persist = true) {
+export function setThemePreset(presetId: string) {
   const resolved = resolveTheme(presetId);
   applyThemePresetToDocument(resolved);
-  if (!persist || typeof localStorage === "undefined") return;
-  try {
-    localStorage.setItem(THEME_PRESET_STORAGE_KEY, resolved);
-  } catch {
-    console.error("Failed to persist theme preset to localStorage");
-  }
 }

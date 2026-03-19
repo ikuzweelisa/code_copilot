@@ -2,6 +2,7 @@ import "./globals.css";
 
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import { Suspense } from "react";
 
 import Providers from "~/components/providers";
 import ThemeProvider from "~/components/providers/theme-provider";
@@ -33,7 +34,7 @@ const geist = Geist({
   weight: "400",
 });
 
-export default async function RootLayout({
+async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -62,5 +63,16 @@ export default async function RootLayout({
         </TRPCProvider>
       </body>
     </html>
+  );
+}
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <Suspense>
+      <Layout>{children}</Layout>
+    </Suspense>
   );
 }
