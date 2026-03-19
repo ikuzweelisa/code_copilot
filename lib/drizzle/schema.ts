@@ -24,12 +24,16 @@ const timestamps = {
     .$onUpdate(() => new Date().toISOString()),
 };
 
+export const plan = pgEnum("plan", ["FREE", "PRO", "PRO_PLUS"]);
+
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
+  plan: plan("plan").notNull().default("FREE"),
+  polarCustomerId: text("polar_customer_id").unique(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()

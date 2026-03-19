@@ -12,20 +12,20 @@ export default function page() {
 
       <div className="mx-auto  grid max-w-5xl gap-8 md:grid-cols-3">
         <PricingCard
-          slug="starter"
+          slug="FREE"
           price="$0"
           description="Perfect for individuals just getting started with ai"
           features={["1000 tokens/month", "Up to 20 uploads"]}
         />
         <PricingCard
-          slug="pro"
+          slug="PRO"
           isPopular
           price="$5"
           description="Perfect for individuals just getting started with ai"
           features={["1000 tokens/month", "Up to 20 uploads"]}
         />
         <PricingCard
-          slug="pro-plus"
+          slug="PRO_PLUS"
           price="$10"
           description="Perfect for individuals just getting started with ai"
           features={["1000 tokens/month", "Up to 20 uploads"]}

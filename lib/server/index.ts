@@ -12,12 +12,7 @@ import { getSession } from "../auth";
 import { Customization } from "../types/schema";
 
 export const getChats = cache(
-  async (
-    userId: string | undefined,
-    limit = 25,
-    offset = 0,
-    search?: string,
-  ) => {
+  async (userId: string | undefined, limit = 25, offset = 0, search?: string) => {
     if (!userId) return [];
     try {
       const chats = await db.query.chats.findMany({

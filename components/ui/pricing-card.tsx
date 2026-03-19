@@ -1,8 +1,10 @@
-"use client"
+"use client";
 import { Check } from "lucide-react";
 
+import { checkout, useSession } from "~/lib/auth/auth-client";
+import { Plan } from "~/lib/types";
+
 import { Button } from "./button";
-import {checkout} from "~/lib/auth/auth-client"
 export function PricingCard({
   slug,
   price,
@@ -11,19 +13,23 @@ export function PricingCard({
   description,
   isPopular = false,
 }: {
-  slug: string;
+  slug: Plan;
   price: string;
   period?: string;
   features: string[];
   description: string;
   isPopular?: boolean;
 }) {
-  const handleCheckOut=()=>{
+  const { data, isPending } = useSession();
+  //TODO:Create a pricing card skeleton
+  const isCurrent = data?.session?.plan === slug;
+  const handleCheckOut = () => {
     checkout({
-       slug
-    })
-  }
-  const title = slug.replaceAll("-"," ");
+      slug,
+    });
+  };
+  const title = slug === "PRO_PLUS" ? "pro +" : slug.toLowerCase();
+  if (isPending) return;
   return (
     <div
       className={`relative flex flex-col rounded-2xl border bg-card p-8 ${
@@ -56,11 +62,11 @@ export function PricingCard({
       <Button
         className={`w-full capitalize ${isPopular ? "" : "variant-outline"}`}
         variant={isPopular ? "default" : "outline"}
-         onClick={handleCheckOut}
+        disabled={isCurrent}
+        onClick={handleCheckOut}
       >
-        Choose {title}
+        {isCurrent ? "Current Plan" : `Choose ${title}`}
       </Button>
     </div>
   );
 }
-

@@ -24,7 +24,6 @@ import {
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-
 export default function AccountSecurity() {
   const {
     data: sessions,
@@ -42,13 +41,10 @@ export default function AccountSecurity() {
   return (
     <div className="space-y-4">
       <h2 className="text-lg">Account and Security</h2>
-      <p className="text-sm text-muted-foreground">
-        Manage your account security settings
-      </p>
+      <p className="text-sm text-muted-foreground">Manage your account security settings</p>
       <div className="flex items-center justify-between gap-2">
         <p className="text-sm text-muted-foreground">
-          Manage devices that have access to your account. Remove any devices
-          you don't recognize.
+          Manage devices that have access to your account. Remove any devices you don't recognize.
         </p>
         {sessions?.data && sessions?.data?.length > 1 && (
           <AlertDialog>
@@ -59,8 +55,7 @@ export default function AccountSecurity() {
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This will log out all other devices currently signed into your
-                  account.
+                  This will log out all other devices currently signed into your account.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -93,16 +88,13 @@ export default function AccountSecurity() {
       )}
       <Card className="border-destructive/50">
         <CardHeader>
-          <CardTitle className="text-xl text-destructive">
-            Danger Zone
-          </CardTitle>
+          <CardTitle className="text-xl text-destructive">Danger Zone</CardTitle>
         </CardHeader>
         <CardContent className="w-full space-y-4">
           <div className="space-y-2">
             <h3 className="font-medium">Delete Account</h3>
             <p className="text-sm text-muted-foreground">
-              Once you delete your account, there is no going back. Please be
-              certain.
+              Once you delete your account, there is no going back. Please be certain.
             </p>
           </div>
           <AlertDialog>
@@ -115,8 +107,8 @@ export default function AccountSecurity() {
               <AlertDialogHeader>
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  your account and remove your data from our servers.
+                  This action cannot be undone. This will permanently delete your account and remove
+                  your data from our servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -165,9 +157,7 @@ function Session({
           <p className="text-xs text-muted-foreground">
             Expires: {new Date(session.expiresAt).toLocaleString()}
           </p>
-          <p className="text-xs text-muted-foreground">
-            IP: {session.ipAddress}
-          </p>
+          <p className="text-xs text-muted-foreground">IP: {session.ipAddress}</p>
         </div>
         <div className="flex items-center gap-1">
           <AlertDialog>

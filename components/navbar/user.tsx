@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 import ModeToggle from "~/components/navbar/toggle-mode";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
@@ -22,26 +23,37 @@ interface Props {
 
 export default function UserButton({ session }: Props) {
   const router = useRouter();
+  const plan = session?.session?.plan ?? "FREE";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="p-0">
         <div className="flex cursor-pointer gap-2">
-          <Button variant="ghost" size="icon" className="relative ">
-            <Avatar className="h-10 w-10 rounded-full">
-              <AvatarImage src={session?.user?.image ?? ""} />
-              <AvatarFallback>
-                {session?.user?.name
-                  ?.split(" ")
-                  .map((n) => n[0])
-                  .join("")
-                  .toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
+          <Button variant="ghost" size="icon" className="relative">
+            <div className="relative">
+              <Avatar className="h-10 w-10 rounded-full">
+                <AvatarImage src={session?.user?.image ?? ""} />
+                <AvatarFallback>
+                  {session?.user?.name
+                    ?.split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <Badge
+                variant="secondary"
+                className="absolute -bottom-1 -right-1 h-4 px-1.5 text-[9px] uppercase shadow-sm"
+              >
+                {plan === "PRO_PLUS" ? "pro +" : plan.toLowerCase()}
+              </Badge>
+            </div>
           </Button>
 
-          <div className="flex w-full items-center gap-0  ">
-            <div className="flex w-full flex-col group-data-[collapsible=icon]:hidden">
-              <span className="text-base font-medium">{session?.user?.name}</span>
+          <div className="flex w-full items-center gap-0">
+            <div className="flex w-full flex-col gap-0.5 group-data-[collapsible=icon]:hidden">
+              <div className="flex items-center gap-2">
+                <span className="text-base font-medium">{session?.user?.name}</span>
+              </div>
               <span className="text-sm text-muted-foreground">{session?.user?.email}</span>
             </div>
 

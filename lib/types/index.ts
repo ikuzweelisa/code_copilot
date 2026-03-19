@@ -4,6 +4,7 @@ import { Chat } from "../ai/types";
 
 type Status = "success" | "error";
 
+export type Plan = "FREE" | "PRO" | "PRO_PLUS";
 export type AuthStatus = {
   status: Status;
   message: string;

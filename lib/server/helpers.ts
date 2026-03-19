@@ -3,15 +3,11 @@ import "server-only";
 import { google } from "@ai-sdk/google";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import {
-  UIMessage,
-  convertToModelMessages,
-  GeneratedFile,
-  generateText,
-  Output,
-} from "ai";
+import { UIMessage, convertToModelMessages, GeneratedFile, generateText, Output } from "ai";
 import { fileTypeFromBuffer } from "file-type";
 import { UTApi } from "uploadthing/server";
+
+import { db } from "../drizzle";
 
 export const utpapi = new UTApi({
   token: process.env.UPLOADTHING_TOKEN,
@@ -54,5 +50,10 @@ async function uploadImage(files: GeneratedFile[]) {
     };
   });
 }
-
-export { getChatTitle, getFileType, uploadImage };
+async function findUser(id: string) {
+  const user = await db.query.user.findFirst({
+    where: (c, { eq }) => eq(c.id, id),
+  });
+  return user;
+}
+export { getChatTitle, getFileType, uploadImage, findUser };
