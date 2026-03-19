@@ -8,6 +8,13 @@
       "when": 1773828997319,
       "tag": "0000_wise_paladin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1773945053568,
+      "tag": "0001_supreme_the_fury",
+      "breakpoints": true
     }
   ]
 }

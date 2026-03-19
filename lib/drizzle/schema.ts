@@ -49,6 +49,7 @@ export const userPreferences = pgTable("user_preferences", {
   occupation: text("occupation"),
   bio: text("bio"),
   customInstructions: text("custom_instructions"),
+  themePreset: text("theme_preset"),
   ...timestamps,
 });
 

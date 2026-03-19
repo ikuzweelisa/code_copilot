@@ -108,6 +108,7 @@ export const userPreferences = pgTable("user_preferences", {
 	occupation: text(),
 	bio: text(),
 	customInstructions: text("custom_instructions"),
+	themePreset: text("theme_preset"),
 	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
 	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().notNull(),
 }, (table) => [

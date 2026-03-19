@@ -1,12 +1,13 @@
 "use client";
 
-import { User,  Shield } from "lucide-react";
+import { Palette, Shield, User } from "lucide-react";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs";
 
 import { ScrollArea } from "../ui/scroll-area";
 
 import AccountSecurity from "./account";
+import ThemeSettings from "./theme";
 import Personalization from "./user";
 
 export function Settings() {
@@ -24,6 +25,10 @@ export function Settings() {
             <Shield className="h-4 w-4" />
             <span>Account and Security</span>
           </TabsTrigger>
+          <TabsTrigger value="theme" className="space-x-2">
+            <Palette className="h-4 w-4" />
+            <span>Theme</span>
+          </TabsTrigger>
         </TabsList>
         <ScrollArea className="h-[calc(100vh-220px)] w-full pr-4">
           <TabsContent value="personalization" className="space-y-12">
@@ -31,6 +36,9 @@ export function Settings() {
           </TabsContent>
           <TabsContent value="security" className="space-y-12">
             <AccountSecurity />
+          </TabsContent>
+          <TabsContent value="theme" className="space-y-12">
+            <ThemeSettings />
           </TabsContent>
         </ScrollArea>
       </Tabs>

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { THEME_PRESET_IDS } from "../theme-presets";
 const fileSchema = z
   .instanceof(File, { message: "File is Required" })
   .refine((file) => file.type.startsWith("application/pdf"), {
@@ -33,6 +34,7 @@ const customizationSchema = z.object({
   customInstructions: z.string().max(500, {
     message: "Custom instructions is too long",
   }),
+  themePreset: z.enum(THEME_PRESET_IDS).optional(),
 });
 type Customization = z.infer<typeof customizationSchema>;
 

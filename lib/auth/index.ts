@@ -66,19 +66,16 @@ const auth = betterAuth({
           onCustomerCreated: async (payload) => {
             const customerId = payload?.data.id;
             const email = payload.data?.email;
-            console.log("customer created",customerId,payload)
             if (!customerId || !email) return;
             await db.update(user).set({ polarCustomerId: customerId }).where(eq(user.email, email));
           },
           onCustomerUpdated: async (payload) => {
             const customerId = payload?.data.id;
             const email = payload.data?.email;
-            console.log("customer created",customerId,payload)
             if (!customerId || !email) return;
             await db.update(user).set({ polarCustomerId: customerId }).where(eq(user.email, email));
           },
           onSubscriptionActive: async (payload) => {
-            console.log("pay",payload)
             const plan = planFromProductId(payload.data.productId);
             if (!plan) return;
             const customerId = payload.data.customerId;
@@ -87,7 +84,6 @@ const auth = betterAuth({
             }
           },
           onSubscriptionUpdated: async (payload) => {
-            console.log("pay",payload)
             const plan = planFromProductId(payload?.data.productId);
             if (!plan) return;
             const customerId = payload.data.customerId;
@@ -97,7 +93,6 @@ const auth = betterAuth({
           },
           onSubscriptionRevoked: async (payload) => {
             const customerId = payload.data.customerId;
-            console.log("pay",payload)
             if (customerId) {
               await db
                 .update(user)

@@ -7,7 +7,10 @@ import Providers from "~/components/providers";
 import ThemeProvider from "~/components/providers/theme-provider";
 import { Toaster } from "~/components/ui/sonner";
 import { TooltipProvider } from "~/components/ui/tooltip";
+import { getSession } from "~/lib/auth";
 import { TRPCProvider } from "~/lib/backend/trpc/client";
+import { getUserPreferences } from "~/lib/server";
+import { getThemeInitScript } from "~/lib/theme-presets";
 import { cn } from "~/lib/utils";
 
 export const metadata: Metadata = {
@@ -30,13 +33,19 @@ const geist = Geist({
   weight: "400",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getSession();
+  const preferences = await getUserPreferences(session?.user?.id);
+  const themeScript = getThemeInitScript(preferences?.themePreset);
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} suppressHydrationWarning />
+      </head>
       <body className={cn("font-sans antialiased", geist.className)} suppressContentEditableWarning>
         <TRPCProvider>
           <ThemeProvider
@@ -45,7 +54,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Providers>
+            <Providers themePreset={preferences?.themePreset}>
               <Toaster />
               <TooltipProvider>{children}</TooltipProvider>
             </Providers>

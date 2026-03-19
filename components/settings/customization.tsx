@@ -40,7 +40,6 @@ export default function Customization() {
       });
     }
   }, [isSuccess, isError]);
-
   return (
     <section className="space-y-2">
       <div className="space-y-1">
@@ -164,7 +163,6 @@ export default function Customization() {
             );
           }}
         />
-
         <Button disabled={isPending}>
           {isPending ? "Saving..." : "Save Preferences"}
         </Button>
