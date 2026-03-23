@@ -127,7 +127,7 @@ export function DeleteDialog({ chat, onSuccess }: Props) {
       }
       onSuccess?.();
     }
-  }, [isSuccess]);
+  }, [isSuccess, pathname, chat.id, router, onSuccess]);
   useEffect(() => {
     if (isError) {
       toast.error("Failed to delete chat");
@@ -193,7 +193,7 @@ export function RenameDialog({ chat, onSuccess }: Props) {
     if (isSuccess) {
       onSuccess?.();
     }
-  }, [isSuccess]);
+  }, [isSuccess, onSuccess]);
   return (
     <Dialog>
       <DialogTrigger asChild>

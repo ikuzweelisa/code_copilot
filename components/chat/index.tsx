@@ -3,7 +3,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, FileUIPart } from "ai";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useOptimistic, useState } from "react";
+import React, { useOptimistic, useState } from "react";
 
 import EmptyScreen from "~/components/chat/empty-messages";
 import InputField from "~/components/chat/input";
@@ -11,7 +11,7 @@ import Messages from "~/components/chat/messages";
 import ScrollAnchor from "~/components/chat/scroll-anchor";
 import { Button } from "~/components/ui/button";
 import { ScrollArea } from "~/components/ui/scroll-area";
-import { type Chat as TChat, UIMessage } from "~/lib/ai/types";
+import { UIMessage } from "~/lib/ai/types";
 import { generateMessageId } from "~/lib/ai/utils";
 import { useSession } from "~/lib/auth/auth-client";
 import { useTRPC } from "~/lib/backend/trpc/client";
@@ -28,11 +28,7 @@ interface ChatProps {
   chatId: string;
   chatTitle?: string;
 }
-export default function Chat({
-  chatId,
-  initialMessages,
-  chatTitle,
-}: ChatProps) {
+export default function Chat({ chatId, initialMessages, chatTitle }: ChatProps) {
   const trpc = useTRPC();
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
   const [input, setInput] = useState("");
@@ -41,46 +37,46 @@ export default function Chat({
   const isLoggedIn = isPending ? true : !!data?.user;
   const path = usePathname();
   const [attachments, setAttachments] = useState<Array<FileUIPart>>([]);
-  const [optimisticAttachments, setOptimisticAttachments] =
-    useOptimistic<Array<FileUIPart & { isUploading?: boolean }>>(attachments);
+  const [optimisticAttachments, setOptimisticAttachments] = useOptimistic<
+    Array<FileUIPart & { isUploading?: boolean }>
+  >(attachments);
 
-  const { messages, status, error, sendMessage, regenerate, stop } =
-    useChat<UIMessage>({
-      messages: initialMessages,
-      id: chatId,
-      transport: new DefaultChatTransport({
-        prepareSendMessagesRequest: ({ id, messages, trigger, messageId }) => {
-          switch (trigger) {
-            case "regenerate-message":
-              return {
-                body: {
-                  trigger,
-                  id,
-                  messageId,
-                  search,
-                },
-              };
-            case "submit-message":
-              // avoid sending all messages
-              return {
-                body: {
-                  trigger: trigger,
-                  id,
-                  message: messages[messages.length - 1],
-                  messageId,
-                  search,
-                },
-              };
-          }
-        },
-      }),
-      resume: isLoggedIn,
-      generateId: generateMessageId,
-      onFinish: (data) => {
-        setChatId(chatId);
-        trpc.chat.getUserChats.invalidate();
+  const { messages, status, error, sendMessage, regenerate, stop } = useChat<UIMessage>({
+    messages: initialMessages,
+    id: chatId,
+    transport: new DefaultChatTransport({
+      prepareSendMessagesRequest: ({ id, messages, trigger, messageId }) => {
+        switch (trigger) {
+          case "regenerate-message":
+            return {
+              body: {
+                trigger,
+                id,
+                messageId,
+                search,
+              },
+            };
+          case "submit-message":
+            // avoid sending all messages
+            return {
+              body: {
+                trigger: trigger,
+                id,
+                message: messages[messages.length - 1],
+                messageId,
+                search,
+              },
+            };
+        }
       },
-    });
+    }),
+    resume: isLoggedIn,
+    generateId: generateMessageId,
+    onFinish: (_data) => {
+      setChatId(chatId);
+      trpc.chat.getUserChats.invalidate();
+    },
+  });
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -92,7 +88,7 @@ export default function Chat({
     if (isNew) {
       trpc.chat.getUserChats.setData(undefined, (prevChats) => {
         return [
-          ...(prevChats || []),
+          ...(prevChats ?? []),
           {
             id: chatId,
             title: "New Chat",
@@ -111,13 +107,8 @@ export default function Chat({
   }
   const loading = ["streaming", "submitted"].includes(status);
   const isEmpty = messages.length === 0;
-  const {
-    isAtBottom,
-    scrollToBottom,
-    messagesRef,
-    visibilityRef,
-    handleScroll,
-  } = useScroll<HTMLDivElement>();
+  const { isAtBottom, scrollToBottom, messagesRef, visibilityRef, handleScroll } =
+    useScroll<HTMLDivElement>();
   const isMobile = useIsMobile();
   return (
     <div className="flex h-screen w-full flex-col overflow-hidden">
@@ -152,10 +143,7 @@ export default function Chat({
         <EmptyScreen onSubmit={(msg) => sendMessage({ text: msg })} />
       ) : (
         <>
-          <ScrollArea
-            onScrollCapture={handleScroll}
-            className="mt-3 w-full grow overflow-y-auto"
-          >
+          <ScrollArea onScrollCapture={handleScroll} className="mt-3 w-full grow overflow-y-auto">
             <AutoScroller
               ref={visibilityRef}
               className="mx-auto flex min-h-full max-w-5xl flex-col px-40"
@@ -170,10 +158,7 @@ export default function Chat({
             </AutoScroller>
           </ScrollArea>
           <div className="z-10 mx-auto flex items-center justify-center pt-0 pb-2">
-            <ScrollAnchor
-              isAtBottom={isAtBottom}
-              scrollToBottom={scrollToBottom}
-            />
+            <ScrollAnchor isAtBottom={isAtBottom} scrollToBottom={scrollToBottom} />
           </div>
         </>
       )}

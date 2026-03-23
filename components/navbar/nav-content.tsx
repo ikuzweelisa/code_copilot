@@ -31,7 +31,6 @@ export default function NavContent() {
   const isPending = session.isPending;
   const isLoggedIn = !!session?.data;
 
-
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
     trpc.chat.getUserChats.useInfiniteQuery(
       {
@@ -48,8 +47,7 @@ export default function NavContent() {
   const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
     const target = e.target as HTMLDivElement;
     const offset = 50;
-    const isAtBottom =
-      target.scrollTop + target.clientHeight >= target.scrollHeight - offset;
+    const isAtBottom = target.scrollTop + target.clientHeight >= target.scrollHeight - offset;
 
     if (isAtBottom && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -78,17 +76,11 @@ export default function NavContent() {
         {isPending ? null : isLoggedIn ? (
           <ScrollArea className="grow" onScrollCapture={handleScroll}>
             <NavLinks />
-            <NavItems
-              chats={chats}
-              isLoading={isLoading}
-              isFetchingNextPage={isFetchingNextPage}
-            />
+            <NavItems chats={chats} isLoading={isLoading} isFetchingNextPage={isFetchingNextPage} />
           </ScrollArea>
         ) : (
           <SidebarMenu>
-            <SidebarMenuItem className="mt-5 text-center">
-              Login to save chats
-            </SidebarMenuItem>
+            <SidebarMenuItem className="mt-5 text-center">Login to save chats</SidebarMenuItem>
           </SidebarMenu>
         )}
       </SidebarContent>

@@ -2,10 +2,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 
-import {
-  applyThemePresetToDocument,
-  resolveTheme,
-} from "~/lib/theme-presets";
+import { applyThemePresetToDocument, resolveTheme } from "~/lib/theme-presets";
 
 export default function Providers({
   children,

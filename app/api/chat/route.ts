@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     const parsedBody = chatSchema.parse(body);
     const session = await getSession();
 
-    const { id, message, trigger, messageId, search } = parsedBody;
+    const { id, message, trigger, messageId, search: _search } = parsedBody;
     const validatedMessage = await safeValidateUIMessages<UIMessage>({
       messages: [message],
     });
@@ -115,9 +115,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error(err);
-    return NextResponse.json(
-      { message: "Something went wrong" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "Something went wrong" }, { status: 500 });
   }
 }

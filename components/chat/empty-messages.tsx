@@ -5,7 +5,7 @@ interface Props {
   onSubmit: (message: string) => void;
 }
 
-export default function EmptyScreen({ onSubmit }: Props) {
+export default function EmptyScreen({ onSubmit: _onSubmit }: Props) {
   const session = useSession();
   const name = session.data?.user?.name?.split(" ")[0];
   const [text] = useAnimatedText(`${name ? name + " !" : ""}  How can I Assist you ?`, {

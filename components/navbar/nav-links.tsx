@@ -1,4 +1,4 @@
-import { BookOpen, Plus, SquarePlus } from "lucide-react";
+import { BookOpen, Plus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

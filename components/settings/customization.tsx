@@ -26,8 +26,7 @@ export default function Customization() {
       mutate(value);
     },
   });
-  const { mutate, isPending, isError, isSuccess } =
-    trpc.user.saveUserPreferences.useMutation();
+  const { mutate, isPending, isError, isSuccess } = trpc.user.saveUserPreferences.useMutation();
   useEffect(() => {
     if (isSuccess) {
       toast.success("Success", {
@@ -56,16 +55,12 @@ export default function Customization() {
         }}
         className="space-y-2"
       >
-        <form.Field
-          name="name"
-          children={(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid;
+        <form.Field name="name">
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid} className="space-y-2">
-                <FieldLabel htmlFor={field.name}>
-                  What should we call you?
-                </FieldLabel>
+                <FieldLabel htmlFor={field.name}>What should we call you?</FieldLabel>
                 <div className="relative">
                   <Input
                     id="name"
@@ -82,12 +77,10 @@ export default function Customization() {
               </Field>
             );
           }}
-        />
-        <form.Field
-          name="occupation"
-          children={(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid;
+        </form.Field>
+        <form.Field name="occupation">
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid} className="space-y-2">
                 <FieldLabel htmlFor={field.name}>What do you do?</FieldLabel>
@@ -107,17 +100,13 @@ export default function Customization() {
               </Field>
             );
           }}
-        />
-        <form.Field
-          name="bio"
-          children={(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid;
+        </form.Field>
+        <form.Field name="bio">
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid} className="space-y-2">
-                <FieldLabel htmlFor={field.name}>
-                  Tell us about yourself
-                </FieldLabel>
+                <FieldLabel htmlFor={field.name}>Tell us about yourself</FieldLabel>
                 <div className="relative">
                   <Textarea
                     id="bio"
@@ -135,17 +124,13 @@ export default function Customization() {
               </Field>
             );
           }}
-        />
-        <form.Field
-          name="customInstructions"
-          children={(field) => {
-            const isInvalid =
-              field.state.meta.isTouched && !field.state.meta.isValid;
+        </form.Field>
+        <form.Field name="customInstructions">
+          {(field) => {
+            const isInvalid = field.state.meta.isTouched && !field.state.meta.isValid;
             return (
               <Field data-invalid={isInvalid} className="space-y-2">
-                <FieldLabel htmlFor={field.name}>
-                  Custom Instructions
-                </FieldLabel>
+                <FieldLabel htmlFor={field.name}>Custom Instructions</FieldLabel>
                 <div className="relative">
                   <Textarea
                     value={field.state.value}
@@ -162,10 +147,8 @@ export default function Customization() {
               </Field>
             );
           }}
-        />
-        <Button disabled={isPending}>
-          {isPending ? "Saving..." : "Save Preferences"}
-        </Button>
+        </form.Field>
+        <Button disabled={isPending}>{isPending ? "Saving..." : "Save Preferences"}</Button>
       </form>
     </section>
   );

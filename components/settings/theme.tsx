@@ -38,7 +38,7 @@ export default function ThemeSettings() {
 
   const options = useMemo(() => THEME_PRESETS_OPTIONS, []);
   const fallbackColor = THEME_PRESETS.default.light.primary;
-  const isDisabled = mutation.isPending ;
+  const isDisabled = mutation.isPending;
 
   const handleSelect = (presetId: ThemePresetId) => {
     if (isDisabled) return;
@@ -58,13 +58,10 @@ export default function ThemeSettings() {
     <section className="space-y-6">
       <div className="space-y-1">
         <h2 className="text-xl font-semibold">Theme</h2>
-        <p className="text-sm text-muted-foreground">
-          Choose a theme that feels right for you.
-        </p>
+        <p className="text-sm text-muted-foreground">Choose a theme that feels right for you.</p>
       </div>
 
       <Card className="border-none">
-      
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
             {options.map((option) => {

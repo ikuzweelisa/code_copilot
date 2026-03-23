@@ -41,7 +41,7 @@ function InputField({
 }: InputFieldProps) {
   const inputRef = useRef<HTMLTextAreaElement | null>(null);
   const attachementRef = useRef<HTMLInputElement | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [_isPending, startTransition] = useTransition();
 
   function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
@@ -55,7 +55,7 @@ function InputField({
   }, []);
 
   const { startUpload } = useUploadThing("imageUploader", {
-    onUploadError: (error) => {
+    onUploadError: (_error) => {
       toast.error("Error", {
         description: "Attachment upload failed",
         icon: <TriangleAlert />,

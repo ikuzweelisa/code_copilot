@@ -110,12 +110,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -195,12 +191,8 @@
           "name": "chats_userId_user_id_fk",
           "tableFrom": "chats",
           "tableTo": "user",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -366,12 +358,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -381,9 +369,7 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -461,16 +447,12 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         },
         "user_polar_customer_id_unique": {
           "name": "user_polar_customer_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "polar_customer_id"
-          ]
+          "columns": ["polar_customer_id"]
         }
       },
       "policies": {},
@@ -532,12 +514,8 @@
           "name": "user_preferences_user_id_user_id_fk",
           "tableFrom": "user_preferences",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -620,11 +598,7 @@
     "public.plan": {
       "name": "plan",
       "schema": "public",
-      "values": [
-        "FREE",
-        "PRO",
-        "PRO_PLUS"
-      ]
+      "values": ["FREE", "PRO", "PRO_PLUS"]
     },
     "public.provider": {
       "name": "provider",
@@ -643,11 +617,7 @@
     "public.status": {
       "name": "status",
       "schema": "public",
-      "values": [
-        "DEFAULT",
-        "PINNED",
-        "ARCHIVED"
-      ]
+      "values": ["DEFAULT", "PINNED", "ARCHIVED"]
     },
     "public.type": {
       "name": "type",

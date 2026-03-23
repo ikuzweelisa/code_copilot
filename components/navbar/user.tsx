@@ -42,7 +42,7 @@ export default function UserButton({ session }: Props) {
               </Avatar>
               <Badge
                 variant="secondary"
-                className="absolute -bottom-1 -right-1 h-4 px-1.5 text-[9px] uppercase shadow-sm"
+                className="absolute -right-1 -bottom-1 h-4 px-1.5 text-[9px] uppercase shadow-sm"
               >
                 {plan === "PRO_PLUS" ? "pro +" : plan.toLowerCase()}
               </Badge>

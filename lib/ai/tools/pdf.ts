@@ -5,7 +5,7 @@ import { z } from "zod";
 export const fetchPdfTool = tool({
   description: "Fetch a PDF",
   inputSchema: z.object({
-    url: z.string().url(),
+    url: z.url(),
   }),
   async execute({ url }) {
     const response = await fetch(url);

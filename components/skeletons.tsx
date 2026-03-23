@@ -5,7 +5,6 @@ import { Card, CardContent, CardFooter, CardTitle } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import { Skeleton } from "~/components/ui/skeleton";
 
-import SearchInput from "./search";
 import { SidebarMenuSkeleton } from "./ui/sidebar";
 export function ChatsSkeleton() {
   return (

@@ -1,7 +1,7 @@
 import { google } from "@ai-sdk/google";
 import { generateText } from "ai";
 
-const { text, sources, providerMetadata } = await generateText({
+const { text, sources } = await generateText({
   model: "google/gemini-2.5-flash",
   tools: {
     google_search: google.tools.googleSearch({}),

@@ -19,19 +19,18 @@ export const generateImageTool = tool({
     console.log("getting here", result);
     const files = result.files;
     const res = await uploadImage(files);
-    if (!res) {
-      throw new Error("Image upload failed");
-    }
     console.log("res", res);
     return res;
   },
   toModelOutput: ({ output }) => ({
     type: "content",
-    value: output.map((f) => ({
-      type: "image-data",
-      data: f.url,
-      mediaType: f.mediaType,
-    })),
+    value: output
+      .filter((f) => f !== null)
+      .map((f) => ({
+        type: "image-data",
+        data: f.url,
+        mediaType: f.mediaType ?? "",
+      })),
   }),
 });
 

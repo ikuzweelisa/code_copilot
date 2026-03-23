@@ -14,7 +14,7 @@ export const THEME_PRESETS_OPTIONS = [
 ] as const;
 
 export type ThemePresetId = (typeof THEME_PRESETS_OPTIONS)[number]["id"];
-export const THEME_PRESET_IDS = THEME_PRESETS_OPTIONS.map((preset) => preset.id)
+export const THEME_PRESET_IDS = THEME_PRESETS_OPTIONS.map((preset) => preset.id);
 
 const BASE_LIGHT: Record<string, string> = {
   background: "oklch(1 0 0)",
@@ -134,18 +134,8 @@ export const THEME_PRESETS: Record<ThemePresetId, ThemePresetConfig> = {
     ),
   },
   black: {
-    light: withPrimary(
-      BASE_LIGHT,
-      "oklch(0.2 0 0)",
-      "oklch(0.98 0 0)",
-      "oklch(0.2 0 0)",
-    ),
-    dark: withPrimary(
-      BASE_DARK,
-      "oklch(0.98 0 0)",
-      "oklch(0.2 0 0)",
-      "oklch(0.98 0 0)",
-    ),
+    light: withPrimary(BASE_LIGHT, "oklch(0.2 0 0)", "oklch(0.98 0 0)", "oklch(0.2 0 0)"),
+    dark: withPrimary(BASE_DARK, "oklch(0.98 0 0)", "oklch(0.2 0 0)", "oklch(0.98 0 0)"),
   },
 };
 
@@ -169,9 +159,7 @@ export function buildThemeCssText(presetId: string): string {
 export function applyThemePresetToDocument(presetId: string) {
   if (typeof document === "undefined") return;
   const cssText = buildThemeCssText(presetId);
-  let styleEl = document.getElementById(THEME_STYLE_ELEMENT_ID) as
-    | HTMLStyleElement
-    | null;
+  let styleEl = document.getElementById(THEME_STYLE_ELEMENT_ID) as HTMLStyleElement | null;
   if (!styleEl) {
     styleEl = document.createElement("style");
     styleEl.id = THEME_STYLE_ELEMENT_ID;

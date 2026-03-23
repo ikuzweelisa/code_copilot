@@ -8,7 +8,7 @@ const f = createUploadthing({
     throw new UploadThingError(error.message);
   },
 });
-const auth = async (req: Request) => {
+const auth = async (_req: Request) => {
   const session = await getSession();
   return session;
 };
@@ -34,7 +34,7 @@ export const ourFileRouter = {
       }
       return { userId: userId };
     })
-    .onUploadComplete(async ({ metadata, file }) => {
+    .onUploadComplete(async ({ metadata, file: _file }) => {
       return { uploadedBy: metadata.userId };
     }),
 } satisfies FileRouter;

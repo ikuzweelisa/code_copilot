@@ -3,9 +3,10 @@ import "server-only";
 import { eq } from "drizzle-orm";
 import { cacheTag } from "next/cache";
 
+import { UIMessage } from "../ai/types";
 import { db, Model } from "../drizzle";
 import { model as modelSchema } from "../drizzle/schema";
-import { UIMessage } from "../ai/types";
+
 import { getChatById } from ".";
 
 export async function getModels() {
@@ -56,9 +57,7 @@ export async function getUpdatedChatMessages({
     }
     messages = messages.slice(
       0,
-      messages[messageIndex].role === "assistant"
-        ? messageIndex
-        : messageIndex + 1,
+      messages[messageIndex].role === "assistant" ? messageIndex : messageIndex + 1,
     );
   }
   return messages;

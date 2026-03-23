@@ -66,7 +66,16 @@ export function AssistantMessage({
                     </div>
                   );
                 case "tool-web_search":
-                  return <SourcesView key={index} sources={(msg as any)?.output?.results} />;
+                  if (msg.state !== "output-available") return null;
+                  return (
+                    <SourcesView
+                      key={index}
+                      sources={msg.output.results.map((result) => ({
+                        id: result.url,
+                        title: result.title,
+                      }))}
+                    />
+                  );
 
                 case "tool-generate_image":
                   return <ImageGenerationView key={index} invocation={msg} />;

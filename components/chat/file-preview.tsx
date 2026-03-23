@@ -1,5 +1,5 @@
 import type { FileUIPart } from "ai";
-import { DownloadIcon, FileIcon, FullscreenIcon, MinimizeIcon, XIcon } from "lucide-react";
+import { DownloadIcon, FullscreenIcon, MinimizeIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";

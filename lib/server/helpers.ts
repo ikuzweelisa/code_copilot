@@ -45,8 +45,8 @@ async function uploadImage(files: GeneratedFile[]) {
       return null;
     }
     return {
-      url: res.data?.ufsUrl,
-      mediaType: res.data?.type,
+      url: res.data.ufsUrl,
+      mediaType: res.data.type,
     };
   });
 }

@@ -10,7 +10,7 @@ const agent = new ToolLoopAgent({
   },
 });
 
-const { text, sources, toolResults } = await agent.generate({
+const { sources, toolResults } = await agent.generate({
   prompt: "What happened in San Francisco last week?",
 });
 

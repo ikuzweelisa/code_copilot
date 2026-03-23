@@ -35,21 +35,17 @@ export const chatRouter = router({
         nextCursor,
       };
     }),
-  getChatById: protectedProcedure
-    .input(z.object({ id: z.string() }))
-    .query(async ({ input }) => {
-      const { id } = input;
-      const chat = await getChatById(id);
-      return chat;
-    }),
+  getChatById: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ input }) => {
+    const { id } = input;
+    const chat = await getChatById(id);
+    return chat;
+  }),
   deleteChat: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const auth = ctx.auth;
       const { id } = input;
-      await db
-        .delete(chats)
-        .where(and(eq(chats.id, id), eq(chats.userId, auth.user.id)));
+      await db.delete(chats).where(and(eq(chats.id, id), eq(chats.userId, auth.user.id)));
     }),
   updateTitle: protectedProcedure
     .input(z.object({ id: z.string(), title: z.string() }))
