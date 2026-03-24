@@ -7,6 +7,7 @@ import { UIMessage } from "~/lib/ai/types";
 import { RegenerateFunc } from "~/lib/types";
 import { cn } from "~/lib/utils";
 
+import DocumentGenerationView from "../chat/document-gen-view";
 import ImageGenerationView from "../chat/image-gen-view";
 import SourcesView from "../chat/source-view";
 
@@ -79,6 +80,8 @@ export function AssistantMessage({
 
                 case "tool-generate_image":
                   return <ImageGenerationView key={index} invocation={msg} />;
+                case "tool-generate_document":
+                  return <DocumentGenerationView key={index} invocation={msg} />;
               }
             })
           : children}

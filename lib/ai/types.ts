@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { chatStatus } from "../constants/chat";
 
+import { generateDocumentTool } from "./tools/generate-document";
 import { generateImageTool } from "./tools/generate-image";
 
 export const messageMetadataSchema = z.object({
@@ -27,6 +28,10 @@ export type ChatTools = {
   generate_image: {
     input: InferUITool<typeof generateImageTool>["input"];
     output: InferUITool<typeof generateImageTool>["output"];
+  };
+  generate_document: {
+    input: InferUITool<typeof generateDocumentTool>["input"];
+    output: InferUITool<typeof generateDocumentTool>["output"];
   };
 };
 

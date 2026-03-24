@@ -13,6 +13,7 @@ import { createResumableStreamContext } from "resumable-stream/ioredis";
 
 import { modelProvider } from "~/lib/ai/models";
 import { systemPrompt } from "~/lib/ai/prompt";
+import { generateDocumentTool } from "~/lib/ai/tools/generate-document";
 import { generateImageTool } from "~/lib/ai/tools/generate-image";
 import { UIMessage } from "~/lib/ai/types";
 import { generateMessageId } from "~/lib/ai/utils";
@@ -62,15 +63,17 @@ export async function POST(request: NextRequest) {
         tools: [
           { name: "web_search", description: "Search the web for information" },
           { name: "generate_image", description: "Generate an image" },
+          { name: "generate_document", description: "Create an editable document" },
         ],
         userPreferences,
       }),
       tools: {
         web_search: webSearch({ numResults: 5 }),
         generate_image: generateImageTool,
+        generate_document: generateDocumentTool,
       },
       stopWhen: stepCountIs(10),
-      activeTools: ["web_search", "generate_image"],
+      activeTools: ["web_search", "generate_image", "generate_document"],
     });
 
     return result.toUIMessageStreamResponse({
