@@ -20,7 +20,6 @@ export async function fetcher(url: string) {
   const res = await fetch(url);
   return await res.json();
 }
-
 export function groupChats(chats: Chat[]): GroupedChats {
   return chats.reduce(
     (acc, chat) => {

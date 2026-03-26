@@ -35,7 +35,11 @@ export default function Message({ message, regenerate, loading }: MessageProps) 
           </div>
         </UserMessage>
       ) : (
-        <AssistantMessage isLoading={loading} regenerate={regenerate} message={message} />
+        <AssistantMessage
+          isLoading={loading}
+          regenerate={regenerate}
+          message={message}
+        />
       )}
     </div>
   );

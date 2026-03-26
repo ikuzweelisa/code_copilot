@@ -81,7 +81,12 @@ export function AssistantMessage({
                 case "tool-generate_image":
                   return <ImageGenerationView key={index} invocation={msg} />;
                 case "tool-generate_document":
-                  return <DocumentGenerationView key={index} invocation={msg} />;
+                  return (
+                    <DocumentGenerationView
+                      key={index}
+                      invocation={msg}
+                    />
+                  );
               }
             })
           : children}

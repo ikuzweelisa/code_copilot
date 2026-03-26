@@ -16,7 +16,13 @@ interface MessageProps {
   ref: React.Ref<HTMLDivElement>;
 }
 
-export default function Messages({ messages, error, isLoading, regenerate, ref }: MessageProps) {
+export default function Messages({
+  messages,
+  error,
+  isLoading,
+  regenerate,
+  ref,
+}: MessageProps) {
   return (
     <div ref={ref} className={"flex w-full max-w-full flex-col gap-4 p-1 sm:p-5 md:p-4 lg:p-1"}>
       {messages.map((message) => (

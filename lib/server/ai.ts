@@ -5,7 +5,7 @@ import { cacheTag } from "next/cache";
 
 import { UIMessage } from "../ai/types";
 import { db, Model } from "../drizzle";
-import { model as modelSchema } from "../drizzle/schema";
+import { chatDocument, model as modelSchema } from "../drizzle/schema";
 
 import { getChatById } from ".";
 

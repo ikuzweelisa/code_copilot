@@ -7,6 +7,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uuid,
   varchar,
 } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
@@ -133,6 +134,12 @@ export const chats = pgTable(
     },
   ],
 );
+export const chatDocument = pgTable("chatDocument", {
+  id: uuid("id").defaultRandom(),
+  title: varchar("title").notNull(),
+  content: text("content").notNull(),
+  ...timestamps,
+});
 // for ai inference
 export const provider = pgEnum("provider", providers);
 // for icons
@@ -179,7 +186,6 @@ export const chatRelations = relations(chats, ({ one, many }) => ({
   }),
   branchedChats: many(chats, { relationName: "parentChat" }),
 }));
-
 export const sessionRelations = relations(session, ({ one }) => ({
   user: one(user, {
     fields: [session.userId],

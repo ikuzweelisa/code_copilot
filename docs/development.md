@@ -38,7 +38,6 @@ pnpm run start
 | ---------------------- | ------------------------------ |
 | `pnpm run lint`        | Lint the codebase              |
 | `pnpm run typecheck`   | Run TypeScript compiler checks |
-| `pnpm run db:push`     | Push database schema changes   |
 | `pnpm run db:generate` | Generate migration files       |
 | `pnpm run db:migrate`  | Apply migrations               |
 | `pnpm run db:studio`   | Open Drizzle Studio            |

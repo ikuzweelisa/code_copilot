@@ -15,6 +15,13 @@
       "when": 1773945053568,
       "tag": "0001_supreme_the_fury",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1774393348650,
+      "tag": "0002_medical_bug",
+      "breakpoints": true
     }
   ]
 }

@@ -63,7 +63,7 @@ export default function UserSkelton() {
 }
 
 export function ModelSelectorSkelton() {
-  return <Skeleton className="h-10 w-30" />;
+  return <Skeleton className="h-10 w-35" />;
 }
 
 export function ImageSkeleton() {

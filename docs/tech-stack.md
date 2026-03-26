@@ -8,7 +8,7 @@
 
 ## Backend & Data
 
-- **Auth:** [NextAuth.js](https://next-auth.js.org/) (Google & Github providers)
+- **Auth:** [BetterAuth](https://better-auth.com/) (Google & Github providers)
 - **Database:** PostgreSQL
 - **Backend** [TRPC](https://trpc.io/)
 - **ORM:** [Drizzle ORM](https://orm.drizzle.team/)

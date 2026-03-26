@@ -3,7 +3,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, FileUIPart } from "ai";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useOptimistic, useState } from "react";
+import React, { useOptimistic, useState, useEffect } from "react";
 
 import EmptyScreen from "~/components/chat/empty-messages";
 import InputField from "~/components/chat/input";
@@ -27,14 +27,28 @@ interface ChatProps {
   initialMessages: UIMessage[];
   chatId: string;
   chatTitle?: string;
+  className?: string;
+  initialInput?: string;
 }
-export default function Chat({ chatId, initialMessages, chatTitle }: ChatProps) {
+export default function Chat({
+  chatId,
+  initialMessages,
+  chatTitle,
+  className,
+  initialInput,
+}: ChatProps) {
   const trpc = useTRPC();
   const [_new, setChatId] = useLocalStorage<string | null>("chatId", null);
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    if (initialInput) {
+      setInput(initialInput);
+    }
+  }, [initialInput]);
   const { data, isPending } = useSession();
   const [search, setSearch] = useState(false);
-  const isLoggedIn = isPending ? true : !!data?.user;
+  const isLoggedIn = isPending ? false : !!data?.user;
   const path = usePathname();
   const [attachments, setAttachments] = useState<Array<FileUIPart>>([]);
   const [optimisticAttachments, setOptimisticAttachments] = useOptimistic<
@@ -57,7 +71,6 @@ export default function Chat({ chatId, initialMessages, chatTitle }: ChatProps) 
               },
             };
           case "submit-message":
-            // avoid sending all messages
             return {
               body: {
                 trigger: trigger,
@@ -111,7 +124,7 @@ export default function Chat({ chatId, initialMessages, chatTitle }: ChatProps) 
     useScroll<HTMLDivElement>();
   const isMobile = useIsMobile();
   return (
-    <div className="flex h-screen w-full flex-col overflow-hidden">
+    <div className={cn("flex h-full w-full flex-col overflow-hidden", className)}>
       {!isLoggedIn ? (
         <div className="absolute top-1 right-1 z-10 mx-3 mt-3 mb-3 flex h-10 w-fit justify-end gap-2 pl-0">
           <LoginForm>
@@ -179,17 +192,6 @@ export default function Chat({ chatId, initialMessages, chatTitle }: ChatProps) 
             />
           </div>
         </div>
-        {/* <div className="flex container justify-center items-center  bottom-1 w-fit">
-          <div className=" flex justify-center absolute bottom-1  right-1/3">
-            <Link
-              href={"https://github.com/Ikuzweshema/_Chat"}
-              target="_blank"
-              className="text-sm flex gap-1 items-center text-muted-foreground"
-            >
-              <Github className="h-4 w-4" /> view Project On Github
-            </Link>
-          </div>
-        </div> */}
       </div>
     </div>
   );
