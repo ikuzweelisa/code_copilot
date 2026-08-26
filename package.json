@@ -64,7 +64,7 @@
     "react-intersection-observer": "9.16.0",
     "react-markdown": "9.0.1",
     "react-syntax-highlighter": "15.6.1",
-    "react-textarea-autosize": "8.5.4",
+    "react-textarea-autosize": "8.5.9",
     "remark-gfm": "4.0.0",
     "resumable-stream": "^2.2.10",
     "server-only": "0.0.1",
