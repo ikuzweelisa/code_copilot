@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@ai-sdk/google':
         specifier: ^2.0.13
-        version: 2.0.52(zod@4.3.5)
+        version: 2.0.111(zod@4.3.5)
       '@ai-sdk/groq':
         specifier: ^2.0.17
         version: 2.0.34(zod@4.3.5)
@@ -243,8 +243,8 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/google@2.0.52':
-    resolution: {integrity: sha512-2XUnGi3f7TV4ujoAhA+Fg3idUoG/+Y2xjCRg70a1/m0DH1KSQqYaCboJ1C19y6ZHGdf5KNT20eJdswP6TvrY2g==}
+  '@ai-sdk/google@2.0.111':
+    resolution: {integrity: sha512-ePdR5qTsVUdd+BpKICMQmkoF6f/oMFtgnXbUnmrd+evsSLfp+IGkkrM528Wz2h/5dEvKZrJYskFVprM3x9n+BQ==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -263,6 +263,12 @@ packages:
 
   '@ai-sdk/provider-utils@3.0.45':
     resolution: {integrity: sha512-AfVd7CNBns6agdc9SWTr6kh8By45X48eenoyyYRUjX4we5rqoaowcff1L2U8sbYctxunKryiyBeNv005W60VDw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider-utils@3.0.46':
+    resolution: {integrity: sha512-rR+mVZfYcED05F3f7eTDVg+8SGHHLxDn5Xcp71IpQkQVDFy7brgKBC8pbbi347vT4GJz3kXMSEuf6PXpJC1NFg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -5049,10 +5055,10 @@ snapshots:
       '@vercel/oidc': 3.0.5
       zod: 4.3.5
 
-  '@ai-sdk/google@2.0.52(zod@4.3.5)':
+  '@ai-sdk/google@2.0.111(zod@4.3.5)':
     dependencies:
-      '@ai-sdk/provider': 2.0.1
-      '@ai-sdk/provider-utils': 3.0.20(zod@4.3.5)
+      '@ai-sdk/provider': 2.0.5
+      '@ai-sdk/provider-utils': 3.0.46(zod@4.3.5)
       zod: 4.3.5
 
   '@ai-sdk/groq@2.0.34(zod@4.3.5)':
@@ -5069,6 +5075,14 @@ snapshots:
       zod: 4.3.5
 
   '@ai-sdk/provider-utils@3.0.45(zod@4.3.5)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.5
+      '@standard-schema/spec': 1.1.0
+      eventsource-parser: 3.0.6
+      undici: 5.29.0
+      zod: 4.3.5
+
+  '@ai-sdk/provider-utils@3.0.46(zod@4.3.5)':
     dependencies:
       '@ai-sdk/provider': 2.0.5
       '@standard-schema/spec': 1.1.0
