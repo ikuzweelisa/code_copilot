@@ -19,7 +19,7 @@ importers:
         version: 2.0.119(react@19.2.3)(zod@4.3.5)
       '@openrouter/ai-sdk-provider':
         specifier: 1.5.4
-        version: 1.5.4(ai@5.0.286(zod@4.3.5))(zod@4.3.5)
+        version: 1.5.4(ai@5.0.294(zod@4.3.5))(zod@4.3.5)
       '@radix-ui/react-alert-dialog':
         specifier: 1.1.4
         version: 1.1.4(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -85,7 +85,7 @@ importers:
         version: 1.37.0
       ai:
         specifier: ^5.0.38
-        version: 5.0.286(zod@4.3.5)
+        version: 5.0.294(zod@4.3.5)
       babel-plugin-react-compiler:
         specifier: 19.0.0-beta-201e55d-20241215
         version: 19.0.0-beta-201e55d-20241215
@@ -231,8 +231,8 @@ importers:
 
 packages:
 
-  '@ai-sdk/gateway@2.0.177':
-    resolution: {integrity: sha512-obOOqHt8c4EU72NBOaMvaAogUwzBC/C7kUq2AeGgxaxspLRlGkHGps7awuQpFmKc9fcBNX17zK3DkNi0Kt3+yw==}
+  '@ai-sdk/gateway@2.0.185':
+    resolution: {integrity: sha512-0tP8ZoPEjxy72935IQfO84EBzci7Ei+/UylakMsksbR2Wuq+/zkLX17fOPj8Q8AZy+otoymEUeWBKvuV1Ym+Cw==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -261,8 +261,8 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/provider-utils@3.0.45':
-    resolution: {integrity: sha512-AfVd7CNBns6agdc9SWTr6kh8By45X48eenoyyYRUjX4we5rqoaowcff1L2U8sbYctxunKryiyBeNv005W60VDw==}
+  '@ai-sdk/provider-utils@3.0.48':
+    resolution: {integrity: sha512-pibs201e7/4fTHRUF/rUa5NKcbxbefRQl0Ujvd/EqLo6eA+IMzeBCrI2vVpusTcatSILKiZIjXX5gVXMPOoYUg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -2419,8 +2419,8 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  ai@5.0.286:
-    resolution: {integrity: sha512-55eVI5kmUm1kGxAmc++hxMbk12H9Y7ZkVg6bQAscf+uXwIh1BkiVfYhVKnOc3OyrhMYfg00WIKcOB9VjkCUvpA==}
+  ai@5.0.294:
+    resolution: {integrity: sha512-qZyXINojJR7Ba6gwV2pK/b05R1kAoEEyzgW0zoZCQA79jIfi2Qgh3Q9wmkNRcJlk8ezel1Avp9Mk/BEEkeyl+g==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -3236,6 +3236,10 @@ packages:
 
   eventsource-parser@3.0.6:
     resolution: {integrity: sha512-Vo1ab+QXPzZ4tCa8SwIHJFaSzy4R6SHf7BY79rFBDf0idraZWAkYrDjDj8uWaSm3S2TK+hJ7/t1CEmZ7jXw+pg==}
+    engines: {node: '>=18.0.0'}
+
+  eventsource-parser@3.1.1:
+    resolution: {integrity: sha512-EKN1vKAMcZ8MlYMpaNuxN6R9yakzH6uajHcHVTqWJzvu5pWw9DyhbP35HH8MVBQ+dZjAfDxk+A8NiR9KWaXiyQ==}
     engines: {node: '>=18.0.0'}
 
   extend@3.0.2:
@@ -5035,10 +5039,10 @@ packages:
 
 snapshots:
 
-  '@ai-sdk/gateway@2.0.177(zod@4.3.5)':
+  '@ai-sdk/gateway@2.0.185(zod@4.3.5)':
     dependencies:
       '@ai-sdk/provider': 2.0.5
-      '@ai-sdk/provider-utils': 3.0.45(zod@4.3.5)
+      '@ai-sdk/provider-utils': 3.0.48(zod@4.3.5)
       '@vercel/oidc': 3.1.0
       zod: 4.3.5
 
@@ -5068,11 +5072,11 @@ snapshots:
       eventsource-parser: 3.0.6
       zod: 4.3.5
 
-  '@ai-sdk/provider-utils@3.0.45(zod@4.3.5)':
+  '@ai-sdk/provider-utils@3.0.48(zod@4.3.5)':
     dependencies:
       '@ai-sdk/provider': 2.0.5
       '@standard-schema/spec': 1.1.0
-      eventsource-parser: 3.0.6
+      eventsource-parser: 3.1.1
       undici: 5.29.0
       zod: 4.3.5
 
@@ -5613,10 +5617,10 @@ snapshots:
 
   '@nolyfill/is-core-module@1.0.39': {}
 
-  '@openrouter/ai-sdk-provider@1.5.4(ai@5.0.286(zod@4.3.5))(zod@4.3.5)':
+  '@openrouter/ai-sdk-provider@1.5.4(ai@5.0.294(zod@4.3.5))(zod@4.3.5)':
     dependencies:
       '@openrouter/sdk': 0.1.27
-      ai: 5.0.286(zod@4.3.5)
+      ai: 5.0.294(zod@4.3.5)
       zod: 4.3.5
 
   '@openrouter/sdk@0.1.27':
@@ -6965,11 +6969,11 @@ snapshots:
       '@opentelemetry/api': 1.9.0
       zod: 4.3.5
 
-  ai@5.0.286(zod@4.3.5):
+  ai@5.0.294(zod@4.3.5):
     dependencies:
-      '@ai-sdk/gateway': 2.0.177(zod@4.3.5)
+      '@ai-sdk/gateway': 2.0.185(zod@4.3.5)
       '@ai-sdk/provider': 2.0.5
-      '@ai-sdk/provider-utils': 3.0.45(zod@4.3.5)
+      '@ai-sdk/provider-utils': 3.0.48(zod@4.3.5)
       '@opentelemetry/api': 1.9.0
       zod: 4.3.5
 
@@ -7907,6 +7911,8 @@ snapshots:
   esutils@2.0.3: {}
 
   eventsource-parser@3.0.6: {}
+
+  eventsource-parser@3.1.1: {}
 
   extend@3.0.2: {}
 
