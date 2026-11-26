@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@ai-sdk/google':
         specifier: ^2.0.13
-        version: 2.0.52(zod@4.3.5)
+        version: 2.0.115(zod@4.3.5)
       '@ai-sdk/groq':
         specifier: ^2.0.17
         version: 2.0.34(zod@4.3.5)
@@ -243,8 +243,8 @@ packages:
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
 
-  '@ai-sdk/google@2.0.52':
-    resolution: {integrity: sha512-2XUnGi3f7TV4ujoAhA+Fg3idUoG/+Y2xjCRg70a1/m0DH1KSQqYaCboJ1C19y6ZHGdf5KNT20eJdswP6TvrY2g==}
+  '@ai-sdk/google@2.0.115':
+    resolution: {integrity: sha512-scjCQfnTtWhoy1PWtiPLkx3rdAgJTtjk/GHfzMfOBHoAsFgGPPMw+3/NkPv6j4824x049mX8NjdWB6DF/zNYgg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -263,6 +263,12 @@ packages:
 
   '@ai-sdk/provider-utils@3.0.45':
     resolution: {integrity: sha512-AfVd7CNBns6agdc9SWTr6kh8By45X48eenoyyYRUjX4we5rqoaowcff1L2U8sbYctxunKryiyBeNv005W60VDw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider-utils@3.0.48':
+    resolution: {integrity: sha512-pibs201e7/4fTHRUF/rUa5NKcbxbefRQl0Ujvd/EqLo6eA+IMzeBCrI2vVpusTcatSILKiZIjXX5gVXMPOoYUg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -3238,6 +3244,10 @@ packages:
     resolution: {integrity: sha512-Vo1ab+QXPzZ4tCa8SwIHJFaSzy4R6SHf7BY79rFBDf0idraZWAkYrDjDj8uWaSm3S2TK+hJ7/t1CEmZ7jXw+pg==}
     engines: {node: '>=18.0.0'}
 
+  eventsource-parser@3.1.1:
+    resolution: {integrity: sha512-EKN1vKAMcZ8MlYMpaNuxN6R9yakzH6uajHcHVTqWJzvu5pWw9DyhbP35HH8MVBQ+dZjAfDxk+A8NiR9KWaXiyQ==}
+    engines: {node: '>=18.0.0'}
+
   extend@3.0.2:
     resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
 
@@ -5049,10 +5059,10 @@ snapshots:
       '@vercel/oidc': 3.0.5
       zod: 4.3.5
 
-  '@ai-sdk/google@2.0.52(zod@4.3.5)':
+  '@ai-sdk/google@2.0.115(zod@4.3.5)':
     dependencies:
-      '@ai-sdk/provider': 2.0.1
-      '@ai-sdk/provider-utils': 3.0.20(zod@4.3.5)
+      '@ai-sdk/provider': 2.0.5
+      '@ai-sdk/provider-utils': 3.0.48(zod@4.3.5)
       zod: 4.3.5
 
   '@ai-sdk/groq@2.0.34(zod@4.3.5)':
@@ -5073,6 +5083,14 @@ snapshots:
       '@ai-sdk/provider': 2.0.5
       '@standard-schema/spec': 1.1.0
       eventsource-parser: 3.0.6
+      undici: 5.29.0
+      zod: 4.3.5
+
+  '@ai-sdk/provider-utils@3.0.48(zod@4.3.5)':
+    dependencies:
+      '@ai-sdk/provider': 2.0.5
+      '@standard-schema/spec': 1.1.0
+      eventsource-parser: 3.1.1
       undici: 5.29.0
       zod: 4.3.5
 
@@ -7907,6 +7925,8 @@ snapshots:
   esutils@2.0.3: {}
 
   eventsource-parser@3.0.6: {}
+
+  eventsource-parser@3.1.1: {}
 
   extend@3.0.2: {}
 
